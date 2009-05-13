@@ -7,6 +7,7 @@ class EndoModel extends MyActiveRecord
 
   var $get_attached = array();
   var $get_children = array();
+  var $get_parents = array();
 
   // --------------------------------------------------
   // STORAGE

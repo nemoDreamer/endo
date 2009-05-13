@@ -146,12 +146,14 @@ class EndoController
 
   function admin_index()
   {
+    $prep_filter = $this->_prep_filter();
+    // get
     $this->View->assign(
       'items',
       $items=AppModel::FindAll(
         Url::$data['modelName'],
         false, // extend
-        null, // where
+        $prep_filter['where'], // where
         '`'.$this->Model->name_fields[0].'` ASC' // order
         // '`modified` DESC' // order
       )
@@ -163,6 +165,7 @@ class EndoController
 
   function admin_add()
   {
+    $prep_filter = $this->_prep_filter();
     if ($this->data!=null) {
       // create
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
@@ -172,7 +175,7 @@ class EndoController
       }
     } else {
       // create empty
-      $this->Model = AppModel::create(Url::$data['modelName']);
+      $this->Model = AppModel::create(Url::$data['modelName'], array($prep_filter['parent_field'] => $prep_filter['filter']));
     }
     $this->View->assign('item', $this->Model);
   }
@@ -182,6 +185,7 @@ class EndoController
 
   function admin_edit($id)
   {
+    $this->_prep_filter();
     if ($this->data!=null) {
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
@@ -212,6 +216,32 @@ class EndoController
       // redirect
       $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
     }
+  }
+
+  private function _prep_filter()
+  {
+    // filter?
+    $filter = array_get($_GET, 'filter', null);
+    // parents?
+    $parents = ($parent = array_get($this->Model->get_parents, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
+    // short filter?
+    if (is_numeric($filter) && $filter!=false) {
+      Globe::load($parent, 'model');
+      $parent_field = AppModel::Class2Table($parent).'_id';
+      $where = "$parent_field=$filter";
+    } else {
+      $parent_field = false; // TODO _pb: improve!!!
+      $where = $filter;
+    }
+    $this->View->assign('filter', $filter); // field, value
+    $this->View->assign('parents', $parents);
+
+    return array(
+      'where' => $where,
+      'filter' => $filter,
+      'parents' => $parents,
+      'parent_field' => $parent_field
+    );
   }
 
 }

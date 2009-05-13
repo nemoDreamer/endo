@@ -1,3 +1,11 @@
+{if $parents}
+  <form id="filter_form">
+    <div class="input select">
+      <label>Filter by:</label>
+      {html_options name='filter' options=$parents selected=$filter}
+    </div>
+  </form>
+{/if}
 <ul class="items">
 {foreach from=$items item=item name=item}
   <li class="item {list_classes name='item'}">
