@@ -4,7 +4,7 @@
   TODO replace $url (assigned at view and layout level... by a Registered Object)
 -->
 
-<form action="/{$ADMIN_ROUTE}/{$url.controller}/edit/{$item->id}" method="post" accept-charset="utf-8">
+<form action="/{$ADMIN_ROUTE}/{$url.controller}/edit/{$item->id}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
   <input type="hidden" name="id" value="{$item->id}" id="id">
   {include file="`$url.controller`/admin_form.tpl"}
   <div class="submit">
