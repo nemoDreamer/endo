@@ -11,6 +11,7 @@ function smarty_function_admin_options($params=array(), &$smarty)
   $controller=null;
   $object=null;
   $wrap=false;
+  $show_label=false;
   $links=array();
   $output='';
 
@@ -32,30 +33,33 @@ function smarty_function_admin_options($params=array(), &$smarty)
     return;
   }
 
-  $links[] = smarty_function_admin_link(array(
+  $links['remove'] = smarty_function_admin_link(array(
     'controller' => $controller,
     'action' => 'remove'.DS.$object->id,
-    'text' => '<img src="/images/admin/silk/delete.png" width="16" height="16" alt="Remove">',
+    'alt' => $alt = 'remove entry',
+    'text' => '<img src="/images/admin/silk/delete.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
     'confirm' => "Are you sure you want to remove\n\n'{$object->display_field('name', false)}'\n\nand all child entries? (This action is permanent!)",
     'set_gets' => true
   ), $smarty);
 
-  $links[] = smarty_function_admin_link(array(
+  $links['show'] = smarty_function_admin_link(array(
     'controller' => $controller,
     'action' => 'show'.DS.$object->id,
-    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="Show">',
+    'alt' => $alt = 'show entry',
+    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
     'set_gets' => true
   ), $smarty);
 
-  $links[] = smarty_function_admin_link(array(
+  $links['edit'] = smarty_function_admin_link(array(
     'controller' => $controller,
     'action' => 'edit'.DS.$object->id,
-    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="Edit">',
+    'alt' => $alt = 'edit entry',
+    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
     'set_gets' => true
   ), $smarty);
 
-  foreach ($links as $link) {
-    $output .= "<li>$link</li>\n";
+  foreach ($links as $class => $link) {
+    $output .= "<li class=\"$class\">$link</li>\n";
   }
 
   if ($wrap) {

@@ -23,11 +23,13 @@
       <span class="modified {if $modified} highlight{/if}" rel="{$item->date(modified, true)}">{$item->date(modified)}</span>
     </div>
   </div>
-  <div class="options">
-    {admin_options controller=$url.controller object=$item wrap=true}
-  </div>
 </div>
 
 {endo_for_layout assign="sidebar"}
-<p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add"}</a></p>
+  <div id="tools">
+    <div id="tool_options" class="group">
+      {admin_options controller=$url.controller object=$item wrap=true show_label=true}
+    </div>
+  </div>
+  <p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
 {/endo_for_layout}
