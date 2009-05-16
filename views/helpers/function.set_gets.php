@@ -20,15 +20,23 @@ function smarty_function_set_gets($params=array(), &$smarty)
 
   foreach ($vars as $_key) {
     $_value = array_get($smarty->_tpl_vars, $_key, false);
-    if (!($_key=='filter' && $_value==false)) {
-      $output .= $_key."=".smarty_function_escape_special_chars($_value)."&";
+    switch ($_key) {
+      case 'filter':
+        if ($_value->value!=false) {
+          $output .= $_key."=".(($_value->short) ? $_value->value : $_value->where);
+        }
+        break;
+      default:
+        $output .= $_key."=".smarty_function_escape_special_chars($_value);
+        break;
     }
+    $output .= "&"; // add separator
   }
 
-  $output = preg_replace('%&$%U', '', $output);
+  $output = preg_replace('/&$/U', '', $output); // remove trailing separator
 
   if (strlen($output)>0) {
-    $output = '?'.$output;
+    $output = '?'.$output; // build output
   }
 
   return $output;

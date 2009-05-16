@@ -36,19 +36,22 @@ function smarty_function_admin_options($params=array(), &$smarty)
     'controller' => $controller,
     'action' => 'remove'.DS.$object->id,
     'text' => '<img src="/images/admin/silk/delete.png" width="16" height="16" alt="Remove">',
-    'confirm' => "Are you sure you want to remove\n\n'{$object->display_field('name', false)}'\n\nand all child entries? (This action is permanent!)"
+    'confirm' => "Are you sure you want to remove\n\n'{$object->display_field('name', false)}'\n\nand all child entries? (This action is permanent!)",
+    'set_gets' => true
   ), $smarty);
 
   $links[] = smarty_function_admin_link(array(
     'controller' => $controller,
     'action' => 'show'.DS.$object->id,
-    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="Show">'
+    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="Show">',
+    'set_gets' => true
   ), $smarty);
 
   $links[] = smarty_function_admin_link(array(
     'controller' => $controller,
     'action' => 'edit'.DS.$object->id,
-    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="Edit">'
+    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="Edit">',
+    'set_gets' => true
   ), $smarty);
 
   foreach ($links as $link) {

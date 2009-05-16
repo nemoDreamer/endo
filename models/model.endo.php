@@ -7,7 +7,7 @@ class EndoModel extends MyActiveRecord
 
   var $get_attached = array();
   var $get_children = array();
-  var $get_parents = array();
+  var $get_parent = array();
 
   // --------------------------------------------------
   // STORAGE
@@ -75,6 +75,7 @@ class EndoModel extends MyActiveRecord
   {
     AppModel::AddRelated('attached', $objects);
     AppModel::AddRelated('children', $objects);
+    AppModel::AddRelated('parent', $objects);
     return $objects;
   }
 

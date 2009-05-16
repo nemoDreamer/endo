@@ -146,16 +146,15 @@ class EndoController
 
   function admin_index()
   {
-    $prep_filter = $this->_prep_filter();
+    $filter = $this->_get_filter();
     // get
     $this->View->assign(
       'items',
-      $items=AppModel::FindAll(
+      AppModel::FindAll(
         Url::$data['modelName'],
-        false, // extend
-        $prep_filter['where'], // where
+        true, // extend
+        $filter->where, // where
         '`'.$this->Model->name_fields[0].'` ASC' // order
-        // '`modified` DESC' // order
       )
     );
   }
@@ -165,7 +164,7 @@ class EndoController
 
   function admin_add()
   {
-    $prep_filter = $this->_prep_filter();
+    $filter = $this->_get_filter();
     if ($this->data!=null) {
       // create
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
@@ -174,8 +173,10 @@ class EndoController
         $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
       }
     } else {
+      // pre-data?
+      $pre_data = ($filter->field) ? array($filter->field => $filter->value) : null;
       // create empty
-      $this->Model = AppModel::create(Url::$data['modelName'], array($prep_filter['parent_field'] => $prep_filter['filter']));
+      $this->Model = AppModel::create(Url::$data['modelName'], $pre_data);
     }
     $this->View->assign('item', $this->Model);
   }
@@ -185,7 +186,7 @@ class EndoController
 
   function admin_edit($id)
   {
-    $this->_prep_filter();
+    $this->_get_filter();
     if ($this->data!=null) {
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
@@ -218,30 +219,41 @@ class EndoController
     }
   }
 
-  private function _prep_filter()
+  private function _get_filter()
   {
     // filter?
-    $filter = array_get($_GET, 'filter', null);
-    // parents?
-    $parents = ($parent = array_get($this->Model->get_parents, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
-    // short filter?
-    if (is_numeric($filter) && $filter!=false) {
-      Globe::load($parent, 'model');
-      $parent_field = AppModel::Class2Table($parent).'_id';
-      $where = "$parent_field=$filter";
-    } else {
-      $parent_field = false; // TODO _pb: improve!!!
-      $where = $filter;
-    }
-    $this->View->assign('filter', $filter); // field, value
-    $this->View->assign('parents', $parents);
+    $value = array_get($_GET, 'filter', null);
 
-    return array(
+    // parents?
+    $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
+
+    // short filter?
+    if ($short = is_numeric($value)) {
+      if ($parent) {
+        Globe::load($parent, 'model');
+        $field = AppModel::Class2Table($parent).'_id';
+        if ($value!=false) {
+          $where = "$field=$value";
+        } else {
+          $where = null;
+        }
+      } else {
+        $field = $where = null;
+      }
+    } else {
+      $field = preg_replace('/=.*/U', '', $value);
+      $where = $value;
+    }
+
+    $this->View->assign('filter', $filter = (object) array(
+      'short' => $short,
       'where' => $where,
-      'filter' => $filter,
-      'parents' => $parents,
-      'parent_field' => $parent_field
-    );
+      'field' => $field,
+      'value' => $value,
+      'parents' => $parents
+    ));
+
+    return $filter;
   }
 
 }

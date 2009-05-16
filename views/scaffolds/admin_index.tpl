@@ -1,8 +1,8 @@
-{if $parents}
+{if $filter->parents}
   <form id="filter_form">
     <div class="input select">
       <label>Filter by:</label>
-      {html_options name='filter' options=$parents selected=$filter}
+      {html_options name='filter' options=$filter->parents selected=$filter->value}
     </div>
   </form>
 {/if}
