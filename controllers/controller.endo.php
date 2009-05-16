@@ -6,6 +6,7 @@ class EndoController
 
   var $output = '';
   var $data = array();
+  var $filter = null;
 
   var $View;
 
@@ -61,6 +62,7 @@ class EndoController
     // admin?
     if (Url::$data['is_admin']) {
       $this->layout = 'admin';
+      $this->_set_filter();
     }
   }
 
@@ -146,14 +148,13 @@ class EndoController
 
   function admin_index()
   {
-    $filter = $this->_get_filter();
     // get
     $this->View->assign(
       'items',
       AppModel::FindAll(
         Url::$data['modelName'],
         true, // extend
-        $filter->where, // where
+        $this->filter->where, // where
         '`'.$this->Model->name_fields[0].'` ASC' // order
       )
     );
@@ -164,7 +165,6 @@ class EndoController
 
   function admin_add()
   {
-    $filter = $this->_get_filter();
     if ($this->data!=null) {
       // create
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
@@ -174,7 +174,7 @@ class EndoController
       }
     } else {
       // pre-data?
-      $pre_data = ($filter->field) ? array($filter->field => $filter->value) : null;
+      $pre_data = ($this->filter->field) ? array($this->filter->field => $this->filter->value) : null;
       // create empty
       $this->Model = AppModel::create(Url::$data['modelName'], $pre_data);
     }
@@ -186,7 +186,6 @@ class EndoController
 
   function admin_edit($id)
   {
-    $this->_get_filter();
     if ($this->data!=null) {
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
@@ -219,7 +218,7 @@ class EndoController
     }
   }
 
-  private function _get_filter()
+  private function _set_filter()
   {
     // filter?
     $value = array_get($_GET, 'filter', null);
@@ -245,15 +244,13 @@ class EndoController
       $where = $value;
     }
 
-    $this->View->assign('filter', $filter = (object) array(
+    $this->View->assign('filter', $this->filter = (object) array(
       'short' => $short,
       'where' => $where,
       'field' => $field,
       'value' => $value,
       'parents' => $parents
     ));
-
-    return $filter;
   }
 
 }
