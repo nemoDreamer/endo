@@ -35,6 +35,7 @@
 
 <script src="/javascripts/my.admin.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="{$id}" class="{$url.action}">
 <div id="container">
