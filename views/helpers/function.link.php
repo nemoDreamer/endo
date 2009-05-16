@@ -8,6 +8,7 @@ function smarty_function_link($params=array(), &$smarty)
   $text='';
   $controller='';
   $action='';
+  $set_gets=false;
   $extra='';
 
   foreach ($params as $_key => $_value) {
@@ -15,6 +16,7 @@ function smarty_function_link($params=array(), &$smarty)
       case 'text':
       case 'controller':
       case 'action':
+      case 'set_gets':
         $$_key = $_value;
         break;
 
@@ -46,6 +48,11 @@ function smarty_function_link($params=array(), &$smarty)
 
   if (!empty($action)) {
     $output .= DS.$action;
+  }
+
+  if ($set_gets!=false) {
+    require_once $smarty->_get_plugin_filepath('function','set_gets');
+    $output .= smarty_function_set_gets(is_bool($set_gets) ? array() : array('vars' => $set_gets), $smarty);
   }
 
   $output .= '"'.$extra.'>'.$text.'</a>';

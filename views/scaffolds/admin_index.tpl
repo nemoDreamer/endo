@@ -36,5 +36,5 @@
 </ul>
 
 {endo_for_layout assign="sidebar"}
-<p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add"}</a></p>
+<p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
 {/endo_for_layout}
