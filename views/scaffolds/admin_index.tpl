@@ -10,8 +10,8 @@
 {foreach from=$items item=item name=item}
   <li class="item {list_classes name='item'}">
     <div class="info">
-      <span class="label sort">{$item->display_name()}</span>
-      <span class="blurb sec">{$item->display_description()|truncate:256|htmlencode}</span>
+      <span class="label sort">{$item->display_field('name')}</span>
+      <span class="blurb sec">{$item->display_field('description', false)|truncate:256|htmlencode}</span>
       <div class="dates">
         <div class="date sec">
           created:<br/>

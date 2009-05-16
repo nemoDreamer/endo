@@ -1,4 +1,4 @@
-<h2>Edit <em>&lsquo;{$item->display_name()|truncate}&rsquo;</em></h2>
+<h2>Edit <em>&lsquo;{$item->display_field('name')}&rsquo;</em></h2>
 
 <!--
   TODO replace $url (assigned at view and layout level... by a Registered Object)

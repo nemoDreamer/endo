@@ -143,7 +143,7 @@ class EndoModel extends MyActiveRecord
     $class = Globe::init($table, 'model');
 
     // get name field
-    $name_field = $class->name_fields[0];
+    $name_field = implode($class->name_fields, '`, `');
 
     // where?
     $strWhere = $strWhere!=null ? "WHERE {$strWhere}" : '';
@@ -152,11 +152,12 @@ class EndoModel extends MyActiveRecord
     $collection = AppModel::FindBySql($strClass, "SELECT `id`, `{$name_field}` FROM `{$table}` {$strWhere} ORDER BY `{$name_field}`", $strIndexBy);
 
     // associate id => name
-    foreach ($collection as $key => $value) {
-      $collection[$key] = $value->{$name_field};
+    foreach ($collection as $key => $object) {
+      $collection[$key] = $object->display_field('name', false);
     }
 
     // return
+    asort($collection); // re-sort by display-name
     return $collection;
   }
 
@@ -201,17 +202,16 @@ class EndoModel extends MyActiveRecord
   // SCAFFOLD TOOLS
   // --------------------------------------------------
 
-  function display_scaffold_field($scaffold_name, $span_wrap=true)
+  function display_field($scaffold_name, $span_wrap=true, $separator=', ')
   {
     $output = '';
     foreach ($this->{$scaffold_name.'_fields'} as $key => $value) {
-      $output .= $span_wrap ? '<span class="part_'.$key.'">'.$this->$value.'</span> ' : $this->$value.($key<count($this->{$scaffold_name.'_fields'})-1 ? ', ' : '');
+      if ($this->$value!=null) {
+        $output .= $span_wrap ? '<span class="part_'.$key.'">'.$this->$value.'</span> ' : $this->$value.($key<count($this->{$scaffold_name.'_fields'})-1 ? $separator : '');
+      }
     }
     return trim($output);
   }
-
-  function display_name() { return $this->display_scaffold_field('name'); }
-  function display_description() { return $this->display_scaffold_field('description', false); }
 
 }
 

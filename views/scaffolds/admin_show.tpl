@@ -1,4 +1,4 @@
-<h2>Showing <em>&lsquo;{$item->display_name()|truncate}&rsquo;</em></h2>
+<h2>Showing <em>&lsquo;{$item->display_field('name')}&rsquo;</em></h2>
 <div id="show">
   <div class="info">
     {foreach from=$item key=key item=value}
