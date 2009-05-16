@@ -1,7 +1,7 @@
 <h2>Showing <em>&lsquo;{$item->display_field('name')}&rsquo;</em></h2>
 <div id="show">
   <div class="info">
-    {foreach from=$item key=key item=value}
+    {foreach from=$item->_for_show() key=key item=value}
       <div id="{$key}" class="key">
         <h3>{$key}</h3>
         <span class="value">{$value}</span>

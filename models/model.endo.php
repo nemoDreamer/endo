@@ -214,6 +214,22 @@ class EndoModel extends MyActiveRecord
     return trim($output);
   }
 
+  function _for_show()
+  {
+    $output = clone $this;
+    foreach ($output as $key => $value) {
+      if (preg_match('/^get_/', $key) || preg_match('/_id$/', $key)) {
+        unset($output->$key);
+      }
+    }
+    return $output;
+  }
+
+  function __toString()
+  {
+    return $this->display_field('name');
+  }
+
 }
 
 ?>

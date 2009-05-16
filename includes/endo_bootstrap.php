@@ -26,4 +26,13 @@ function array_get($array, $key, $default=null)
   return array_key_exists($key, $array) ? $array[$key] : $default;
 }
 
+function to_array($obj)
+{
+  $output = array();
+  foreach ($obj as $key => $value) {
+    $output[$key] = $value;
+  }
+  return $output;
+}
+
 ?>
