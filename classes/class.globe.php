@@ -146,18 +146,18 @@ class Globe {
   // PLURALIZE / SINGULARIZE
   // --------------------------------------------------
 
-  public function pluralize($str='')
+  public function pluralize($str='', $title_case=false)
   {
     $str = strtolower($str);
     if (array_key_exists($str, Globe::$pluralize_exceptions)) {
-      return Globe::$pluralize_exceptions[$str];
+      $output = Globe::$pluralize_exceptions[$str];
     } else {
-      if(substr($str,-1)!='s') {
-        return $str.'s';
-      } else {
-        return $str;
-      }
+      $output = substr($str,-1)!='s' ? $str.'s': $str;
     }
+    if ($title_case) {
+      $output = ucfirst($output);
+    }
+    return $output;
   }
 
   public function singularize($str='')
