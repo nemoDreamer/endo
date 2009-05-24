@@ -5,6 +5,9 @@
 -->
 
 <form action="/{$ADMIN_ROUTE}/{$url.controller}/edit/{$item->id}{set_gets}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+
+  {admin_relations object=`$item` wrap=true}
+
   <input type="hidden" name="id" value="{$item->id}" id="id">
   {include file="`$url.controller`/admin_form.tpl"}
   <div class="submit">

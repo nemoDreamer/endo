@@ -240,7 +240,7 @@ class EndoController
         $field = $where = null;
       }
     } else {
-      $field = preg_replace('/=.*/U', '', $value);
+      $field = preg_replace('/=.+$/U', '', $value);
       $where = $value;
     }
 
@@ -249,6 +249,7 @@ class EndoController
       'where' => $where,
       'field' => $field,
       'value' => $value,
+      'parent' => $parent,
       'parents' => $parents
     ));
   }
