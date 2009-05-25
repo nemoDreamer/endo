@@ -10,31 +10,31 @@
 // ROOTS
 // --------------------------------------------------
 
-ddefine('ENDO_ROOT', dirname(__FILE__).DS);
-ddefine('PACKAGES_ROOT', ROOT.'packages'.DS);
+ddefine('ENDO_ROOT',                        dirname(__FILE__).DS);
+ddefine('PACKAGES_ROOT',                    ROOT.'packages'.DS);
 
 // --------------------------------------------------
 // ROUTES
 // --------------------------------------------------
 
-ddefine('DEFAULT_URL', 'pages/home');
-ddefine('DEFAULT_REQUEST_TYPE', 'html');
+ddefine('DEFAULT_URL',                      'pages/home');
+ddefine('DEFAULT_REQUEST_TYPE',             'html');
 
 // --------------------------------------------------
 // ADMIN
 // --------------------------------------------------
 
-ddefine('ADMIN_ROUTE', '__admin');
-ddefine('ADMIN_PREFIX', 'admin_');
-ddefine('ADMIN_DEFAULT_CONTROLLER', '---'); // should be overwritten in APP Configure
-ddefine('ADMIN_DEFAULT_ACTION', 'dashboard');
+ddefine('ADMIN_ROUTE',                      '__admin');
+ddefine('ADMIN_PREFIX',                     'admin_');
+ddefine('ADMIN_DEFAULT_CONTROLLER',         '---'); // should be overwritten in APP Configure
+ddefine('ADMIN_DEFAULT_ACTION',             'dashboard');
 
 // --------------------------------------------------
 // FORMATTING
 // --------------------------------------------------
 
-ddefine('DATE_FORMAT',     'D, M jS \'y g:ia');
-ddefine('DATE_FORMAT_JS',  'D, j M Y H:i:s');
+ddefine('DATE_FORMAT',                      'D, M jS \'y g:ia');
+ddefine('DATE_FORMAT_JS',                   'D, j M Y H:i:s');
 
 // --------------------------------------------------
 // FOLDERS
@@ -58,14 +58,14 @@ ddefine('STR_FINDCACHE',                    'find');
 ddefine('SMARTY_TEMPLATE_DIR',              'views');
 ddefine('SMARTY_PLUGINS_DIR',               'helpers');
 ddefine('SMARTY_SCAFFOLD_DIR',              SMARTY_TEMPLATE_DIR.DS.'scaffolds');
-ddefine('SMARTY_CONFIG_DIR',			          'config');
-ddefine('SMARTY_COMPILE_DIR',		            APP_ROOT.CACHES_DIR.'views_compiled');
-ddefine('SMARTY_CACHE_DIR',			            APP_ROOT.CACHES_DIR.'views_cached');
-ddefine('SMARTY_TEMPLATE_EXT',		          'tpl');
+ddefine('SMARTY_CONFIG_DIR',                'config');
+ddefine('SMARTY_COMPILE_DIR',               APP_ROOT.CACHES_DIR.'views_compiled');
+ddefine('SMARTY_CACHE_DIR',                 APP_ROOT.CACHES_DIR.'views_cached');
+ddefine('SMARTY_TEMPLATE_EXT',              'tpl');
 
 // ddefine('SMARTY_CACHING',                   DEBUG==0 ? true : false);
-ddefine('SMARTY_CACHING',				            false);
-ddefine('SMARTY_COMPILE_CHECK',	            true);
+ddefine('SMARTY_CACHING',                   false);
+ddefine('SMARTY_COMPILE_CHECK',             true);
 ddefine('SMARTY_DEBUG_OUTPUT',              null);
 
 // --------------------------------------------------
