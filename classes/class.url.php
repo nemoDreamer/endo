@@ -41,12 +41,19 @@ class Url {
       Url::$data['controller'] = EXECUTE_CONTROLLER;
       Url::$data['controllerName'] = ucfirst(EXECUTE_CONTROLLER).'Controller';
       Url::$data['action'] = '_include_to_buffer';
+      // is admin?
+      if (strpos($tmp_url=Url::$data['url'], ADMIN_ROUTE)===0) {
+        // set is_admin
+        Url::$data['is_admin'] = true;
+        // remove route
+        $tmp_url = preg_replace('%^'.ADMIN_ROUTE.DS.'%U', '', $tmp_url);
+      }
       Url::$data['params'] = array(
-        'filename' => Url::$data['url'].'.php'
+        'filename' => $tmp_url.'.php'
       );
     } else {
       // get parts
-      $parts = explode('/', Url::$data['url']);
+      $parts = explode(DS, Url::$data['url']);
 
       // is admin because of path?
       if ($parts[0]==ADMIN_ROUTE) {

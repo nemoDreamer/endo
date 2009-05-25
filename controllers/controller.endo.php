@@ -227,8 +227,13 @@ class EndoController
     // filter?
     $value = array_get($_GET, 'filter', null);
 
-    // parents?
-    $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
+    if ($this->name != 'execute') {
+      // parents?
+      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
+    } else {
+      // no model on ExecuteController...
+      $parents = $parent = false;
+    }
 
     // short filter?
     if ($short = is_numeric($value)) {
