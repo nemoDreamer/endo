@@ -40,6 +40,16 @@ class Error
   {
     return count(Error::$errors)!=0;
   }
+
+  static function is_fatal()
+  {
+    return Error::is_('fatal');
+  }
+
+  static function is_($key)
+  {
+    return array_key_exists($key, Error::$errors);
+  }
 }
 
 ?>

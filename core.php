@@ -52,7 +52,7 @@ $Controller->_afterFilter();
 $debug_dump = '';
 $debug_dump .= d_arr(Url::$data, false);
 // $debug_dump .= d_arr(Error::$errors, false);
-$debug_dump .= d_arr($_REQUEST, false);
+// $debug_dump .= d_arr($_REQUEST, false);
 $debug_dump .= d_arr(get_constants(), false);
 
 
@@ -67,10 +67,12 @@ $View = new AppView();
 $View->assign(array(
   'id' => Url::$data['controller'].'_'.Url::$data['action'],
   'url' => Url::$data,
-  'content' => $Controller->output,
   'has_errors' => Error::has_errors(),
   'debug_dump' => $debug_dump
 ));
+
+// assign content if no fatal
+$View->assign('content', !Error::is_fatal() ? $Controller->output : null);
 
 // assign case-specific
 $View->assign(Globe::$variables_for_layout);
