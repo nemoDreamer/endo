@@ -81,6 +81,8 @@ class EndoModel extends MyActiveRecord
 
   function FindAll($strClass, $extend=FALSE, $mxdWhere=NULL, $strOrderBy='`id` ASC', $intLimit=10000, $intOffset=0)
   {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+
     $objects = parent::FindAll($strClass, $mxdWhere, $strOrderBy, $intLimit, $intOffset);
     if ($extend) {
       AppModel::AddAllRelated($objects);
@@ -90,11 +92,28 @@ class EndoModel extends MyActiveRecord
 
   function FindById( $strClass, $mxdID, $extend=FALSE )
   {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+
     $objects = array(parent::FindById($strClass, $mxdID));
     if ($extend) {
       AppModel::AddAllRelated($objects);
     }
     return $objects[0];
+  }
+
+  function FindFirst($strClass, $extend=false, $strWhere=null, $strOrderBy='id ASC')
+  {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    if ($object = parent::FindFirst($strClass, $strWhere, $strOrderBy)) {
+      $objects = array($object);
+      if ($extend) {
+        AppModel::AddAllRelated($objects);
+      }
+      return $objects[0];
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -108,7 +127,7 @@ class EndoModel extends MyActiveRecord
    */
   function FindAllFreq($ofClass, $toClass, &$min=null, &$max=null)
   {
-    Globe::load(array($ofClass, $toClass), 'model');
+    if (!AppModel::_smartLoadModel(array($ofClass, $toClass))) return false;
 
     $ofTable = EndoModel::Class2Table($ofClass);
     $strColumn = strtolower($ofClass.'_id');
@@ -134,31 +153,37 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
-  function FindAllAssoc($strClass, $strWhere=null, $strIndexBy='id')
+  function FindAllAssoc($strClass, $extend=FALSE, $mxdWhere=NULL, $strIndexBy='id', $strOrderBy='`id` ASC', $intLimit=10000, $intOffset=0)
   {
-    // get table
-    // $table = AppModel::Class2Table($strClass); // TODO work on Globe::make_class_name...
-    $table = strtolower($strClass);
-
-    // load class file
-    $class = Globe::init($table, 'model');
-
-    // get name field
-    $name_field = implode($class->name_fields, '`, `');
-
-    // where?
-    $strWhere = $strWhere!=null ? "WHERE {$strWhere}" : '';
+    if (!AppModel::_smartLoadModel($strClass)) return false;
 
     // get collection
-    $collection = AppModel::FindBySql($strClass, "SELECT `id`, `{$name_field}` FROM `{$table}` {$strWhere} ORDER BY `{$name_field}`", $strIndexBy);
+    $collection = AppModel::FindAll($strClass, $extend, $mxdWhere, $strOrderBy, $intLimit, $intOffset);
 
-    // associate id => name
+    // associate label
+    $output = array();
+    foreach ($collection as $key => $object) {
+      $output[$object->{$strIndexBy}] = $object;
+    }
+
+    return $output;
+  }
+
+  function FindAllAssoc_options($strClass, $mxdWhere=null, $strIndexBy='id')
+  {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    // get collection
+    $collection = AppModel::FindAllAssoc($strClass, false, $mxdWhere, $strIndexBy);
+
+    // only keep display-name
     foreach ($collection as $key => $object) {
       $collection[$key] = $object->display_field('name', false);
     }
 
-    // return
-    asort($collection); // re-sort by display-name
+    // sort by display-name
+    asort($collection);
+
     return $collection;
   }
 
@@ -228,6 +253,74 @@ class EndoModel extends MyActiveRecord
   function __toString()
   {
     return $this->display_field('name');
+  }
+
+  // --------------------------------------------------
+  // SMART LOAD
+  // --------------------------------------------------
+
+  private function _smartLoad($strClass, $type='model')
+  {
+    return Globe::load($strClass, $type) != false;
+  }
+
+  private function _smartLoadModel($strClass)       { return AppModel::_smartLoad($strClass, 'model'); }
+  private function _smartLoadController($strClass)  { return AppModel::_smartLoad($strClass, 'controller'); }
+
+  // --------------------------------------------------
+  // UPLOADS
+  // --------------------------------------------------
+
+  function _handle_uploads($field=null, $path='assets', $allowed='image', $options=array())
+  {
+    require_once(PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
+
+    // TODO _pb: add 'delete-checkbox' functionality
+
+    if (!empty($_FILES)) {
+
+      $file = new Upload($_FILES[$field]);
+      if ($file->uploaded) {
+        // path
+        $path = 'uploads'.DS.Globe::pluralize(get_class($this)).DS.$path.DS.$this->id.DS;
+        $folder = WEB_ROOT.$path;
+
+        // settings
+        if ($allowed=='image') {
+          $file->allowed = array('image/gif','image/jpg','image/jpeg','image/png','image/bmp');
+          // defaults
+          $options = array_merge(array('width' => 100), $options);
+          // resize
+          $file->image_max_pixels = 1000000;
+          $file->image_resize = true;
+          $file->image_convert = 'jpg';
+          $file->image_x = $options['width'];
+          $file->image_ratio_y = true;
+        } elseif(is_array($allowed)) {
+          $file->allowed = $allowed;
+        }
+
+        // process!
+        $file->Process($folder);
+
+        // success?
+        if ($file->processed) {
+          // remove old file?
+          @unlink($folder.str_replace(DS.$path,'',$this->{$field.'_old'}));
+
+          $file->Clean();
+          $this->{$field} = DS.$path.$file->file_dst_name;
+          return parent::save();
+        } else {
+          // TODO _pb: add endo form error message
+          echo 'ERROR: ' . $file->error;
+          return false;
+        }
+      }
+
+    }
+
+    return true;
   }
 
 }

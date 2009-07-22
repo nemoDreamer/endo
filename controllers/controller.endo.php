@@ -229,7 +229,7 @@ class EndoController
 
     if ($this->name != 'execute') {
       // parents?
-      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc($parent)) : false;
+      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc_options($parent)) : false;
     } else {
       // no model on ExecuteController...
       $parents = $parent = false;
@@ -263,37 +263,31 @@ class EndoController
     ));
   }
 
-  function _handle_uploads($field=null, $path='assets')
+  function _handle_attachments($classes=array(), $id=null)
   {
-    require_once(PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
-
-    if ($this->data!=null && !empty($_FILES)) {
-
-      $image = new Upload($_FILES[$field]);
-      if ($image->uploaded) {
-        // settings
-        $folder = WEB_ROOT.'uploads'.DS.$path.DS;
-        $image->allowed = array('image/gif','image/jpg','image/jpeg','image/png','image/bmp');
-        $image->image_max_pixels = 1000000;
-        // resize
-        $image->image_resize = true;
-        $image->image_convert = 'jpeg';
-        $image->image_x = 200;
-        $image->image_ratio_y = true;
-        $image->Process($folder);
-        if ($image->processed) {
-          $image->Clean();
-          @unlink($folder . $this->data[$field.'_old']);
-          $this->data[$field] = $image->file_dst_name;
-        } else {
-          // TODO: add endo form error message
-          echo 'ERROR: ' . $image->error;
-          die;
+    foreach ($classes as $class) {
+      if ($this->data!=null) {
+        // get all objects
+        $Objects = AppModel::FindAll($class, false); // only one query
+        // get Model
+        if ($this->Model->id == null) {
+          $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id'], false);
+        }
+        // detach
+        foreach ($this->Model->{$class} as $id => $Object) {
+          $this->Model->detach($Object);
+        }
+        // attach
+        foreach ($this->data[$class] as $id) {
+          $this->Model->attach($Objects[$id]);
         }
       }
-
+      if ($id==null) {
+        $this->Model->{$class} = array();
+      }
     }
   }
+
 }
 
 ?>
