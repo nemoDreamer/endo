@@ -16,6 +16,7 @@ function smarty_function_link($params=array(), &$smarty)
       case 'text':
       case 'controller':
       case 'action':
+      case 'href':
       case 'set_gets':
         $$_key = $_value;
         break;
@@ -39,16 +40,25 @@ function smarty_function_link($params=array(), &$smarty)
     return;
   }
 
-  if (empty($controller)) {
-    $smarty->trigger_error("link: missing 'controller' parameter", E_USER_NOTICE);
-    return;
+  if (empty($href)) {
+    if (empty($controller)) {
+      $smarty->trigger_error("link: missing 'controller' parameter", E_USER_NOTICE);
+      return;
+    }
+
+    $output .= '<a href="'.DS.$controller;
+
+    if (!empty($action)) {
+      $output .= DS.$action;
+    }
+  } else {
+    $output .= '<a href="';
+    if (preg_match('/.*@.*\..{2,5}/', $href)) {
+      $output .= 'mailto:';
+    }
+    $output .= $href;
   }
 
-  $output .= '<a href="'.DS.$controller;
-
-  if (!empty($action)) {
-    $output .= DS.$action;
-  }
 
   if ($set_gets!=false) {
     require_once $smarty->_get_plugin_filepath('function','set_gets');
