@@ -239,6 +239,16 @@ class EndoModel extends MyActiveRecord
     return trim($output);
   }
 
+  function is_publishable()
+  {
+    return array_key_exists('is_published', $this);
+  }
+
+  function is_published()
+  {
+    return !$this->is_publishable() || ($this->is_publishable() && $this->is_published);
+  }
+
   function _for_show()
   {
     $output = clone $this;

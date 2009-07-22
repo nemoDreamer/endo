@@ -8,7 +8,7 @@
 {/if}
 <ul class="items">
 {foreach from=$items item=item name=item}
-  <li class="item {list_classes name='item'}">
+  <li class="item {list_classes name='item'}{if !$item->is_published()} unpublished{/if}">
     <div class="info">
       <span class="label sort">{$item->display_field('name')}</span>
       <span class="blurb sec">{$item->display_field('description', false)|truncate:256|htmlencode}</span>
@@ -36,5 +36,6 @@
 </ul>
 
 {endo_for_layout assign="sidebar"}
-<p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
+  <input type="hidden" name="is_publishable" value="{$is_publishable}" id="is_publishable">
+  <p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
 {/endo_for_layout}

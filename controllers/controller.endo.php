@@ -148,7 +148,7 @@ class EndoController
 
   function admin_index()
   {
-    // get
+    // items
     $this->View->assign(
       'items',
       AppModel::FindAll(
@@ -158,6 +158,8 @@ class EndoController
         '`'.$this->Model->name_fields[0].'` ASC' // order
       )
     );
+    // options
+    $this->View->assign('is_publishable', $this->Model->is_publishable());
   }
 
   // ADD
