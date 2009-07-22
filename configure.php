@@ -21,6 +21,13 @@ ddefine('DEFAULT_URL',                      'pages/home');
 ddefine('DEFAULT_REQUEST_TYPE',             'html');
 
 // --------------------------------------------------
+// SUBDOMAIN
+// --------------------------------------------------
+
+ddefine('SUBDOMAIN_PREFIX',                 '~');
+ddefine('SUBDOMAIN_DEFAULT_URL',            DEFAULT_URL);
+
+// --------------------------------------------------
 // ADMIN
 // --------------------------------------------------
 
