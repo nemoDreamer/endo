@@ -237,7 +237,7 @@ class Globe {
 
   public function for_layout($variable, $value=null)
   {
-    Globe::$variables_for_layout[$variable.'_for_layout'] = $value;
+    return Globe::$variables_for_layout[$variable.'_for_layout'] = $value;
   }
 
   // --------------------------------------------------

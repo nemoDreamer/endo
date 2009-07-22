@@ -20,7 +20,7 @@ require_once(ENDO_ROOT.INCLUDES_DIR.'initialize.php');
 // URL
 // --------------------------------------------------
 
-Url::parse(array_key_exists('url', $_REQUEST) ? $_REQUEST['url'] : DEFAULT_URL);
+Url::parse(array_get($_REQUEST, 'url', DEFAULT_URL));
 
 // --------------------------------------------------
 // Controller
