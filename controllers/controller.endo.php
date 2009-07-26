@@ -267,24 +267,21 @@ class EndoController
 
   function _handle_attachments($classes=array(), $id=null)
   {
+    // cycle Associations
     foreach ($classes as $class) {
       if ($this->data!=null) {
         // get all objects
         $Objects = AppModel::FindAll($class, false); // only one query
-        // get Model
-        if ($this->Model->id == null) {
-          $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id'], false);
-        }
         // detach
-        foreach ($this->Model->{$class} as $id => $Object) {
+        foreach ($this->Model->find_attached($class) as $Object) {
           $this->Model->detach($Object);
         }
         // attach
-        foreach ($this->data[$class] as $id) {
+        foreach (array_get($this->data, $class, array()) as $id) {
           $this->Model->attach($Objects[$id]);
         }
-      }
-      if ($id==null) {
+        // $this->_redirect(null);//d_arr($this);die;
+      } elseif ($id==null) {
         $this->Model->{$class} = array();
       }
     }
