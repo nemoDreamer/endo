@@ -25,7 +25,7 @@
   </literal>
 <![endif]-->
 
-<script src="/javascripts/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/jquery.livequery.js" type="text/javascript" charset="utf-8"></script>
