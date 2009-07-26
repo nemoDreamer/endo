@@ -117,6 +117,14 @@ class Url {
 
   }
 
+  ##
+  # get param
+  #
+  static function param($variable, $default=null)
+  {
+    return array_get(Url::$data['params'], $variable, $default);
+  }
+
   static function _set_subdomain($subdomain)
   {
     Url::$data['is_subdomain'] = true;
