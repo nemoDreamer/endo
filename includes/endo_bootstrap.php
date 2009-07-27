@@ -21,9 +21,18 @@ function str_replace_js($string='')
   return str_replace($search, $replace, $string);
 }
 
-function array_get($array, $key, $default=null)
+function array_get(&$array, $key, $default=null)
 {
   return array_key_exists($key, $array) ? $array[$key] : $default;
+}
+
+function array_extract(&$array, $keys)
+{
+  $output = array();
+  foreach ($keys as $key) {
+    $output[$key] = array_get($array, $key);
+  }
+  return $output;
 }
 
 function to_array($obj)
