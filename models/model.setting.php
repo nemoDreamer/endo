@@ -7,7 +7,7 @@ class Setting extends EndoModel {
     return AppModel::FindAll('Setting', false, "`group`='{$group}'", '`variable` ASC');
   }
 
-  function Get($variable, $group = 'default', $value_only = false)
+  function Get($variable, $group = 'default', $value_only = true)
   {
     $tmp = AppModel::FindFirst('Setting', false, "`variable`=\"{$variable}\" AND `group`='{$group}'");
     return !$value_only ? $tmp : $tmp->value;
