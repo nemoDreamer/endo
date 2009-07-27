@@ -8,6 +8,7 @@ class EndoModel extends MyActiveRecord
   var $get_attached = array();
   var $get_children = array();
   var $get_parent = array();
+  var $file_uploads = array();
 
   // --------------------------------------------------
   // STORAGE
@@ -221,7 +222,7 @@ class EndoModel extends MyActiveRecord
     return true;
   }
   function _afterSave() {
-    return true;
+    return $this->_handle_file_uploads();
   }
 
   // --------------------------------------------------
@@ -281,13 +282,27 @@ class EndoModel extends MyActiveRecord
   // UPLOADS
   // --------------------------------------------------
 
-  function _handle_uploads($field=null, $path='assets', $allowed='image', $options=array())
+  function _handle_file_uploads()
+  {
+    $success = true;
+    foreach ($this->file_uploads as $field => $params) {
+      $success = $success && $this->_handle_file_upload($field, $params);
+    }
+    return $success;
+  }
+
+  function _handle_file_upload($field=null, $params=array())
   {
     require_once(PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
 
     // TODO _pb: add 'delete-checkbox' functionality
 
     if (!empty($_FILES)) {
+
+      // defaults
+      $path = array_get($params,'path','assets');
+      $allowed = array_get($params,'allowed','image');
+      $options = array_get($params,'options',array());
 
       $file = new Upload($_FILES[$field]);
       if ($file->uploaded) {
