@@ -214,6 +214,7 @@ class Globe {
 
   public function get_template($name, $model=null, $type=null)
   {
+    $name = $name==false || $name==null ? 'none' : $name;
     $type = $type!=DEFAULT_REQUEST_TYPE && $type!='php' ? $type.DS : '';
     return $filename = $model.DS.$type.$name.'.'.SMARTY_TEMPLATE_EXT;
   }

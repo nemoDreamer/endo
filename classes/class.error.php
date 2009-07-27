@@ -25,7 +25,7 @@ class Error
         $View->assign('key', $key);
         $View->assign('index', $index);
         $View->assign('message', $message);
-        $output .= $View->fetch(Globe::get_template($layout, 'errors', Url::$data['type']));
+        $output .= $View->fetch(Globe::get_template($layout, 'errors', Url::$data['type']))."\n";
       }
 
       unset(Error::$errors[$key]);
