@@ -191,6 +191,7 @@ class EndoController
     if ($this->data!=null) {
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
+        $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id']);
         $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
       }
     }
@@ -280,7 +281,6 @@ class EndoController
         foreach (array_get($this->data, $class, array()) as $id) {
           $this->Model->attach($Objects[$id]);
         }
-        // $this->_redirect(null);//d_arr($this);die;
       } elseif ($id==null) {
         $this->Model->{$class} = array();
       }
