@@ -314,13 +314,33 @@ class EndoModel extends MyActiveRecord
         if ($allowed=='image') {
           $file->allowed = array('image/gif','image/jpg','image/jpeg','image/png','image/bmp');
           // defaults
-          $options = array_merge(array('width' => 100), $options);
+          if (!array_get($options, 'width') && !array_get($options, 'height')) {
+            $options = array_merge(array('width' => 100), $options);
+          }
           // resize
           $file->image_max_pixels = 1000000;
           $file->image_resize = true;
           $file->image_convert = 'jpg';
-          $file->image_x = $options['width'];
-          $file->image_ratio_y = true;
+          // determine method
+          if (array_get($options, 'width') && !array_get($options, 'height')) {
+            // width only
+            $file->image_x = $options['width'];
+            $file->image_ratio_y = true;
+          } elseif(!array_get($options, 'width') && array_get($options, 'height')) {
+            // height only
+            $file->image_y = $options['height'];
+            $file->image_ratio_x = true;
+          } else {
+            // width and height
+            $file->image_x = $options['width'];
+            $file->image_y = $options['height'];
+            // crop?
+            if (array_get($options, 'crop')) {
+              $file->image_ratio_crop = true;
+            } else {
+              $file->image_ratio = true;
+            }
+          }
         } elseif(is_array($allowed)) {
           $file->allowed = $allowed;
         }
