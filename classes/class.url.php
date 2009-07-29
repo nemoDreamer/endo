@@ -115,6 +115,17 @@ class Url {
       }
     }
 
+    // set request
+    Url::$data['request'] = $_REQUEST;
+
+  }
+
+  ##
+  # get data
+  #
+  static function data($data, $variable, $default=null)
+  {
+    return array_get(array_get(Url::$data, $data, array()), $variable, $default);
   }
 
   ##
@@ -122,7 +133,15 @@ class Url {
   #
   static function param($variable, $default=null)
   {
-    return array_get(Url::$data['params'], $variable, $default);
+    return Url::data('params', $variable, $default);
+  }
+
+  ##
+  # get request
+  #
+  static function request($variable, $default=null)
+  {
+    return Url::data('request', $variable, $default);
   }
 
   static function _set_subdomain($subdomain)

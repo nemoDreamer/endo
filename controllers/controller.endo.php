@@ -228,7 +228,7 @@ class EndoController
   private function _set_filter()
   {
     // filter?
-    $value = array_get($_GET, 'filter', null);
+    $value = Url::request('filter', null);
 
     if ($this->name != 'execute') {
       // parents?
