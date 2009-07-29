@@ -44,4 +44,12 @@ function to_array($obj)
   return $output;
 }
 
+// --------------------------------------------------
+// SORTING CALLBACKS
+// --------------------------------------------------
+
+function sort_name($a, $b) {
+  return strnatcasecmp($a->name, $b->name);
+}
+
 ?>

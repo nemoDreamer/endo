@@ -2,6 +2,10 @@
 
 class Setting extends EndoModel {
 
+  var $name_fields = array('variable');
+  var $description_fields = array('value');
+  var $order_by = 'variable';
+
   function Group($group)
   {
     return AppModel::FindAll('Setting', false, "`group`='{$group}'", '`variable` ASC');

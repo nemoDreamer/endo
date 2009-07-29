@@ -4,6 +4,7 @@ class EndoModel extends MyActiveRecord
 {
   var $name_fields = array('name');
   var $description_fields = array('description');
+  var $order_by = 'name';
 
   var $get_attached = array();
   var $get_children = array();
@@ -65,8 +66,8 @@ class EndoModel extends MyActiveRecord
     // get related
     foreach ($objects as $key => $object) {
       foreach ($object->$get_related as $related_name) {
-        Globe::load($related_name, 'model');
-        $objects[$key]->$related_name = $object->$find_related($related_name);
+        $model = Globe::init($related_name, 'model');
+        $objects[$key]->$related_name = $object->$find_related($related_name, null, $model->order_by);
       }
     }
     return $objects;
