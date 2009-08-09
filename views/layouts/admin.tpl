@@ -25,17 +25,17 @@
   </literal>
 <![endif]-->
 
-<script src="/javascripts/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery.livequery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery/jquery.livequery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/jquery/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
 
-<script src="/javascripts/my.prevalue.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my.debug.js" type="text/javascript" charset="utf-8"></script>
-
-<script src="/javascripts/my.admin.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my/my.prevalue.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/my/my.admin.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="{$id}" class="{$url.action}">
 <div id="container">
