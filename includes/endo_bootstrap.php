@@ -7,6 +7,10 @@
  * @author Philip Blyth
  */
 
+// --------------------------------------------------
+// STRING
+// --------------------------------------------------
+
 function str_replace_js($string='')
 {
   $search = array(
@@ -20,6 +24,30 @@ function str_replace_js($string='')
 
   return str_replace($search, $replace, $string);
 }
+
+function camelcase($str='')
+{
+  return str_replace(' ', '', titlecase(preg_replace('/\W/', ' ', $str)));
+}
+
+function titlecase($str='')
+{
+  return ucwords((string) $str);
+}
+
+function wrap($string, $before='', $after='', $default=false)
+{
+  $string = trim($string);
+  if (($no=$string!='') || $default!=false) {
+    return $before.($no ? $string : $default).$after;
+  } else {
+    return '';
+  }
+}
+
+// --------------------------------------------------
+// ARRAY
+// --------------------------------------------------
 
 function array_get(&$array, $key, $default=null)
 {
@@ -42,6 +70,15 @@ function to_array($obj)
     $output[$key] = $value;
   }
   return $output;
+}
+
+function add_all($array)
+{
+  $tmp = array(0 => 'All');
+  foreach ($array as $key => $value) {
+    $tmp[$key] = $value;
+  }
+  return $tmp;
 }
 
 // --------------------------------------------------

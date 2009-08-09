@@ -264,7 +264,7 @@ class EndoModel extends MyActiveRecord
 
   function __toString()
   {
-    return $this->display_field('name');
+    return $this->display_field('name', false);
   }
 
   // --------------------------------------------------

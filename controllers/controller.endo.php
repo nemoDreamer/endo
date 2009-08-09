@@ -232,7 +232,7 @@ class EndoController
 
     if ($this->name != 'execute') {
       // parents?
-      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? array_merge(array(0 => 'All'), AppModel::FindAllAssoc_options($parent)) : false;
+      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? add_all(AppModel::FindAllAssoc_options($parent)) : false;
     } else {
       // no model on ExecuteController...
       $parents = $parent = false;
