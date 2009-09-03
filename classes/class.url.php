@@ -148,7 +148,15 @@ class Url {
   {
     Url::$data['is_subdomain'] = true;
     Url::$data['subdomain'] = $subdomain;
-    Url::$data['_subdomain'] = DS.SUBDOMAIN_PREFIX.$subdomain;
+    // ----------
+    if (count(explode('.', $_SERVER['HTTP_HOST'])) > 2) {
+      // if host already has subdomain, i.e. if ~tilde was appended by .htaccess:
+      Url::$data['_subdomain'] = '';
+      Url::$data['url'] = Url::$data['_url'] = substr(strstr(Url::$data['url'], DS), 1);
+    } else {
+      // set _subdomain (prefixed to 'absolute' links)
+      Url::$data['_subdomain'] = DS.SUBDOMAIN_PREFIX.$subdomain;
+    }
   }
 
 }
