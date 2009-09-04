@@ -39,17 +39,17 @@ class Url {
     $parts = explode(DS, Url::$data['url']);
 
     // is subdomain?
-    // - because of tilde
     if (substr($parts[0],0,1)==SUBDOMAIN_PREFIX) {
+      // - because of tilde
       Url::_set_subdomain(substr(array_shift($parts),1));
-    }
-    // - because of domain
-    elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2) {
+    } elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2) {
+      // - because of domain
       Url::_set_subdomain(array_shift($host_parts));
     }
-    // - anything left?
-    if (Url::$data['is_subdomain'] && count($parts)===0) {
-      $parts = explode(DS, SUBDOMAIN_DEFAULT_URL);
+
+    // anything left?
+    if (count($parts)===0 || $parts[0]==='') {
+      $parts = explode(DS, Url::$data['is_subdomain'] ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
     }
 
     // is admin because of path?
