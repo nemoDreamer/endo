@@ -19,6 +19,8 @@ ddefine('PACKAGES_ROOT',                    ROOT.'packages'.DS);
 
 ddefine('DEFAULT_URL',                      'pages/home');
 ddefine('DEFAULT_REQUEST_TYPE',             'html');
+ddefine('DEFAULT_LAYOUT',                   'default');
+ddefine('DEFAULT_ACTION',                   'default');
 
 // --------------------------------------------------
 // SUBDOMAIN

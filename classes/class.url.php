@@ -35,6 +35,34 @@ class Url {
       Url::$data['type'] = $matches[2];
     }
 
+    // get parts
+    $parts = explode(DS, Url::$data['url']);
+
+    // is subdomain?
+    // - because of tilde
+    if (substr($parts[0],0,1)==SUBDOMAIN_PREFIX) {
+      Url::_set_subdomain(substr(array_shift($parts),1));
+    }
+    // - because of domain
+    elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2) {
+      Url::_set_subdomain(array_shift($host_parts));
+    }
+    // - anything left?
+    if (Url::$data['is_subdomain'] && count($parts)===0) {
+      $parts = explode(DS, SUBDOMAIN_DEFAULT_URL);
+    }
+
+    // is admin because of path?
+    if ($parts && $parts[0]==ADMIN_ROUTE) {
+      // set is_admin
+      Url::$data['is_admin'] = true;
+      array_shift($parts); // dump into nothingness...
+      // anything left?
+      if (count($parts)===0) {
+        $parts = array(ADMIN_DEFAULT_CONTROLLER, ADMIN_DEFAULT_ACTION);
+      }
+    }
+
     // is execute?
     if (Url::$data['type']=='php') {
       Url::$data['model'] = 'app';
@@ -42,52 +70,11 @@ class Url {
       Url::$data['controller'] = EXECUTE_CONTROLLER;
       Url::$data['controllerName'] = ucfirst(EXECUTE_CONTROLLER).'Controller';
       Url::$data['action'] = '_include_to_buffer';
-
-      // is subdomain?
-      if (substr($tmp_url=Url::$data['url'],0,1)==SUBDOMAIN_PREFIX) {
-        // set subdomain
-        $tmp_pos = !($tmp_pos = strpos($tmp_url, DS)) ? -1 : $tmp_pos;
-        Url::_set_subdomain(substr($tmp_url,1,$tmp_pos-strlen(DS))); // get from after SUBDOMAIN_PREFIX to before first DS
-        // continue w/ rest of url
-        $tmp_url = substr($tmp_url,$tmp_pos+strlen(DS));
-      }
-
-      // is admin?
-      if (strpos($tmp_url, ADMIN_ROUTE)===0) {
-        // set is_admin
-        Url::$data['is_admin'] = true;
-        // remove route
-        $tmp_url = preg_replace('%^'.ADMIN_ROUTE.DS.'%U', '', $tmp_url);
-      }
-
       // set filename
       Url::$data['params'] = array(
-        'filename' => $tmp_url.'.php'
+        'filename' => implode(DS, $parts).'.php'
       );
     } else {
-      // get parts
-      $parts = explode(DS, Url::$data['url']);
-
-      // is subdomain?
-      if (substr($parts[0],0,1)==SUBDOMAIN_PREFIX) {
-        // set subdomain
-        Url::_set_subdomain(substr(array_shift($parts),1)); // save & dump into nothingness...
-        // anything left?
-        if (count($parts)===0) {
-          $parts = explode(DS, SUBDOMAIN_DEFAULT_URL);
-        }
-      }
-
-      // is admin because of path?
-      if ($parts[0]==ADMIN_ROUTE) {
-        // set is_admin
-        Url::$data['is_admin'] = true;
-        array_shift($parts); // dump into nothingness...
-        // anything left?
-        if (count($parts)===0) {
-          $parts = array(ADMIN_DEFAULT_CONTROLLER, ADMIN_DEFAULT_ACTION);
-        }
-      }
 
       // set controller
       Url::$data['controller'] = array_shift($parts);
@@ -148,15 +135,11 @@ class Url {
   {
     Url::$data['is_subdomain'] = true;
     Url::$data['subdomain'] = $subdomain;
-    // ----------
-    if (count(explode('.', $_SERVER['HTTP_HOST'])) > 2) {
-      // if host already has subdomain, i.e. if ~tilde was appended by .htaccess:
-      Url::$data['_subdomain'] = '';
-      Url::$data['url'] = Url::$data['_url'] = substr(strstr(Url::$data['url'], DS), 1);
-    } else {
-      // set _subdomain (prefixed to 'absolute' links)
-      Url::$data['_subdomain'] = DS.SUBDOMAIN_PREFIX.$subdomain;
+    $host_parts = explode('.', $_SERVER['HTTP_HOST']);
+    if ($host_parts[0] != $subdomain) {
+      array_unshift($host_parts, $subdomain);
     }
+    Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.implode('.', $host_parts);
   }
 
 }

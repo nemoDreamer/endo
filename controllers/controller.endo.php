@@ -11,8 +11,8 @@ class EndoController
   var $View;
 
   var $template; // keep NULL!!!
-  var $layout = 'default';
-  var $action = 'default';
+  var $layout = DEFAULT_LAYOUT;
+  var $action = DEFAULT_ACTION;
   var $type = DEFAULT_REQUEST_TYPE;
 
   // --------------------------------------------------
@@ -82,6 +82,12 @@ class EndoController
     if (Url::$data['is_admin']) {
       $this->View->assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
+
+    // subdomain stuff
+    if (Url::$data['is_subdomain'] && $this->layout == DEFAULT_LAYOUT) {
+      $this->layout = 'subdomain';
+    }
+
   }
 
   function _afterRender() {}
