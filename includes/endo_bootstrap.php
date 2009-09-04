@@ -82,6 +82,19 @@ function add_all($array)
 }
 
 // --------------------------------------------------
+// VARIABLES
+// --------------------------------------------------
+
+function get_default(&$variable, $default=null)
+{
+  if (isset($variable)) {
+    return !$variable ? $default : $variable;
+  } else {
+    return $default;
+  }
+}
+
+// --------------------------------------------------
 // SORTING CALLBACKS
 // --------------------------------------------------
 
