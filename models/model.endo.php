@@ -369,6 +369,23 @@ class EndoModel extends MyActiveRecord
     return true;
   }
 
+  // --------------------------------------------------
+  // DATA CHECKING
+  // --------------------------------------------------
+
+  function has_($arrayOrVar, &$scope=false)
+  {
+    if (!$scope) {
+      $scope =& $this;
+    }
+    $array = !is_array($arrayOrVar) ? array($arrayOrVar) : $arrayOrVar;
+    $has = false;
+    foreach ($array as $var) {
+      $has = $has || (isset($scope->$var) && $scope->$var);
+    }
+    return $has;
+  }
+
 }
 
 ?>
