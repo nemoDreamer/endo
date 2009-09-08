@@ -41,7 +41,9 @@ if (get_class($Controller)=='stdClass') {
 $Controller->_beforeFilter();
 $Controller->_call(Url::$data['action'], Url::$data['params'], Url::$data['type']);
 $Controller->_beforeRender();
-$Controller->_render();
+if (!Error::is_fatal()) {
+  $Controller->_render();
+}
 $Controller->_afterRender();
 $Controller->_afterFilter();
 
@@ -72,7 +74,7 @@ $View->assign(array(
 ));
 
 // assign content if no fatal
-$View->assign('content', !Error::is_fatal() ? $Controller->output : null);
+$View->assign('content', !Error::is_fatal() || DEBUG!=0 ? $Controller->output : null);
 
 // assign case-specific
 $View->assign(Globe::$variables_for_layout);
