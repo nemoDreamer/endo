@@ -373,15 +373,27 @@ class EndoModel extends MyActiveRecord
   // DATA CHECKING
   // --------------------------------------------------
 
+  /*
+   * can take either:
+   *  - string: variable-name
+   *  - array: array of variable-names
+   *  - array: 0: array of variable-names, 1: default
+   */
   function has_($arrayOrVar, &$scope=false)
   {
     if (!$scope) {
       $scope =& $this;
     }
     $array = !is_array($arrayOrVar) ? array($arrayOrVar) : $arrayOrVar;
+    if (is_array($array[0])) {
+      $default = $array[1]; // save default
+      $array = $array[0];
+    } else {
+      $default = null;
+    }
     $has = false;
     foreach ($array as $var) {
-      $has = $has || (isset($scope->$var) && $scope->$var);
+      $has = $has || (isset($scope->$var) && $scope->$var != $default);
     }
     return $has;
   }
