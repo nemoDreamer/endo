@@ -14,6 +14,9 @@ class Setting extends EndoModel {
   function Get($variable, $group = 'default', $value_only = true)
   {
     $tmp = AppModel::FindFirst('Setting', false, "`variable`=\"{$variable}\" AND `group`='{$group}'");
+    if (!$tmp) {
+      return null;
+    }
     return !$value_only ? $tmp : $tmp->value;
   }
 
