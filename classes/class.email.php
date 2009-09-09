@@ -44,7 +44,7 @@ class Email {
       $this->headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
     }
 
-    $this->headers .= "To: $this->to\r\n";
+    // $this->headers .= "To: $this->to\r\n"; // handled by mail()...
     $this->headers .= "From: $this->from\r\n";
     $this->headers .= "Reply-To: $this->from\r\n";
 
