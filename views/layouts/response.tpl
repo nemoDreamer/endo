@@ -1,4 +1,4 @@
-$('#response').html("{escape}
+$('#{$url.url}_response').html("{escape}
 {if $has_errors}
   <div class="failure">
     {endo_errors key=notice}
@@ -12,3 +12,4 @@ $('#response').html("{escape}
   </div>
 {/if}
 {/escape}").slideDown();
+$('#{$url.url}_form [pre]').each({literal}function(i,o) { prevalue_active(o,true); } {/literal});
