@@ -54,7 +54,8 @@ $Controller->_afterFilter();
 $debug_dump = '';
 $debug_dump .= d_arr(Url::$data, false);
 // $debug_dump .= d_arr(Error::$errors, false);
-$debug_dump .= d_arr($_REQUEST, false);
+$debug_dump .= d_arr($_SESSION, false);
+$debug_dump .= d_arr($_SERVER, false);
 // $debug_dump .= d_arr(get_constants(), false);
 
 
