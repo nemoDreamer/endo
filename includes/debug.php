@@ -30,7 +30,7 @@ function get_constants($key='user')
 
 function d ($str, $print=TRUE, $class=NULL, $element='p')
 {
-	if (DEBUG) {
+	if (DEBUG || get_debug()) {
     if ($class != NULL) $class = " $class";
   	$str = "<$element class='debug$class'>$str</$element>";
   	if ($print) echo $str;
@@ -45,5 +45,20 @@ function d_arr ($array, $print=TRUE, $class=NULL) { return d_pre(print_r($array,
 
 function d_err ($str, $print=FALSE, $element='span') { return d($str, $print, 'error', $element); }
 function d_ ($str, $print=FALSE, $element='span') { return d($str, $print, 'success', $element); }
+
+function get_debug()
+{
+  if(array_key_exists('debug', $_REQUEST)) {
+    if ($_REQUEST['debug']=='false') {
+      unset($_SESSION['debug']);
+      return false;
+    } else {
+      return $_SESSION['debug'] = true;
+    }
+  } elseif(isset($_SESSION) && array_key_exists('debug', $_SESSION)) {
+    return true;
+  }
+  return false;
+}
 
 ?>
