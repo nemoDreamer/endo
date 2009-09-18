@@ -39,7 +39,8 @@ class GetSetter {
     if (!is_array($data)) {
       $data = array($data);
     }
-    foreach ($data as $value) {
+    foreach ($data as $key => $value) {
+      $value = is_numeric($key) ? $value : $key;
       if (array_key_exists($value, $source[$variable])) {
         unset($source[$variable][$value]);
       }
