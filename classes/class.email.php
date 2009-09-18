@@ -15,14 +15,7 @@ class Email {
 
   function send_data($data, $subject='[Data Send]')
   {
-    $message = '<ul>'."\n";
-    foreach ($data as $key => $value) {
-      $key = ucwords(str_replace('_', ' ', $key));
-      $message .= "\t<li><strong>$key:</strong> <pre>$value</pre></li>\n";
-    }
-    $message .= '</ul>';
-
-    return $this->send($message, $subject, true);
+    return $this->send($this->build_message($data), $subject, true);
   }
 
   function send($message, $subject='[Send]', $is_html = false)
@@ -49,6 +42,18 @@ class Email {
     $this->headers .= "Reply-To: $this->from\r\n";
 
     $this->headers .= 'X-Mailer: PHP/'.phpversion();
+  }
+
+  function build_message($data)
+  {
+    $message = '<ul>'."\n";
+    foreach ($data as $key => $value) {
+      $key = ucwords(str_replace('_', ' ', $key));
+      $value = !is_array($value) ? htmlentities($value) : $this->build_message($value);
+      $message .= "\t<li><strong>$key:</strong> $value</li>\n";
+    }
+    $message .= '</ul>';
+    return $message;
   }
 
 }
