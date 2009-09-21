@@ -6,11 +6,14 @@ class Email {
 
   var $from, $to, $subject, $message;
 
-  function __construct($from, $to)
+  function __construct($from, $to, $include_admin=false)
   {
-    $this->from = $from ? $from : Setting::Get('email', 'admin', true);
-    $this->to = $to ? $to : Setting::Get('email', 'admin', true);
-
+    $admin = Setting::Get('email', 'admin', true);
+    if ($include_admin) {
+      $to = $admin.wrap($to,', ');
+    }
+    $this->from = $from ? $from : $admin;
+    $this->to = $to ? $to : $admin;
   }
 
   function send_data($data, $subject='[Data Send]')
