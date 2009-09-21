@@ -32,7 +32,7 @@ function d ($str, $print=TRUE, $class=NULL, $element='p')
 {
 	if (DEBUG || get_debug()) {
     if ($class != NULL) $class = " $class";
-  	$str = "<$element class='debug$class'>$str</$element>";
+  	$str = "<$element class='debug$class'>".htmlentities($str)."</$element>";
   	if ($print) echo $str;
   	return $str;
 	} else {
