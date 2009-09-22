@@ -81,6 +81,21 @@ function add_all($array)
   return $tmp;
 }
 
+define('ARRAY_INDEX_NO_GROUP', '__ungroupable__');
+
+function array_group($array, $group_by)
+{
+  $tmp = array();
+  foreach ($array as $index => $row) {
+    $group_name = !isset($row->$group_by) ? ARRAY_INDEX_NO_GROUP : $row->$group_by;
+    if (!array_key_exists($group_name, $tmp)) {
+      $tmp[$group_name] = array();
+    }
+    $tmp[$group_name][$index] = $row;
+  }
+  return $tmp;
+}
+
 // --------------------------------------------------
 // VARIABLES
 // --------------------------------------------------

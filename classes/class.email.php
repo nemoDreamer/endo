@@ -8,7 +8,7 @@ class Email {
 
   function __construct($from, $to, $include_admin=false)
   {
-    $admin = Setting::Get('email', 'admin', true);
+    $admin = Setting::Get('admin', 'email', true);
     if ($include_admin) {
       $to = $admin.wrap($to,', ');
     }
@@ -60,5 +60,9 @@ class Email {
   }
 
 }
+
+/*
+  UPDATE `setting` SET  `variable` = 'admin', `group` = 'emails', `label` = 'Administrator Emails' WHERE `setting`.`group` = 'admin' LIMIT 1 ;
+*/
 
 ?>
