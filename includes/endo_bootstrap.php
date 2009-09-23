@@ -96,6 +96,18 @@ function array_group($array, $group_by)
   return $tmp;
 }
 
+function random_get($array, $elements=1)
+{
+  $output = array();
+  for ($i=0; $i < $elements; $i++) {
+    if (empty($array)) break;
+    $key = array_rand($array);
+    $output[$key] = $array[$key];
+    unset($array[$key]);
+  }
+  return $output;
+}
+
 // --------------------------------------------------
 // VARIABLES
 // --------------------------------------------------
