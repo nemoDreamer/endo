@@ -387,13 +387,16 @@ class EndoModel extends MyActiveRecord
     $array = !is_array($arrayOrVar) ? array($arrayOrVar) : $arrayOrVar;
     if (is_array($array[0])) {
       $default = $array[1]; // save default
+      if (!is_array($default)) {
+        $default = array($default);
+      }
       $array = $array[0];
     } else {
-      $default = null;
+      $default = array();
     }
     $has = false;
     foreach ($array as $var) {
-      $has = $has || (isset($scope->$var) && $scope->$var != $default);
+      $has = $has || (isset($scope->$var) && !in_array($scope->$var, $default));
     }
     return $has;
   }
