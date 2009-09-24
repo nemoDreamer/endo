@@ -236,9 +236,23 @@ class Globe {
   // VIEW FUNCTIONS
   // --------------------------------------------------
 
-  public function for_layout($variable, $value=null)
+  public function for_layout($variable, $value=null, $append=false)
   {
-    return Globe::$variables_for_layout[$variable.'_for_layout'] = $value;
+    $variable = $variable.'_for_layout';
+    if ($append) {
+      if (!array_key_exists($variable, Globe::$variables_for_layout)) {
+        $tmp = !is_string($value) ? array($value) : $value;
+      } else {
+        $tmp = Globe::$variables_for_layout[$variable];
+        if (!is_string($tmp)) {
+          array_push($tmp, $value);
+        } else {
+          $tmp .= $value;
+        }
+      }
+      return Globe::$variables_for_layout[$variable] = $tmp;
+    }
+    return Globe::$variables_for_layout[$variable] = $value;
   }
 
   // --------------------------------------------------
