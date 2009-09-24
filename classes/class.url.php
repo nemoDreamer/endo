@@ -42,7 +42,7 @@ class Url {
     if (substr($parts[0],0,1)==SUBDOMAIN_PREFIX) {
       // - because of tilde
       Url::_set_subdomain(substr(array_shift($parts),1));
-    } elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2) {
+    } elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
       // - because of domain
       Url::_set_subdomain(array_shift($host_parts));
     }
