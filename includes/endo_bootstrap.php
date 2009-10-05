@@ -49,9 +49,9 @@ function wrap($string, $before='', $after='', $default=false)
 // ARRAY
 // --------------------------------------------------
 
-function array_get(&$array, $key, $default=null)
+function array_get(&$array, $key, $default=null, $allow_false=true)
 {
-  return array_key_exists($key, $array) ? $array[$key] : $default;
+  return (!array_key_exists($key, $array) || (!$allow_false && !$array[$key])) ? $default : $array[$key];
 }
 
 function array_extract(&$array, $keys)
