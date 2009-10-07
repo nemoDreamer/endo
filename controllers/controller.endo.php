@@ -9,6 +9,9 @@ class EndoController
   var $output = '';
   var $data = array();
   var $filter = null;
+  var $nav = array();
+  var $nav_prepend = array();
+  var $nav_append = array();
 
   var $View;
   var $Model = false;
@@ -72,23 +75,58 @@ class EndoController
   function _afterFilter() {}
 
   function _beforeRender() {
-    // used by all
+
+    // URL
+    // --------------------------------------------------
+
     /*
       TODO _pb: maybe simply access through 'register object' in smarty
     */
     $this->View->assign('url', Url::$data);
+    Globe::for_layout('url', Url::$data);
+
+    // SITE
+    // --------------------------------------------------
 
     Globe::for_layout('sitename', SITE_NAME);
     Globe::for_layout('footer', FOOTER);
+    Globe::for_layout('time', time());
 
-    // admin stuff
+    // ADMIN
+    // --------------------------------------------------
+
     if (Url::$data['is_admin']) {
       $this->View->assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
 
-    // subdomain stuff
+    // SUBDOMAIN
+    // --------------------------------------------------
+
     if (Url::$data['is_subdomain'] && $this->layout == DEFAULT_LAYOUT) {
       $this->layout = 'subdomain';
+    }
+
+    // --------------------------------------------------
+    // NAVIGATION
+    // --------------------------------------------------
+
+    // pre/append
+    $this->nav = array_merge(
+      $this->nav_prepend,
+      $this->nav,
+      $this->nav_append
+    );
+
+    // save
+    Globe::for_layout('nav', $this->nav);
+
+    // active?
+    Globe::for_layout('nav_active', '');
+    foreach ($this->nav as $label => $link) {
+      if (strpos(DS.Url::$data['_url'], $link)===0) {
+        Globe::for_layout('nav_active', $label);
+        Globe::for_layout('title', $label!='LiveIt! Lessons' ? trim(str_replace('LiveIt!', '', $label)) : 'Lesson '.$this->View->_tpl_vars['lesson']);
+      }
     }
 
   }
