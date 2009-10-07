@@ -25,6 +25,8 @@ class Globe {
   );
   static $caches = array();
 
+  const FOR_LAYOUT_SUFFIX = '_for_layout';
+
   // --------------------------------------------------
   // LOAD
   // --------------------------------------------------
@@ -238,7 +240,7 @@ class Globe {
 
   public function for_layout($variable, $value=null, $append=false)
   {
-    $variable = $variable.'_for_layout';
+    $variable = $variable.Globe::FOR_LAYOUT_SUFFIX;
     if ($append) {
       if (!array_key_exists($variable, Globe::$variables_for_layout)) {
         $tmp = !is_string($value) ? array($value) : $value;
@@ -250,9 +252,14 @@ class Globe {
           $tmp .= $value;
         }
       }
-      return Globe::$variables_for_layout[$variable] = $tmp;
+      $value = $tmp;
     }
     return Globe::$variables_for_layout[$variable] = $value;
+  }
+
+  public function get_for_layout($variable)
+  {
+    return array_get(Globe::$variables_for_layout, $variable.Globe::FOR_LAYOUT_SUFFIX);
   }
 
   // --------------------------------------------------
