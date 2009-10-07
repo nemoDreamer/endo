@@ -4,11 +4,14 @@ class EndoController
 {
   var $name = 'endo';
 
+  var $has_model = true;
+
   var $output = '';
   var $data = array();
   var $filter = null;
 
   var $View;
+  var $Model = false;
 
   var $template; // keep NULL!!!
   var $layout = DEFAULT_LAYOUT;
@@ -24,7 +27,7 @@ class EndoController
     // View
     $this->View =& new AppView();
 
-    if (Url::$data['controller']!=PAGES_CONTROLLER && Url::$data['controller']!=EXECUTE_CONTROLLER) {
+    if ($this->has_model) {
       // load Model class
       $this->Model =& Globe::init(Url::$data['modelName'], 'model', false);
       if (get_class($this->Model)!='stdClass') {
