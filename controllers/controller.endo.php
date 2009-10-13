@@ -187,6 +187,7 @@ class EndoController
   function _redirect($url='')
   {
     header('Location: '.$url);
+    die();
   }
 
   // --------------------------------------------------
