@@ -108,6 +108,20 @@ function random_get($array, $elements=1)
   return $output;
 }
 
+/*
+ * use to format array for html_options helper
+ */
+function build_options($array, $null=false)
+{
+  foreach ($array as $key => $value) {
+    if (is_numeric($key) && is_string($value)) {
+      unset($array[$key]);
+      $array[htmlentities($value)] = $null ? null : $value;
+    }
+  }
+  return $array;
+}
+
 // --------------------------------------------------
 // VARIABLES
 // --------------------------------------------------
