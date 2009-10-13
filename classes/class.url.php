@@ -105,6 +105,9 @@ class Url {
     // set request
     Url::$data['request'] = $_REQUEST;
 
+    // set domain
+    Url::$data['domain'] = DOMAIN;
+
   }
 
   ##
