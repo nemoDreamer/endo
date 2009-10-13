@@ -5,6 +5,7 @@ Globe::load('Setting', 'model');
 class Email {
 
   var $from, $to, $subject, $message;
+  var $parts = array();
 
   function __construct($from, $to, $include_admin=false)
   {
@@ -23,7 +24,8 @@ class Email {
 
   function send($message, $subject='[Send]', $is_html = false)
   {
-    $this->message = $message;
+    $this->set_part('message', $message);
+    $this->message = $this->get_part('prepends').$this->get_part('message').$this->get_part('appends');
     $this->subject = $subject;
     $this->build_headers(true);
 
@@ -58,6 +60,22 @@ class Email {
     $message .= '</ul>';
     return $message;
   }
+
+  function set_part($part, $string='')
+  {
+    if (!array_key_exists($part, $this->parts)) {
+      $this->parts[$part] = array();
+    }
+    array_push($this->parts[$part], $string);
+  }
+
+  function get_part($part)
+  {
+    return implode("\n", array_get($this->parts, $part, array()))."\n";
+  }
+
+  function prepend($string='') { $this->set_part('prepends', $string); }
+  function append($string='') { $this->set_part('appends', $string); }
 
 }
 
