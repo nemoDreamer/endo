@@ -189,10 +189,12 @@ class EndoController
     $this->View->display($resource_name, $cache_id, $compile_id);
   }
 
-  function _redirect($url='')
+  function _redirect($url='', $do_die=true)
   {
     header('Location: '.$url);
-    die();
+    if ($do_die) {
+      die();
+    }
   }
 
   // --------------------------------------------------
@@ -225,7 +227,7 @@ class EndoController
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
       // save & redirect?
       if ($this->Model->save()) {
-        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
+        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
       }
     } else {
       // pre-data?
@@ -245,7 +247,7 @@ class EndoController
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
         $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id']);
-        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
+        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
       }
     }
     $this->_assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
@@ -270,7 +272,7 @@ class EndoController
     // destroy
     if ($success = $this->Model->destroy(true)) {
       // redirect
-      $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
+      $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
     }
   }
 
