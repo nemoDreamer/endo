@@ -82,7 +82,7 @@ class EndoController
     /*
       TODO _pb: maybe simply access through 'register object' in smarty
     */
-    $this->View->assign('url', Url::$data);
+    $this->_assign('url', Url::$data);
     Globe::for_layout('url', Url::$data);
 
     // SITE
@@ -96,7 +96,7 @@ class EndoController
     // --------------------------------------------------
 
     if (Url::$data['is_admin']) {
-      $this->View->assign('ADMIN_ROUTE', ADMIN_ROUTE);
+      $this->_assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
 
     // SUBDOMAIN
@@ -133,14 +133,14 @@ class EndoController
 
   function _afterRender() {}
 
-  function _set($variable, $value=null)
-  {
-    $this->View->assign($variable, $value);
-  }
-
   // --------------------------------------------------
   // OUTPUT
   // --------------------------------------------------
+
+  function _assign($variable, $value=null)
+  {
+    return $this->View->assign($variable, $value);
+  }
 
   function _include_to_buffer($filename)
   {
@@ -169,7 +169,7 @@ class EndoController
   function _render()
   {
     // assign data
-    $this->View->assign($this->data);
+    $this->_assign($this->data);
     // de-activate debug
     if ($this->type!=DEFAULT_REQUEST_TYPE) {
       $this->View->debugging = false;
@@ -182,6 +182,11 @@ class EndoController
       Error::set('Couldn\'t render!');
       return false;
     }
+  }
+
+  function _display($resource_name, $cache_id = null, $compile_id = null)
+  {
+    $this->View->display($resource_name, $cache_id, $compile_id);
   }
 
   function _redirect($url='')
@@ -197,7 +202,7 @@ class EndoController
   function admin_index()
   {
     // items
-    $this->View->assign(
+    $this->_assign(
       'items',
       AppModel::FindAll(
         Url::$data['modelName'],
@@ -207,7 +212,7 @@ class EndoController
       )
     );
     // options
-    $this->View->assign('is_publishable', $this->Model->is_publishable());
+    $this->_assign('is_publishable', $this->Model->is_publishable());
   }
 
   // ADD
@@ -228,7 +233,7 @@ class EndoController
       // create empty
       $this->Model = AppModel::create(Url::$data['modelName'], $pre_data);
     }
-    $this->View->assign('item', $this->Model);
+    $this->_assign('item', $this->Model);
   }
 
   // EDIT
@@ -243,7 +248,7 @@ class EndoController
         $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name);
       }
     }
-    $this->View->assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->_assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // SHOW
@@ -251,7 +256,7 @@ class EndoController
 
   function admin_show($id)
   {
-    $this->View->assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->_assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // REMOVE
@@ -304,7 +309,7 @@ class EndoController
       $where = $value;
     }
 
-    $this->View->assign('filter', $this->filter = (object) array(
+    $this->_assign('filter', $this->filter = (object) array(
       'short' => $short,
       'where' => $where,
       'field' => $field,

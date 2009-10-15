@@ -9,7 +9,7 @@ class PagesController extends AppController
   {
     $this->action = $action;
 
-    $this->View->assign($params);
+    $this->_assign($params);
   }
 }
 
