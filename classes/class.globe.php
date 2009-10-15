@@ -95,12 +95,11 @@ class Globe {
   public function find($filename='', $paths=array(), $hit_cache=true)
   {
     // read cache?
-    if (empty(Globe::$caches[STR_FINDCACHE])) {
+    if ($hit_cache && empty(Globe::$caches[STR_FINDCACHE])) {
       Globe::$caches[STR_FINDCACHE] = Globe::file_get_split(APP_ROOT.CACHES_DIR.STR_FINDCACHE);
     }
-
     // check cache
-    if (array_key_exists($filename, Globe::$caches[STR_FINDCACHE]) && $hit_cache) {
+    if ($hit_cache && array_key_exists($filename, Globe::$caches[STR_FINDCACHE])) {
       // return found in cache!
       return Globe::$caches[STR_FINDCACHE][$filename][0];
     } else {
@@ -119,7 +118,7 @@ class Globe {
 
       // else, check scaffolding
       $scaffold_paths = array(APP_ROOT.SMARTY_SCAFFOLD_DIR.DS, ENDO_ROOT.SMARTY_SCAFFOLD_DIR.DS);
-      $scaffold_filename = substr($filename, strpos($filename, DS)+1);
+      $scaffold_filename = ($ds_pos=strpos($filename, DS)) !== false ? substr($filename, $ds_pos+1) : $filename;
       foreach ($scaffold_paths as $path) {
         if (file_exists($result=$path.$scaffold_filename)) {
           // return scaffold!
