@@ -388,11 +388,13 @@ class EndoModel extends MyActiveRecord
     if (is_array($array[0])) {
       $default = $array[1]; // save default
       if (!is_array($default)) {
-        $default = array($default);
+        $default = array($default, null);
+      } else {
+        array_push($default, null);
       }
       $array = $array[0];
     } else {
-      $default = array();
+      $default = array(null);
     }
     $has = false;
     foreach ($array as $var) {
