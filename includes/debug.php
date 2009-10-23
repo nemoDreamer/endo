@@ -42,6 +42,7 @@ function d ($str, $print=TRUE, $class=NULL, $element='p', $encode=TRUE)
 
 function d_pre ($str, $print=TRUE, $class=NULL, $encode=TRUE) { return d($str, $print, $class, 'pre', $encode); }
 function d_arr ($array, $print=TRUE, $class=NULL, $encode=TRUE) { return d_pre(print_r($array, TRUE), $print, $class, $encode); }
+function d_bool ($boolean, $print=TRUE, $class=NULL, $encode=TRUE) { return d_pre($boolean ? 'true' : 'false', $print, $class, $encode); }
 
 function d_err ($str, $print=FALSE, $element='span', $encode=FALSE) { return d($str, $print, 'error', $element, $encode); }
 function d_ ($str, $print=FALSE, $element='span', $encode=FALSE) { return d($str, $print, 'success', $element, $encode); }
