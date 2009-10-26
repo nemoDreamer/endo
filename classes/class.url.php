@@ -26,7 +26,7 @@ class Url {
   static function parse($url)
   {
     // save original
-    Url::$data['_url'] = Url::$data['url'] = preg_replace('/\/$/', '', $url);
+    Url::$data['_url'] = Url::$data['url'] = preg_replace('/\/$/', '', strtolower($url));
 
     // get extension
     preg_match('/(.*)\.(\w{1,4})$/Ui', Url::$data['url'], $matches);
