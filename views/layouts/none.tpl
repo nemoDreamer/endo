@@ -4,3 +4,4 @@
   {endo_errors layout=false}
 {/if}
 {$content}
+{$debug_dump}

@@ -191,7 +191,12 @@ class EndoController
 
   function _redirect($url='', $do_die=true)
   {
-    header('Location: '.$url);
+    if (DEBUG) {
+      $this->layout = 'redirect';
+      Globe::for_layout('redirect', $url);
+    } else {
+      header('Location: '.$url);
+    }
     if ($do_die) {
       die();
     }
