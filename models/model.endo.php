@@ -200,7 +200,7 @@ class EndoModel extends MyActiveRecord
       // remove attachments
       foreach ($this->get_attached as $model) {
         foreach ($this->$model as $attached) {
-          $attached->detach();
+          $attached->detach($this);
         }
       }
 
@@ -216,6 +216,24 @@ class EndoModel extends MyActiveRecord
   }
 
   // --------------------------------------------------
+  // POPULATE
+  // --------------------------------------------------
+
+  function populate($arrVals)
+  {
+    $success = parent::populate($arrVals);
+
+    // attachments
+    foreach ($this->get_attached as $model) {
+      if (!isset($this->$model)) {
+        $this->$model = array();
+      }
+    }
+
+    return $success;
+  }
+
+  // --------------------------------------------------
   // FILTERS
   // --------------------------------------------------
 
@@ -223,7 +241,7 @@ class EndoModel extends MyActiveRecord
     return true;
   }
   function _afterSave() {
-    return $this->_handle_file_uploads();
+    return $this->_handle_file_uploads() && $this->_handle_attachments();
   }
 
   // --------------------------------------------------
@@ -366,6 +384,31 @@ class EndoModel extends MyActiveRecord
 
     }
 
+    return true;
+  }
+
+  function _handle_attachments()
+  {
+    // cycle Associations
+    foreach ($this->get_attached as $class) {
+      // save passed
+      $tmp = isset($this->$class) ? $this->$class : array();
+      // get all objects
+      $Objects = AppModel::FindAll($class, false); // only one query
+      // detach
+      foreach ($this->find_attached($class) as $Object) {
+        $this->detach($Object);
+      }
+      // attach
+      if (!empty($tmp)) {
+        foreach ($tmp as $objectOrId) {
+          $Object = is_numeric($objectOrId) ? $Objects[$objectOrId] : $objectOrId;
+          $this->attach($Object);
+        }
+      } else {
+        $this->$class = array();
+      }
+    }
     return true;
   }
 

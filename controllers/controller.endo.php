@@ -196,9 +196,9 @@ class EndoController
       Globe::for_layout('redirect', $url);
     } else {
       header('Location: '.$url);
-    }
-    if ($do_die) {
-      die();
+      if ($do_die) {
+        die();
+      }
     }
   }
 
@@ -324,27 +324,6 @@ class EndoController
       'parent' => $parent,
       'parents' => $parents
     ));
-  }
-
-  function _handle_attachments($classes=array(), $id=null)
-  {
-    // cycle Associations
-    foreach ($classes as $class) {
-      if ($this->data!=null) {
-        // get all objects
-        $Objects = AppModel::FindAll($class, false); // only one query
-        // detach
-        foreach ($this->Model->find_attached($class) as $Object) {
-          $this->Model->detach($Object);
-        }
-        // attach
-        foreach (array_get($this->data, $class, array()) as $id) {
-          $this->Model->attach($Objects[$id]);
-        }
-      } elseif ($id==null) {
-        $this->Model->{$class} = array();
-      }
-    }
   }
 
 }
