@@ -81,9 +81,12 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  function FindAll($strClass, $extend=FALSE, $mxdWhere=NULL, $strOrderBy='`id` ASC', $intLimit=10000, $intOffset=0)
+  function FindAll($strClass, $extend=FALSE, $mxdWhere=NULL, $strOrderBy='`id` ASC', $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    $intLimit = get_default($intLimit, 10000);
+    $intOffset = get_default($intOffset, 0);
 
     $objects = parent::FindAll($strClass, $mxdWhere, $strOrderBy, $intLimit, $intOffset);
     if ($extend) {
@@ -187,6 +190,38 @@ class EndoModel extends MyActiveRecord
     asort($collection);
 
     return $collection;
+  }
+
+  function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy='', $intLimit=null, $intOffset=null)
+  {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    $Model = new $strClass();
+
+    $strOrderBy = get_default($strOrderBy, '`display_name` ASC');
+    $intLimit = get_default($intLimit, 10000);
+    $intOffset = get_default($intOffset, 0);
+
+    $table = AppModel::Class2Table($strClass);
+
+    $where = array('1=1');
+    // where?
+    if ($strWhere) {
+      array_push($where, $strWhere);
+    }
+    // search?
+    if ($search) {
+      $search_pattern = implode(' ', array_wrap(explode(' ', $search), '+')).'*';
+      $match = 'MATCH ('.implode(', ', $Model->name_fields).', '.implode(', ', $Model->description_fields).") AGAINST('".$search_pattern."' IN BOOLEAN MODE)";
+      array_push($where, $match);
+    }
+    $where = implode(' AND ', $where);
+
+    $display_name = "TRIM(CONCAT_WS(' ', `".implode('`, `', $Model->name_fields).'`)) AS `display_name`';
+
+    $query = "SELECT *, $display_name FROM `$table` WHERE $where ORDER BY $strOrderBy LIMIT $intOffset,$intLimit";
+
+    return AppModel::FindBySql($strClass, $query);
   }
 
   // --------------------------------------------------

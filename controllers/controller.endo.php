@@ -21,6 +21,8 @@ class EndoController
   var $action = DEFAULT_ACTION;
   var $type = DEFAULT_REQUEST_TYPE;
 
+  var $is_ajax = false;
+
   // --------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------
@@ -129,6 +131,11 @@ class EndoController
       }
     }
 
+    // --------------------------------------------------
+    // AJAX
+    // --------------------------------------------------
+
+    $this->_assign('is_ajax', $this->is_ajax());
   }
 
   function _afterRender() {}
@@ -208,16 +215,50 @@ class EndoController
 
   function admin_index()
   {
-    // items
-    $this->_assign(
-      'items',
-      AppModel::FindAll(
-        Url::$data['modelName'],
-        true, // extend
-        $this->filter->where, // where
-        '`'.$this->Model->name_fields[0].'` ASC' // order
-      )
-    );
+    // ajax?
+    if ($this->is_ajax) {
+      // page?
+      $page = $this->_assign(
+        'page',
+        (integer) Url::request('page', 1)
+      );
+      // limit
+      $limit = 10;
+      $offset = ($page-1) * $limit;
+      // page count
+      $page_count = $this->_assign(
+        'page_count',
+        ceil(count(AppModel::FindAllSearched(
+          Url::$data['modelName'],
+          Url::request('search', null), // search
+          $this->filter->where // where
+        )) / $limit)
+      );
+      // items
+      $this->_assign(
+        'items',
+        AppModel::FindAllSearched(
+          Url::$data['modelName'],
+          Url::request('search', null), // search
+          $this->filter->where, // where
+          null, // automatic order
+          $limit,
+          $offset
+        )
+      );
+    } else {
+      // items
+      $this->_assign(
+        'items',
+        AppModel::FindAll(
+          Url::$data['modelName'],
+          false, // extend
+          $this->filter->where, // where
+          '`'.$this->Model->name_fields[0].'` ASC' // order
+        )
+      );
+    }
+
     // options
     $this->_assign('is_publishable', $this->Model->is_publishable());
   }
@@ -279,6 +320,15 @@ class EndoController
       // redirect
       $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
     }
+  }
+
+  // --------------------------------------------------
+  // AJAX
+  // --------------------------------------------------
+
+  function is_ajax($action=null)
+  {
+    return $this->is_ajax && (in_array(is_null($action) ? $this->action : $action, $this->is_ajax) || in_array('*', $this->is_ajax));
   }
 
   // --------------------------------------------------

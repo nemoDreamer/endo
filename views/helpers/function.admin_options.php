@@ -37,7 +37,7 @@ function smarty_function_admin_options($params=array(), &$smarty)
     'controller' => $controller,
     'action' => 'remove'.DS.$object->id,
     'alt' => $alt = 'remove entry',
-    'text' => '<img src="/images/admin/silk/delete.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
+    'text' => '<img src="/images/admin/silk/delete.png" width="16" height="16" alt="'.$alt.'" />'.($show_label?" $alt":''),
     'confirm' => "Are you sure you want to remove\n\n'{$object->display_field('name', false)}'\n\nand all child entries? (This action is permanent!)",
     'set_gets' => true
   ), $smarty);
@@ -46,7 +46,7 @@ function smarty_function_admin_options($params=array(), &$smarty)
     'controller' => $controller,
     'action' => 'show'.DS.$object->id,
     'alt' => $alt = 'show entry',
-    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
+    'text' => '<img src="/images/admin/silk/magnifier.png" width="16" height="16" alt="'.$alt.'" />'.($show_label?" $alt":''),
     'set_gets' => true
   ), $smarty);
 
@@ -54,7 +54,7 @@ function smarty_function_admin_options($params=array(), &$smarty)
     'controller' => $controller,
     'action' => 'edit'.DS.$object->id,
     'alt' => $alt = 'edit entry',
-    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="'.$alt.'">'.($show_label?" $alt":''),
+    'text' => '<img src="/images/admin/silk/page_white_edit.png" width="16" height="16" alt="'.$alt.'" />'.($show_label?" $alt":''),
     'set_gets' => true
   ), $smarty);
 

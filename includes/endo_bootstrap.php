@@ -96,6 +96,14 @@ function array_group($array, $group_by)
   return $tmp;
 }
 
+function array_wrap($array, $before=null, $after=null)
+{
+  foreach ($array as $key => $value) {
+    $array[$key] = $before.$value.$after;
+  }
+  return $array;
+}
+
 function random_get($array, $elements=1)
 {
   $output = array();
