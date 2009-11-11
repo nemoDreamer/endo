@@ -11,6 +11,8 @@ class EndoModel extends MyActiveRecord
   var $get_parent = array();
   var $file_uploads = array();
 
+  var $do_handle_attachments = true;
+
   // --------------------------------------------------
   // STORAGE
   // --------------------------------------------------
@@ -424,6 +426,9 @@ class EndoModel extends MyActiveRecord
 
   function _handle_attachments()
   {
+    if (!$this->do_handle_attachments) {
+      return true;
+    }
     // cycle Associations
     foreach ($this->get_attached as $class) {
       // save passed
