@@ -55,7 +55,7 @@ class EndoController
     if (!method_exists($this, $action) || (substr($action, 0, 1)=='_' && Url::$data['controller']!=EXECUTE_CONTROLLER)) {
       Error::set("Missing Action '$action()' in Controller '".get_class($this)."'", 'fatal');
     } else {
-      call_user_func_array(array($this, $action), $arguments);
+      call_user_func_array(array(&$this, $action), $arguments);
     }
   }
 
