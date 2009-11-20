@@ -68,7 +68,8 @@ $View = new AppView();
 
 // assign standards
 $View->assign(array(
-  'id' => Url::$data['controller'].'_'.Url::$data['action'],
+  // 'id' => Url::$data['controller'].'_'.Url::$data['action'],
+  'id' => $Controller->name.'_'.$Controller->action,
   'url' => Url::$data,
   'has_errors' => Error::has_errors(),
   'debug_dump' => $debug_dump
