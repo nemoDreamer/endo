@@ -183,15 +183,7 @@ class EndoModel extends MyActiveRecord
     // get collection
     $collection = AppModel::FindAllAssoc($strClass, false, $mxdWhere, $strIndexBy);
 
-    // only keep display-name
-    foreach ($collection as $key => $object) {
-      $collection[$key] = $object->display_field('name', false);
-    }
-
-    // sort by display-name
-    asort($collection);
-
-    return $collection;
+    return AppModel::CollectionToOptions($collection);
   }
 
   function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy='', $intLimit=null, $intOffset=null)
@@ -317,9 +309,26 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
+  // --------------------------------------------------
+  // CONVERSION
+  // --------------------------------------------------
+
   function __toString()
   {
     return $this->display_field('name', false);
+  }
+
+  static function CollectionToOptions($collection)
+  {
+    // only keep display-name
+    foreach ($collection as $key => $object) {
+      $collection[$key] = $object->display_field('name', false);
+    }
+
+    // sort by display-name
+    asort($collection);
+
+    return $collection;
   }
 
   // --------------------------------------------------
