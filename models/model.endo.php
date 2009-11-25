@@ -433,6 +433,10 @@ class EndoModel extends MyActiveRecord
     return true;
   }
 
+  // --------------------------------------------------
+  // ATTACHMENTS
+  // --------------------------------------------------
+
   function _handle_attachments()
   {
     if (!$this->do_handle_attachments) {
@@ -461,6 +465,30 @@ class EndoModel extends MyActiveRecord
     return true;
   }
 
+
+  function _attach_to_all($class)
+  {
+    Globe::load($class, 'model');
+    // get all objects:
+    $objects = Listing::FindAll($class, true);
+    // cycle listings
+    foreach ($objects as $object) {
+      // attach & save
+      $object->attach($this);
+    }
+  }
+
+  function _detach_from_all($class)
+  {
+    Globe::load($class, 'model');
+    // get all objects:
+    $objects = Listing::FindAll($class, true);
+    // cycle listings
+    foreach ($objects as $object) {
+      // attach & save
+      $object->detach($this);
+    }
+  }
   // --------------------------------------------------
   // DATA CHECKING
   // --------------------------------------------------
