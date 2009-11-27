@@ -6,9 +6,10 @@ class Setting extends EndoModel {
   var $description_fields = array('value');
   var $order_by = 'variable';
 
-  function Group($group)
+  function Group($group, $reindex=false)
   {
-    return self::FindAll('Setting', false, "`group`='$group'", '`variable` ASC');
+    $tmp = self::FindAll('Setting', false, "`group`='$group'", '`variable` ASC');
+    return $reindex ? array_reindex($tmp, 'variable') : $tmp;
   }
 
   function Get($variable, $group = 'default', $value_only = true)

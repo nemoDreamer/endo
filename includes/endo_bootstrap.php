@@ -110,6 +110,18 @@ function array_group($array, $group_bys)
   return $tmp;
 }
 
+function array_reindex($array=array(), $index='id')
+{
+  $tmp = array();
+  foreach ($array as $key => $value) {
+    if (!is_array($value)) {
+      $value = (array)$value;
+    }
+    $tmp[$value[$index]] = $value;
+  }
+  return $tmp;
+}
+
 function array_wrap($array, $before=null, $after=null)
 {
   foreach ($array as $key => $value) {
