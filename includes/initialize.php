@@ -37,7 +37,8 @@ Globe::load(array(
 Globe::load(array(
   'endo_view',
   'app_view',
-  'url'
+  'url', // endo url
+  'app_url'
 ));
 
 // --------------------------------------------------

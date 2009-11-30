@@ -9,7 +9,11 @@
  */
 class Url {
 
-  static $data=array(
+  // --------------------------------------------------
+  // DEFAULTS
+  // --------------------------------------------------
+
+  static $data = array(
     '_url' => null,
     'url' => null,
     'model' => null,
@@ -23,10 +27,31 @@ class Url {
     'is_subdomain' => false
   );
 
+  // --------------------------------------------------
+  // ROUTES
+  // --------------------------------------------------
+
+  static $routes = array(
+    // tilde
+    '~(.*)/(.*)' => array(
+      'replace' => '$2',
+      'is_subdomain' => true,
+      'subdomain' => '$1',
+      'continue' => true
+    )
+  );
+
+  // --------------------------------------------------
+  // PARSE
+  // --------------------------------------------------
+
   static function parse($url)
   {
-    // save original
-    Url::$data['_url'] = Url::$data['url'] = preg_replace('/\/$/', '', strtolower($url));
+    // save 'original'
+    Url::$data['_url'] = $url;
+
+    // send through routes
+    Url::$data['url'] = Url::do_routes($url);
 
     // get extension
     preg_match('/(.*)\.(\w{1,4})$/Ui', Url::$data['url'], $matches);
@@ -39,27 +64,22 @@ class Url {
     $parts = explode(DS, Url::$data['url']);
 
     // is subdomain?
-    if (substr($parts[0],0,1)==SUBDOMAIN_PREFIX) {
-      // - because of tilde
-      Url::_set_subdomain(substr(array_shift($parts),1));
-    } elseif (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
-      // - because of domain
-      Url::_set_subdomain(array_shift($host_parts));
+    if (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
+      Url::$data['is_subdomain'] = true;
+      Url::$data['subdomain'] = $subdomain = array_shift($host_parts);
+      Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.implode('.', $host_parts);
     }
 
-    // anything left?
-    if (count($parts)===0 || $parts[0]==='') {
-      $parts = explode(DS, Url::$data['is_subdomain'] ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
-    }
+    // d($url);d_arr($parts);d_arr(Url::$data);die;
 
-    // is admin because of path?
-    if ($parts && $parts[0]==ADMIN_ROUTE) {
-      // set is_admin
-      Url::$data['is_admin'] = true;
-      array_shift($parts); // dump into nothingness...
-      // anything left?
-      if (count($parts)===0) {
+    // nothing left?
+    if (array_empty($parts)) {
+      if (Url::$data['is_admin']) {
+        // is admin
         $parts = array(ADMIN_DEFAULT_CONTROLLER, ADMIN_DEFAULT_ACTION);
+      } else{
+        // is default
+        $parts = explode(DS, Url::$data['is_subdomain'] ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
       }
     }
 
@@ -87,12 +107,8 @@ class Url {
       // set action
       Url::$data['action'] = ($action=array_shift($parts)) != null ? $action : 'index';
 
-      // is admin because of action?
-      if (strpos($action, ADMIN_PREFIX)===0) {
-        // set is_admin
-        Url::$data['is_admin'] = true;
-      } elseif(Url::$data['is_admin']) {
-        // add prefix to admin actions
+      // add prefix to admin actions
+      if(Url::$data['is_admin']) {
         Url::$data['action'] = ADMIN_PREFIX.Url::$data['action'];
       }
 
@@ -108,47 +124,64 @@ class Url {
     // set domain
     Url::$data['domain'] = DOMAIN;
 
+    // d_arr(Url::$data);die;
+
   }
 
-  ##
-  # get data
-  #
+  // --------------------------------------------------
+  // ROUTES
+  // --------------------------------------------------
+
+  static function do_routes($url)
+  {
+    $routes = Url::get_routes();
+
+    // add slash
+    $url = preg_replace('/([^\/])$/', '${1}/', $url);
+
+    foreach ($routes as $pattern => $data) {
+      $pattern = "%^$pattern$%Uis"; // add pattern defaults & flags
+      if (preg_match($pattern, $url)!==0) {
+        $params = array_extract($data, array('replace', 'continue'), true);
+        $url = preg_replace($pattern, $params['replace'], $url);
+        Url::$data = array_merge(Url::$data, $data);
+        // break?
+        if (!$params['continue']) break;
+      }
+    }
+    // d($url);d_arr(Url::$data);die;
+
+    // clean and return
+    return preg_replace('/\/$/', '', strtolower($url));
+  }
+
+  static function get_routes()
+  {
+    $include = array();
+    // admin route
+    $include[ADMIN_ROUTE.'/(.*)'] = array(
+      'replace' => '$1',
+      'is_admin' => true
+    );
+    return array_merge(Url::$routes, $include, AppUrl::$routes);
+  }
+
+  // --------------------------------------------------
+  // HELPERS
+  // --------------------------------------------------
+
   static function data($variable, $default=null)
   {
     return array_get(Url::$data, $variable, $default);
   }
 
-  static function data_array($data, $variable, $default=null)
+  static function data_array($key, $variable, $default=null)
   {
-    return array_get(array_get(Url::$data, $data, array()), $variable, $default);
+    return array_get(array_get(Url::$data, $key, array()), $variable, $default);
   }
 
-  ##
-  # get param
-  #
-  static function param($variable, $default=null)
-  {
-    return Url::data_array('params', $variable, $default);
-  }
-
-  ##
-  # get request
-  #
-  static function request($variable, $default=null)
-  {
-    return Url::data_array('request', $variable, $default);
-  }
-
-  static function _set_subdomain($subdomain)
-  {
-    Url::$data['is_subdomain'] = true;
-    Url::$data['subdomain'] = $subdomain;
-    $host_parts = explode('.', $_SERVER['HTTP_HOST']);
-    if ($host_parts[0] != $subdomain) {
-      array_unshift($host_parts, $subdomain);
-    }
-    Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.implode('.', $host_parts);
-  }
+  static function param($variable, $default=null) { return Url::data_array('params', $variable, $default); }
+  static function request($variable, $default=null) { return Url::data_array('request', $variable, $default); }
 
 }
 

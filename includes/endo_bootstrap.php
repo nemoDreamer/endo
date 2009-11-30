@@ -54,11 +54,14 @@ function array_get(&$array, $key, $default=null, $allow_false=true)
   return (!is_array($array) || !array_key_exists($key, $array) || (!$allow_false && !$array[$key])) ? $default : $array[$key];
 }
 
-function array_extract(&$array, $keys)
+function array_extract(&$array, $keys, $unset=false)
 {
   $output = array();
   foreach ($keys as $key) {
     $output[$key] = array_get($array, $key);
+    if ($unset) {
+      unset($array[$key]);
+    }
   }
   return $output;
 }
@@ -140,6 +143,11 @@ function random_get($array, $elements=1)
     unset($array[$key]);
   }
   return $output;
+}
+
+function array_empty($array)
+{
+  return count($array)===0 || (count($array)==1 && $array[0]==='');
 }
 
 /*
