@@ -66,7 +66,7 @@ class Url {
     // is subdomain?
     if (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
       Url::$data['is_subdomain'] = true;
-      Url::$data['subdomain'] = $subdomain = array_shift($host_parts);
+      Url::$data['subdomain'] = $subdomain = $host_parts[0];
       Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.implode('.', $host_parts);
     }
 
