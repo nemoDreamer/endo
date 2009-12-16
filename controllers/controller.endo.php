@@ -209,6 +209,11 @@ class EndoController
     }
   }
 
+  function data($variable, $default=null)
+  {
+    return array_get($this->data, $variable, $default, true);
+  }
+
   // --------------------------------------------------
   // ADMIN SCAFFOLDING
   // --------------------------------------------------
