@@ -13,6 +13,8 @@ class EndoModel extends MyActiveRecord
 
   var $do_handle_attachments = true;
 
+  var $__previous_data = array();
+
   // --------------------------------------------------
   // STORAGE
   // --------------------------------------------------
@@ -39,6 +41,16 @@ class EndoModel extends MyActiveRecord
   /*
     TODO 'update' wrapper
   */
+
+  // --------------------------------------------------
+  // CREATION
+  // --------------------------------------------------
+
+  function &Create($strClass, $arrVals = null)
+  {
+    if (!AppModel::_smartLoadModel($strClass)) return false;
+    return parent::Create($strClass, $arrVals);
+  }
 
   // --------------------------------------------------
   // RETRIEVAL
@@ -250,6 +262,13 @@ class EndoModel extends MyActiveRecord
 
   function populate($arrVals)
   {
+    // save previous data
+    foreach ($this as $key => $value) {
+      if ($key != '__previous_data') {
+        $this->__previous_data[$key] = $value;
+      }
+    }
+
     $success = parent::populate($arrVals);
 
     // attachments
