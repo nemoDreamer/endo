@@ -47,7 +47,7 @@ class User extends AppModel {
       }
       $this->_new_password($this->password);
     } else {
-      $this->password = User::FetchPassword($this->email);
+      $this->password = $this->__previous_data['password'];
     }
     return parent::_beforeSave();
   }
