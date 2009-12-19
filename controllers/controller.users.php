@@ -7,8 +7,9 @@ class UsersController extends AppController
   function signup()
   {
     if ($this->data) {
-      if (!$this->data('username') || !$this->data('password')) {
-        return Error::set("Fields blank!", 'validation');
+      if (!$this->data('email') || !$this->data('password')) {
+        Error::set("Fields blank!", 'validation');
+        return false;
       }
       $this->Model = AppModel::Create('User', $this->data);
       if ($this->Model->save()) {
@@ -17,29 +18,26 @@ class UsersController extends AppController
     } else {
       $this->_assign(array(
         'redirect_to' => null,
-        'name' => null,
-        'username' => null
+        'email' => null
       ));
     }
   }
 
-  // if ($cookie = array_get($_COOKIE, User::REMEMBER_ME, false)) {
-  // }
-
   function login() {
-    if ($this->data) {
-      if ($this->user = User::Login($this->data('username'), $this->data('password'))) {
-        if ($this->data('remember_me', false)) {
-          setcookie(User::REMEMBER_ME, $user->username.'|'.$user->salt, time()+60*60*24*30);
-        }
-        $this->_redirect($this->data('redirect_to'));
-      }
+    if ($this->LoggedIn) {
+      $this->_redirect($this->data('redirect_to', '/'));
     } else {
       $this->_assign(array(
         'redirect_to' => Url::request('redirect_to', '/'),
-        'username' => Url::request('username')
+        'email' => Url::request('email')
       ));
     }
+  }
+
+  function logout()
+  {
+    User::UnsetCurrent();
+    $this->_redirect('/', true);
   }
 
 }

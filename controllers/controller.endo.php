@@ -15,6 +15,7 @@ class EndoController
 
   var $View;
   var $Model = false;
+  var $User;
 
   var $template; // keep NULL!!!
   var $layout = DEFAULT_LAYOUT;
@@ -32,6 +33,7 @@ class EndoController
     // View
     $this->View =& new AppView();
 
+    // Model
     if ($this->has_model) {
       // load Model class
       $this->Model =& Globe::init(Url::$data['modelName'], 'model', false);
@@ -40,6 +42,9 @@ class EndoController
         $this->Model =& $this->{Url::$data['modelName']}; // reference for ease
       }
     }
+
+    // User
+    $this->LoggedIn = User::GetCurrent();
   }
 
   // --------------------------------------------------

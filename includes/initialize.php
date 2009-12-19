@@ -47,7 +47,8 @@ Globe::load(array(
 
 Globe::load(array(
   'endo',
-  'app'
+  'app',
+  'user'
 ), 'model');
 
 // --------------------------------------------------

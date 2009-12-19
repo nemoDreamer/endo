@@ -1,10 +1,6 @@
 <div class="input text">
-  <label for="name">Full name:</label>
-  <input type="text" name="name" value="{$item->name}" id="name">
-</div>
-<div class="input text">
-  <label for="username">Username:</label>
-  <input type="text" name="username" value="{$item->username}" id="username" class="small">
+  <label for="email">Email:</label>
+  <input type="text" name="email" value="{$item->email}" id="email" class="small">
 </div>
 <div class="show_more" more_label="change Password?">
   <h3>Password</h3>
