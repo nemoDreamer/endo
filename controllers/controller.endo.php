@@ -24,6 +24,10 @@ class EndoController
 
   var $is_ajax = false;
 
+  // ACL
+  var $allow = array();
+  var $deny = array();
+
   // --------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------
@@ -45,6 +49,10 @@ class EndoController
 
     // User
     $this->LoggedIn = User::GetCurrent();
+
+    // ACL
+    // $this->allow(array('*'));
+    $this->deny(array('admin_dashboard', 'admin_index', 'admin_add', 'admin_edit', 'admin_show', 'admin_remove'));
   }
 
   // --------------------------------------------------
@@ -55,6 +63,12 @@ class EndoController
   {
     $this->action = $action;
     $this->type = $type;
+
+    // ACL
+    if (!$this->LoggedIn->is_admin() && !$this->allowed(Url::$data['action'])) {
+      // d_bool(!$this->LoggedIn->is_admin());d_arr($this->LoggedIn);die;
+      $this->_redirect(DS.(Url::$data['is_admin'] ? ADMIN_ROUTE.DS : null).'login', true, false);
+    }
 
     // security
     if (!method_exists($this, $action) || (substr($action, 0, 1)=='_' && Url::$data['controller']!=EXECUTE_CONTROLLER)) {
@@ -113,7 +127,6 @@ class EndoController
       $this->layout = 'subdomain';
     }
 
-    // --------------------------------------------------
     // NAVIGATION
     // --------------------------------------------------
 
@@ -137,11 +150,15 @@ class EndoController
       }
     }
 
-    // --------------------------------------------------
     // AJAX
     // --------------------------------------------------
 
     $this->_assign('is_ajax', $this->is_ajax());
+
+    // ACL
+    // --------------------------------------------------
+
+    Globe::for_layout('LoggedIn', $this->_assign('LoggedIn', User::Clean($this->LoggedIn)));
   }
 
   function _afterRender() {}
@@ -202,9 +219,9 @@ class EndoController
     $this->View->display($resource_name, $cache_id, $compile_id);
   }
 
-  function _redirect($url='', $do_die=true)
+  function _redirect($url='', $do_die=true, $wait=true)
   {
-    if (DEBUG) {
+    if (DEBUG && $wait) {
       $this->layout = 'redirect';
       Globe::for_layout('redirect', $url);
     } else {
@@ -223,6 +240,11 @@ class EndoController
   // --------------------------------------------------
   // ADMIN SCAFFOLDING
   // --------------------------------------------------
+
+  function admin_login()
+  {
+    $this->_redirect(DS.ADMIN_ROUTE.DS.'login');
+  }
 
   function admin_index()
   {
@@ -307,7 +329,7 @@ class EndoController
         $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
       }
     }
-    $this->_assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->_assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // SHOW
@@ -315,7 +337,7 @@ class EndoController
 
   function admin_show($id)
   {
-    $this->_assign('item', AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->_assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // REMOVE
@@ -340,6 +362,33 @@ class EndoController
   function is_ajax($action=null)
   {
     return $this->is_ajax && (in_array(is_null($action) ? $this->action : $action, $this->is_ajax) || in_array('*', $this->is_ajax));
+  }
+
+  // --------------------------------------------------
+  // ACL
+  // --------------------------------------------------
+
+  public function allow($strOrArray)
+  {
+    $array = (array) $strOrArray;
+    $this->allow = array_unique(array_merge($this->allow, $array));
+    foreach ($array as $action) {
+      unset($this->deny[$action]);
+    }
+  }
+
+  public function deny($strOrArray)
+  {
+    $array = (array) $strOrArray;
+    $this->deny = array_unique(array_merge($this->deny, $array));
+    foreach ($array as $action) {
+      unset($this->allow[$action]);
+    }
+  }
+
+  public function allowed($action)
+  {
+    return !in_array($action, $this->deny);
   }
 
   // --------------------------------------------------

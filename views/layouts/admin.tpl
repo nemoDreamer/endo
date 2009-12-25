@@ -48,6 +48,11 @@
         {/foreach}
       </ul>
     </div>
+    <div id="account">
+      {if !$LoggedIn_for_layout->is_guest()}
+        <a href="/logout">log out &times;</a>
+      {/if}
+    </div>
   </div>
   <div id="main" class="clearafter">
     <div id="content">

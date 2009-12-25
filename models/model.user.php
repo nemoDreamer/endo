@@ -8,6 +8,12 @@ class User extends AppModel {
   var $description_fields = array('class');
   var $order_by = 'email';
 
+  var $level = 0;
+
+  static $levels = array(
+    'User', 'Member', 'Editor', 'Publisher', 'Admin'
+  );
+
   // --------------------------------------------------
   // CONSTANTS
   // --------------------------------------------------
@@ -19,10 +25,18 @@ class User extends AppModel {
   // PUBLIC METHODS
   // --------------------------------------------------
 
-  function validate($password)
+  public function validate($password)
   {
     return $this->password == $this->_salt_it($password);
   }
+
+  public function is_class($class=null)
+  {
+    return $this->class == $class;
+  }
+
+  public function is_admin() { return $this->is_class('Admin'); }
+  public function is_guest() { return $this->is_class(); }
 
   // --------------------------------------------------
   // HOOKS
@@ -86,7 +100,7 @@ class User extends AppModel {
         Error::set("Invalid Email and/or Password", 'validation');
       }
     }
-    return false;
+    return AppModel::Create(User::$levels[0]);
   }
 
   /**

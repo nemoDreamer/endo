@@ -38,6 +38,14 @@ class Url {
       'is_subdomain' => true,
       'subdomain' => '$1',
       'continue' => true
+    ),
+    // login
+    'login(.*)' => array(
+      'replace' => 'users/login'
+    ),
+    // logout
+    'logout(.*)' => array(
+      'replace' => 'users/logout'
     )
   );
 
@@ -161,9 +169,10 @@ class Url {
     // admin route
     $include[ADMIN_ROUTE.'/(.*)'] = array(
       'replace' => '$1',
-      'is_admin' => true
+      'is_admin' => true,
+      'continue' => true
     );
-    return array_merge(Url::$routes, $include, AppUrl::$routes);
+    return array_merge($include, Url::$routes, AppUrl::$routes);
   }
 
   // --------------------------------------------------

@@ -39,6 +39,12 @@ ddefine('ADMIN_DEFAULT_CONTROLLER',         '---'); // should be overwritten in 
 ddefine('ADMIN_DEFAULT_ACTION',             'dashboard');
 
 // --------------------------------------------------
+// USERS
+// --------------------------------------------------
+
+ddefine('CLASS_USER_MEMBER',                'Member');
+
+// --------------------------------------------------
 // FORMATTING
 // --------------------------------------------------
 
