@@ -132,6 +132,7 @@ class EndoController
     foreach ($this->nav as $label => $link) {
       if (strpos(DS.Url::$data['_url'], $link)===0) {
         Globe::for_layout('nav_active', $label);
+        // FIXME _pb: what the hell is this doing in endo?!
         Globe::for_layout('title', $label!='LiveIt! Lessons' ? trim(str_replace('LiveIt!', '', $label)) : 'Lesson '.$this->View->_tpl_vars['lesson']);
       }
     }
