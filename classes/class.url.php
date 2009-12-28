@@ -72,10 +72,11 @@ class Url {
     $parts = explode(DS, Url::$data['url']);
 
     // is subdomain?
-    if (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
+    // if (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
+    if (($subdomain=Url::GetSubdomain()) != null && $subdomain != 'www') {
       Url::$data['is_subdomain'] = true;
-      Url::$data['subdomain'] = $subdomain = $host_parts[0];
-      Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.implode('.', $host_parts);
+      Url::$data['subdomain'] = $subdomain;
+      Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.$subdomain.'.'.DOMAIN;
     }
 
     // d($url);d_arr($parts);d_arr(Url::$data);die;
@@ -191,6 +192,11 @@ class Url {
 
   static function param($variable, $default=null) { return Url::data_array('params', $variable, $default); }
   static function request($variable, $default=null) { return Url::data_array('request', $variable, $default); }
+
+  static function GetSubdomain()
+  {
+    return substr(str_replace(DOMAIN, '', $_SERVER['HTTP_HOST']), 0, -1);
+  }
 
 }
 
