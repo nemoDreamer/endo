@@ -1,0 +1,12 @@
+[submodule "packages/VerotUpload"]
+	path = packages/VerotUpload
+	url = git@github.com:nemoDreamer/Verot-Upload.git
+[submodule "packages/Smarty"]
+	path = packages/Smarty
+	url = git@github.com:nemoDreamer/smarty.git
+[submodule "packages/MyActiveRecord"]
+	path = packages/MyActiveRecord
+	url = git@github.com:nemoDreamer/MyActiveRecord.git
+[submodule "packages/Textile"]
+	path = packages/Textile
+	url = git://github.com/taat/textile.git

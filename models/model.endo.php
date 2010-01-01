@@ -377,7 +377,7 @@ class EndoModel extends MyActiveRecord
 
   function _handle_file_upload($field=null, $params=array())
   {
-    require_once(PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
+    require_once(ENDO_PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
 
     // TODO _pb: add 'delete-checkbox' functionality
 

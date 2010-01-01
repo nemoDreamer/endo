@@ -27,7 +27,7 @@ Globe::load(array(
 
 Globe::load(array(
   'MyActiveRecord/MyActiveRecord.0.4',
-  'Smarty/libs/Smarty.class'
+  'Smarty/Smarty.class'
 ), 'package');
 
 // --------------------------------------------------

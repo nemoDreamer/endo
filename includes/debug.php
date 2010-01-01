@@ -7,8 +7,6 @@
  * @author Philip Blyth
  */
 
-require_once(PACKAGES_ROOT.'debuglib.php');
-
 // --------------------------------------------------
 // UTILITIES
 // --------------------------------------------------

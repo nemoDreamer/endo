@@ -11,7 +11,8 @@
 // --------------------------------------------------
 
 ddefine('ENDO_ROOT',                        dirname(__FILE__).DS);
-ddefine('PACKAGES_ROOT',                    ROOT.'packages'.DS);
+ddefine('APP_PACKAGES_ROOT',                APP_ROOT.'packages'.DS);
+ddefine('ENDO_PACKAGES_ROOT',               ENDO_ROOT.'packages'.DS);
 
 // --------------------------------------------------
 // ROUTES

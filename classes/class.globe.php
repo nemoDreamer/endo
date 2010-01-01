@@ -79,7 +79,7 @@ class Globe {
           $file = strtolower($file);
       }
       $filename = $prefix.$file.$suffix;
-      if ($filepath=Globe::find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, PACKAGES_ROOT.$dir))) {
+      if ($filepath=Globe::find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, APP_PACKAGES_ROOT.$dir, ENDO_PACKAGES_ROOT.$dir))) {
         require_once($filepath);
       } else {
         if ($show_errors) {
