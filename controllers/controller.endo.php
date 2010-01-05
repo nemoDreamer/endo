@@ -51,7 +51,6 @@ class EndoController
     $this->LoggedIn = User::GetCurrent();
 
     // ACL
-    // $this->allow(array('*'));
     $this->deny(array('admin_dashboard', 'admin_index', 'admin_add', 'admin_edit', 'admin_show', 'admin_remove'));
   }
 
@@ -66,8 +65,7 @@ class EndoController
 
     // ACL
     if (!$this->LoggedIn->is_admin() && !$this->allowed(Url::$data['action'])) {
-      // d_bool(!$this->LoggedIn->is_admin());d_arr($this->LoggedIn);die;
-      $this->_redirect(DS.(Url::$data['is_admin'] ? ADMIN_ROUTE.DS : null).'login', true, false);
+      $this->_redirect(DS.(Url::$data['is_admin'] ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
 
     // security
