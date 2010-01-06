@@ -173,7 +173,7 @@ class Url {
       'is_admin' => true,
       'continue' => true
     );
-    return array_merge($include, Url::$routes, AppUrl::$routes);
+    return array_merge($include, AppUrl::$routes, Url::$routes);
   }
 
   // --------------------------------------------------
