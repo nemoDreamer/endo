@@ -6,6 +6,7 @@
 <title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
 <link rel="stylesheet" href="/stylesheets/reset.css" type="text/css">
 <link rel="stylesheet" href="/stylesheets/admin.css" type="text/css">
+<link rel="stylesheet" href="/stylesheets/forms.css" type="text/css">
 <link rel="stylesheet" href="/stylesheets/debug.css" type="text/css">
 <!--[if lte IE 6]>
   <link rel="stylesheet" href="/stylesheets/admin_iefix.css" type="text/css" media="screen" title="style" charset="utf-8">
