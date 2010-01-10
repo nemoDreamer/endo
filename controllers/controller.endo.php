@@ -64,8 +64,8 @@ class EndoController
     $this->type = $type;
 
     // ACL
-    if (!$this->LoggedIn->is_admin() && !$this->allowed(Url::$data['action'])) {
-      $this->_redirect(DS.(Url::$data['is_admin'] ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
+    if (!$this->LoggedIn->is_admin() && !$this->is_allowed(Url::$data['action'])) {
+      $this->_redirect(DS.(Url::data('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
 
     // security
@@ -85,7 +85,7 @@ class EndoController
     $this->data = $_POST;
 
     // admin?
-    if (Url::$data['is_admin']) {
+    if (Url::data('is_admin')) {
       $this->layout = 'admin';
       $this->_set_filter();
     }
@@ -114,14 +114,14 @@ class EndoController
     // ADMIN
     // --------------------------------------------------
 
-    if (Url::$data['is_admin']) {
+    if (Url::data('is_admin')) {
       $this->_assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
 
     // SUBDOMAIN
     // --------------------------------------------------
 
-    if (Url::$data['is_subdomain'] && $this->layout == DEFAULT_LAYOUT) {
+    if (Url::data('is_subdomain') && $this->layout == DEFAULT_LAYOUT) {
       $this->layout = 'subdomain';
     }
 
@@ -384,7 +384,7 @@ class EndoController
     }
   }
 
-  public function allowed($action)
+  public function is_allowed($action)
   {
     return !in_array($action, $this->deny);
   }

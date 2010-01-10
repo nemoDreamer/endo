@@ -83,12 +83,12 @@ class Url {
 
     // nothing left?
     if (array_empty($parts)) {
-      if (Url::$data['is_admin']) {
+      if (Url::data('is_admin')) {
         // is admin
         $parts = array(ADMIN_DEFAULT_CONTROLLER, ADMIN_DEFAULT_ACTION);
       } else{
         // is default
-        $parts = explode(DS, Url::$data['is_subdomain'] ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
+        $parts = explode(DS, Url::data('is_subdomain') ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
       }
     }
 
@@ -117,7 +117,7 @@ class Url {
       Url::$data['action'] = ($action=array_shift($parts)) != null ? $action : 'index';
 
       // add prefix to admin actions
-      if(Url::$data['is_admin']) {
+      if(Url::data('is_admin')) {
         Url::$data['action'] = ADMIN_PREFIX.Url::$data['action'];
       }
 
