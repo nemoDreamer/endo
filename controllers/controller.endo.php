@@ -425,10 +425,14 @@ class EndoController
         $field = $where = null;
       }
     } else {
-      preg_match_all('/\s*([^=]+)\s*/', $value, $parts); // explode & trim!
-      $field = array_shift($parts[0]);
-      $value = implode('=', $parts[0]);
-      $where = "$field='$value'";
+      if (!empty($value)) {
+        preg_match_all('/\s*([^=]+)\s*/', $value, $parts); // explode & trim!
+        $field = array_shift($parts[0]);
+        $value = implode('=', $parts[0]);
+        $where = "$field='$value'";
+      } else {
+        $field = $where = null;
+      }
     }
 
     $this->_assign('filter', $this->filter = (object) array(
