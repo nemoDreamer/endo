@@ -95,12 +95,15 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  function FindAll($strClass, $extend=FALSE, $mxdWhere=NULL, $strOrderBy='`id` ASC', $intLimit=null, $intOffset=null)
+  function FindAll($strClass, $extend=false, $mxdWhere=null, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
+    $model = AppModel::Create($strClass);
+
     $intLimit = get_default($intLimit, 10000);
     $intOffset = get_default($intOffset, 0);
+    $strOrderBy = get_default($strOrderBy, $model->order_by);
 
     $objects = parent::FindAll($strClass, $mxdWhere, $strOrderBy, $intLimit, $intOffset);
     if ($extend) {
@@ -172,9 +175,13 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
-  function FindAllAssoc($strClass, $extend=FALSE, $mxdWhere=NULL, $strIndexBy='id', $strOrderBy='`id` ASC', $intLimit=10000, $intOffset=0)
+  function FindAllAssoc($strClass, $extend=FALSE, $mxdWhere=NULL, $strIndexBy='id', $strOrderBy=null, $intLimit=10000, $intOffset=0)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    $model = AppModel::Create($strClass);
+
+    $strOrderBy = get_default($strOrderBy, $model->order_by);
 
     // get collection
     $collection = AppModel::FindAll($strClass, $extend, $mxdWhere, $strOrderBy, $intLimit, $intOffset);
@@ -198,7 +205,7 @@ class EndoModel extends MyActiveRecord
     return AppModel::CollectionToOptions($collection);
   }
 
-  function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy='', $intLimit=null, $intOffset=null)
+  function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
