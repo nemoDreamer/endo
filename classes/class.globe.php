@@ -38,7 +38,6 @@ class Globe {
    * @param string $type class/include/file/package/controller/model
    * @return bool success?
    * @author Philip Blyth
-   * @todo use my Package INI script for packages!
    */
   public function load($names, $type='class', $show_errors=true)
   {

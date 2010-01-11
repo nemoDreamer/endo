@@ -66,7 +66,7 @@ class EndoController
 
     // ACL
     /*
-      FIXME _pb: !!! ACL for multiple user-levels...
+      FIXME !!! ACL for multiple user-levels...
     */
     if (!$this->LoggedIn->is_admin() && !$this->is_allowed(Url::$data['action'])) {
       $this->_redirect(DS.(Url::data('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
@@ -103,7 +103,7 @@ class EndoController
     // --------------------------------------------------
 
     /*
-      TODO _pb: maybe simply access through 'register object' in smarty
+      FIXME replace with single 'registered object' in smarty!
     */
     $this->_assign('url', Url::$data);
     Globe::for_layout('url', Url::$data);
@@ -147,7 +147,7 @@ class EndoController
     foreach ($this->nav as $label => $link) {
       if (strpos(DS.Url::$data['_url'], $link)===0) {
         Globe::for_layout('nav_active', $label);
-        // FIXME _pb: what the hell is this doing in endo?!
+        // FIXME what the hell is this doing in endo?!
         Globe::for_layout('title', $label!='LiveIt! Lessons' ? trim(str_replace('LiveIt!', '', $label)) : 'Lesson '.$this->View->_tpl_vars['lesson']);
       }
     }

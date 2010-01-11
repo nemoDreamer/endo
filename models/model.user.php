@@ -44,7 +44,7 @@ class User extends AppModel {
 
   /**
    * This hook handles password encoding.
-   * FIXME _pb: It includes and exception for admin pages (which might need some more work)
+   * FIXME replace 'password' by 'crypted_password' in table (avoids overwrite problem...)
    */
   function _beforeSave()
   {

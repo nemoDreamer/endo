@@ -1,9 +1,5 @@
 <h2>Edit <em>&lsquo;{$item->display_field('name')}&rsquo;</em></h2>
 
-<!--
-  TODO replace $url (assigned at view and layout level... by a Registered Object)
--->
-
 <form action="/{$ADMIN_ROUTE}/{$url.controller}/edit/{$item->id}{set_gets}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 
   {admin_relations object=`$item` wrap=true}

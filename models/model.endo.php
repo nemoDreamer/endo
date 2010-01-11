@@ -379,7 +379,7 @@ class EndoModel extends MyActiveRecord
   {
     require_once(ENDO_PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
 
-    // TODO _pb: add 'delete-checkbox' functionality
+    // TODO add 'delete-checkbox' functionality
 
     if (!empty($_FILES)) {
 
@@ -441,7 +441,7 @@ class EndoModel extends MyActiveRecord
           $this->{$field} = DS.$path.$file->file_dst_name;
           return parent::save();
         } else {
-          // TODO _pb: add endo form error message
+          // TODO add endo form error message
           echo 'ERROR: ' . $file->error;
           return false;
         }

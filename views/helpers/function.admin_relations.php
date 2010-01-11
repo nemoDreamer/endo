@@ -7,7 +7,7 @@ function smarty_function_admin_relations($params=array(), &$smarty)
   $relations = array(
     'parent' =>   'edit ',
     'children' => 'add/edit '
-    // 'attached' => array('attached ',  '', 'Globe::pluralize') // TODO _pb: build structure for 'attached' filtering...
+    // 'attached' => array('attached ',  '', 'Globe::pluralize') // TODO filter: support for 'attached' filtering...
   );
 
   $object=null;

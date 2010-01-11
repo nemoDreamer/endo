@@ -63,9 +63,6 @@
   <div id="main" class="container">
     <div id="content" class="span-16">
       {if $has_errors}
-      <!--
-        TODO rename class to 'messages' (also rename PHP class)
-      -->
       <div id="errors" class="errors">
         {endo_errors key=notice}
         {endo_errors key=fatal}
