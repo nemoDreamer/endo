@@ -15,6 +15,10 @@
 
 require_once(ENDO_ROOT.'configure.php');
 require_once(ENDO_ROOT.INCLUDES_DIR.'initialize.php');
+require_once(APP_ROOT.INCLUDES_DIR.'initialize.php');
+
+// Sessions
+session_start();
 
 // --------------------------------------------------
 // URL

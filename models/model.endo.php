@@ -48,7 +48,7 @@ class EndoModel extends MyActiveRecord
 
   function &Create($strClass, $arrVals = null)
   {
-    if (!AppModel::_smartLoadModel($strClass)) return false;
+    AppModel::_smartLoadModel($strClass);
     return parent::Create($strClass, $arrVals);
   }
 

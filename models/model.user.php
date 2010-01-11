@@ -108,6 +108,8 @@ class User extends AppModel {
    */
   static function SetCurrent($user)
   {
+    // correct class & extend
+    $user = User::FindById($user->class, $user->id, true);
     // cookie
     if (Url::request(User::REMEMBER_ME, false)) {
       setcookie(User::REMEMBER_ME, $user->email.'|'.$user->password, time()+60*60*24*30);
@@ -140,7 +142,7 @@ class User extends AppModel {
 
   static function Clean($user)
   {
-    if (is_a($user, 'User')) {
+    if (is_a($user, 'User') || is_subclass_of($user, 'User')) {
       unset($user->salt);
       unset($user->password);
     }

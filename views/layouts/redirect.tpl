@@ -14,9 +14,9 @@
   <div id="wrapper">
     {if $has_errors}
       <div id="errors" class="errors">
-        {endo_errors key=notice layout=false}
-        {endo_errors key=fatal layout=false}
-        {endo_errors layout=false}
+        {endo_errors key=notice}
+        {endo_errors key=fatal}
+        {endo_errors}
       </div>
     {/if}
     <div id="content">

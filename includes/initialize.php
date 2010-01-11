@@ -48,7 +48,8 @@ Globe::load(array(
 Globe::load(array(
   'endo',
   'app',
-  'user'
+  'user',
+  'admin'
 ), 'model');
 
 // --------------------------------------------------
@@ -59,12 +60,5 @@ Globe::load(array(
   'endo',
   'app'
 ), 'controller');
-
-// --------------------------------------------------
-// INIT
-// --------------------------------------------------
-
-// Sessions
-session_start();
 
 ?>

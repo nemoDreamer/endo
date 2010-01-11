@@ -9,6 +9,7 @@ class EndoController
   var $output = '';
   var $data = array();
   var $filter = null;
+  var $has_redirected = false;
   var $nav = array();
   var $nav_prepend = array();
   var $nav_append = array();
@@ -64,6 +65,9 @@ class EndoController
     $this->type = $type;
 
     // ACL
+    /*
+      FIXME _pb: !!! ACL for multiple user-levels...
+    */
     if (!$this->LoggedIn->is_admin() && !$this->is_allowed(Url::$data['action'])) {
       $this->_redirect(DS.(Url::data('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
@@ -219,6 +223,7 @@ class EndoController
 
   function _redirect($url='', $do_die=true, $wait=true)
   {
+    $this->has_redirected = true;
     if (DEBUG && $wait) {
       $this->layout = 'redirect';
       Globe::for_layout('redirect', $url);
