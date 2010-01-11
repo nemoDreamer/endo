@@ -4,10 +4,15 @@
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
-<link rel="stylesheet" href="/stylesheets/reset.css" type="text/css">
-<link rel="stylesheet" href="/stylesheets/admin.css" type="text/css">
+
+<link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"/><![endif]-->
+
+<!-- <link rel="stylesheet" href="/stylesheets/reset.css" type="text/css"> -->
 <link rel="stylesheet" href="/stylesheets/forms.css" type="text/css">
 <link rel="stylesheet" href="/stylesheets/debug.css" type="text/css">
+<link rel="stylesheet" href="/stylesheets/admin.css" type="text/css">
 <!--[if lte IE 6]>
   <link rel="stylesheet" href="/stylesheets/admin_iefix.css" type="text/css" media="screen" title="style" charset="utf-8">
   <literal>
@@ -40,7 +45,7 @@
 </head>
 <body id="{$id}" class="{$url.action}">
 <div id="container">
-  <div id="header">
+  <div id="header" class="container">
     <h1 id="title">{$sitename_for_layout} <small>| {$title_for_layout}</small></h1>
     <div id="nav">
       <ul>
@@ -55,8 +60,8 @@
       {/if}
     </div>
   </div>
-  <div id="main" class="clearafter">
-    <div id="content">
+  <div id="main" class="container">
+    <div id="content" class="span-16">
       {if $has_errors}
       <!--
         TODO rename class to 'messages' (also rename PHP class)
@@ -72,7 +77,7 @@
       </div>
     </div>
     {if $sidebar_for_layout!=''}
-    <div id="sidebar">
+    <div id="sidebar" class="span-4">
       <div id="sidebar_inner">
         <div id="tools"></div>
         {$sidebar_for_layout}
@@ -80,9 +85,9 @@
     </div>
     {/if}
   </div>
-  <div id="footer">
+  <div id="footer" class="container">
     <p>{$footer_for_layout}</p>
-    <ul>
+    <ul class="clearfix">
       {foreach from=$nav_for_layout key=label item=link name=nav}
       <li><a href="{$link}">{$label}</a>{if !$smarty.foreach.nav.last}|{/if}</li>
       {/foreach}

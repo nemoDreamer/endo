@@ -1,3 +1,4 @@
 <div class="input textarea">
-  <textarea name="value" rows="10" cols="80" pre="Value">{$item->value}</textarea>
+  <label for="value">Value:</label>
+  <textarea name="value" rows="10" class="span-12" pre="Value">{$item->value}</textarea>
 </div>

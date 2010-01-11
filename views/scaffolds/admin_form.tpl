@@ -1,6 +1,8 @@
 <div class="input text">
-  <input type="text" name="name" value="{$item->name}" pre="{$url.modelName} Name" id="name">
+  <label for="name">Name:</label>
+  <input type="text" name="name" value="{$item->name}" pre="{$url.modelName} Name" id="name" class="span-6">
 </div>
 <div class="input textarea">
-  <textarea name="description" rows="10" cols="80" pre="Description">{$item->description}</textarea>
+  <label for="description">Description:</label>
+  <textarea name="description" rows="10" class="span-12" pre="Description">{$item->description}</textarea>
 </div>

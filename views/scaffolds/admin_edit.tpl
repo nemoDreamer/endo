@@ -10,7 +10,7 @@
 
   <input type="hidden" name="id" value="{$item->id}" id="id">
   {include file="`$url.controller`/admin_form.tpl"}
-  <div class="submit">
+  <div class="submit clearfix">
     <input type="submit" value="&raquo; Update!">
     or {admin_link controller=`$url.controller` text='Cancel' class='cancel' set_gets=true}
   </div>
