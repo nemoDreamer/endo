@@ -420,8 +420,10 @@ class EndoController
         $field = $where = null;
       }
     } else {
-      $field = preg_replace('/=.+$/U', '', $value);
-      $where = $value;
+      preg_match_all('/\s*([^=]+)\s*/', $value, $parts); // explode & trim!
+      $field = array_shift($parts[0]);
+      $value = implode('=', $parts[0]);
+      $where = "$field='$value'";
     }
 
     $this->_assign('filter', $this->filter = (object) array(
