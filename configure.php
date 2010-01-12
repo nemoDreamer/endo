@@ -65,6 +65,11 @@ ddefine('CACHES_DIR',                       'caches'.DS);
 ddefine('PAGES_CONTROLLER',                 'pages');
 ddefine('EXECUTE_CONTROLLER',               'execute');
 
+// --------------------------------------------------
+// LOGS
+// --------------------------------------------------
+
+ddefine('STR_LOG',                          APP_ROOT.CACHES_DIR.'log.txt');
 ddefine('STR_FINDCACHE',                    'find');
 
 // --------------------------------------------------

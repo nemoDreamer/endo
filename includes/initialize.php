@@ -9,6 +9,7 @@
  */
 
 require_once(ENDO_ROOT.INCLUDES_DIR.'debug.php');
+require_once(ENDO_ROOT.CLASSES_DIR.'class.log.php');
 require_once(ENDO_ROOT.CLASSES_DIR.'class.error.php');
 require_once(ENDO_ROOT.CLASSES_DIR.'class.globe.php');
 
@@ -29,7 +30,6 @@ Globe::load(array(
   'MyActiveRecord/MyActiveRecord.0.4',
   'Smarty/Smarty.class'
 ), 'package');
-
 // --------------------------------------------------
 // CLASSES
 // --------------------------------------------------
