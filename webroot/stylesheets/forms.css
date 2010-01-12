@@ -1,0 +1,378 @@
+/* @override http://localhost.com:8888/assets/stylesheets/forms.css */
+
+form {
+	position: relative;
+}
+
+/* @group Headers */
+
+form h3 {
+	color: #D3B069;
+	margin: 2em 0 0.5em;
+}
+
+form h3.first {
+	margin-top: 0;
+}
+
+/* @end */
+
+/* @group Tags */
+
+form a {
+	color: #0092d1;
+}
+
+/* @end */
+
+/* @group Label */
+
+form label {
+	color: #444341;
+	float: left;
+	width: 15%;
+	margin-right: 10px;
+	margin-top: 1px;
+	line-height: 30px;
+	text-align: right;
+}
+
+form label.full {
+	display: block;
+	float: none;
+	width: auto;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
+/*form label.inline {
+	display: inline;
+	float: none;
+	width: auto;
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}*/
+
+/* @end */
+
+/* @group Defaults */
+
+form input,
+form textarea {
+	display: block;
+	float: left;
+	margin: 0 10px 0 0!important;
+	padding: 0 5px;
+	height: auto;
+	font: 100%/30px Cambria, Georgia, Times, "Times New Roman", serif;
+	background: url(/assets/images/admin/input.gif) no-repeat left top;
+	border: 1px solid #edece8!important;
+}
+
+form textarea {
+	padding: 8px 5px;
+	line-height: 1.25;
+}
+
+form input.prevalued,
+form textarea.prevalued {
+	color: #a39f99;
+}
+
+form div.input {
+	clear: both;
+	margin-bottom: 10px;
+}
+
+form div.input:after {
+	display: block;
+	content: ' ';
+	clear: both;
+}
+
+form div.input p.info {
+  margin: 0.5em 0 1em 1em;
+  font-size: 90%;
+  color: #999;
+}
+
+form div.input small {
+	font-size: 90%;
+	font-weight: normal;
+	font-style: normal;
+	color: #7d7b77;
+}
+
+/* @end */
+
+/* @group Sizes */
+
+form input.medium {
+	width: 40%;
+}
+
+form input.small {
+	width: 30%;
+}
+
+form input.smaller {
+	width: 20%;
+}
+
+form input.smallest {
+	width: 15%;
+}
+
+form input.tiny {
+	width: 5%;
+}
+
+/* @end */
+
+/* @group Input Types */
+
+/* @group Checkbox */
+
+form div.checkbox {
+	margin-left: 15%;
+	padding-left: 10px;
+}
+
+form div.checkbox label {
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0;
+	line-height: 1.25;
+}
+
+form div.checkbox input {
+	width: auto;
+	height: auto;
+	padding: 0;
+	vertical-align: middle;
+	line-height: 1.25;
+}
+
+/* @end */
+
+/* @group Submit */
+
+form div.submit {
+	margin: 0 0 0 15%;
+	padding: 0 0 0 7px;
+}
+
+form div.submit input {
+	display: inline;
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0;
+	width: 128px;
+	height: 64px;
+	border: none!important;
+	color: #7f7c77;
+	background: #d4d0c8 url(/assets/images/admin/submit.gif) no-repeat center top;
+	font-family: "Trebuchet MS", "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: normal;
+	font-style: normal;
+}
+
+form div.submit input:focus {
+	outline: 0;
+}
+
+form div.submit input.hover {
+	color: #3f3e3b;
+	background-position: center -64px;
+}
+
+form div.submit input.pressed {
+	color: #3f3e3b;
+	background-position: center -128px;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group More */
+
+form div.more_wrap {
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	border-top: 1px dotted #d4d0c8;
+}
+
+form div.more_link {
+  text-align: right;
+  margin: 10px 20px;
+	font: 80% Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+/* @end */
+
+/* @group Filter */
+
+form#filter_form {
+	margin: 0 0 20px;
+	padding: 5px;
+	color: #7f7c77;
+	background-color: #f2ece3;
+	font: normal 75%/1.5 "Trebuchet MS", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+form#filter_form  div.input {
+	margin: 0;
+	padding: 10px;
+	border: 1px solid #d4d0c8;
+}
+
+/* @end */
+
+/* @group Relations */
+
+form .relations {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	color: #7f7c77;
+	font: normal 85%/1.5 Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+	list-style-image: none;
+	list-style-type: none;
+}
+
+form .relations a {
+	text-decoration: none;
+}
+
+form .relations a:hover span {
+	text-decoration: underline;
+}
+
+form .relations img {
+	vertical-align: middle;
+}
+
+/* @end */
+
+/* @group Inputs */
+
+/* @group Tags */
+
+div.input.tags {
+	margin: 1em 0;
+}
+
+div.input.tags select option[disabled] {
+	color: #ccc;
+}
+
+div.input.tags .selected {
+	padding-left: 78px;
+}
+
+div.input.tags .selected:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+div.input.tags .selected .tag {
+	float: left;
+	padding: 2px 4px;
+	margin: 0 3px 3px 0;
+	background-color: #d4d0c8;
+	color: #646665;
+	text-decoration: none;
+}
+
+div.input.tags .selected .tag:hover {
+	background-color: #333;
+	color: #fff;
+}
+
+/* @end */
+
+/* @group Hours */
+
+div.input.hours {
+	line-height: 2em;
+}
+
+/* @end */
+
+/* @group Lessons */
+
+div.input.lesson label {
+  float: left;
+  width: 16%;
+}
+
+div.input.purchased_lesson input {
+  margin: 0 0.5em;
+}
+
+/* @end */
+
+/* @group Files */
+
+div.input.file label {
+  float: left;
+  width: 16%;
+}
+
+div.input.file p.info {
+  margin-left: 16%;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Toggle Selection */
+
+form .select_all {
+	margin: 0 0.5em 0.5em 2em;
+	text-align: left;
+}
+
+form .select_all a {
+	font: 80% Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+/* @end */
+
+/* @group Login */
+
+/*#users_login_form {
+	margin-top: 100px;
+	margin-bottom: 100px;
+}*/
+
+#validation_errors .error {
+	padding: 10px;
+}
+
+#users_login_form .text label {
+	float: left;
+	width: 20%;
+}
+
+#users_login_form .text input {
+	width: 40%;
+}
+
+#users_login_form .checkbox,
+#users_login_form .submit {
+	margin-left: 20%;
+}
+
+/* @end */
+

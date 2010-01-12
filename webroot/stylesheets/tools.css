@@ -1,0 +1,175 @@
+/* @override 
+	http://localhost.com:8888/assets/stylesheets/tools.css
+	http://test.localhost.com:8888/assets/stylesheets/tools.css
+*/
+
+/* @group Scrollable */
+
+/* @group Basics */
+
+/* 
+    root element for the scrollable. 
+    when scrolling occurs this element stays still. 
+*/
+
+div.scrollable {
+	position: relative;
+	overflow: hidden;
+	width: 668px;
+	height: 100px;
+}
+
+/* 
+    root element for scrollable items. Must be absolutely positioned 
+    and it should have a super large width to accomodate scrollable items. 
+    it's enough that you set width and height for the root element and 
+    not for this element. 
+*/
+
+div.scrollable div.items {
+	width: 20000em;
+	position: absolute;
+}
+
+/* 
+    a single item. must be floated on horizontal scrolling 
+    typically this element is the one that *you* will style 
+    the most. 
+*/
+
+div.scrollable div.items div {
+	float: left;
+	width: 668px;
+}
+
+/* you may want to setup some decorations to active item */
+
+div.items div.active {
+	
+}
+
+/* this makes it possible to add next button beside scrollable */
+
+div.scrollable {
+	float: left;
+}
+
+/* @end */
+
+/* @group Prev / Next */
+
+/* prev, next, prevPage and nextPage buttons */
+
+div.prev_ghost, div.next_ghost {
+	position: absolute;
+	top: 0;
+	display: block;
+	width: 28px;
+	height: 100%;
+	background-color: #f2f0e4;
+}
+
+div.prev_ghost {
+	left: 0;
+}
+
+div.next_ghost {
+	right: 0;
+}
+
+a.prev, a.next, a.prevPage, a.nextPage {
+	position: absolute;
+	top: 0;
+	display: block;
+	width: 12px;
+	height: 100%;
+	padding: 0 8px;
+	cursor: pointer;
+	font-size: 1px;
+	background: #e5e0d7 url(../images/tools/scrollable/arrow_left.png) no-repeat center center;
+}
+
+/* mouseover state */
+
+a.prev:hover, a.next:hover, a.prevPage:hover, a.nextPage:hover {
+	background-color: #f2f0e4;
+}
+
+/* disabled navigational button */
+
+a.disabled {
+	visibility: hidden !important;
+}
+
+/* next button uses another background image */
+
+a.prev, a.prevPage {
+	left: 0;
+}
+
+a.next, a.nextPage {
+	right: 0;
+	background-image: url(../images/tools/scrollable/arrow_right.png);
+}
+
+/* @end */
+
+/* @group Navigator */
+
+/* position and dimensions of the navigator */
+
+div.navi {
+	margin-left: 328px;
+	width: 200px;
+	height: 20px;
+}
+
+/* items inside navigator */
+
+div.navi a {
+	width: 8px;
+	height: 8px;
+	float: left;
+	margin: 3px;
+	background: url(../images/tools/scrollable/navigator.png) 0 0 no-repeat;
+	display: block;
+	font-size: 1px;
+}
+
+/* mouseover state */
+
+div.navi a:hover {
+	background-position: 0 -8px;
+}
+
+/* active state (current page state) */
+
+div.navi a.active {
+	background-position: 0 -16px;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Overlay */
+
+div.overlay {
+    background-image:url(../images/tools/overlay/white.png);
+    width:600px;
+    height:470px;
+    display:none;
+    padding:55px;
+}
+
+div.overlay div.close {
+    background-image:url(../images/tools/overlay/close.png);
+    position:absolute;
+    right:5px;
+    top:5px;
+    cursor:pointer;
+    height:35px;
+    width:35px;
+}
+
+/* @end */

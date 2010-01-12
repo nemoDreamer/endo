@@ -1,0 +1,601 @@
+/* @override 
+	http://localhost:8888/assets/stylesheets/admin.css
+	http://localhost.com:8888/assets/stylesheets/admin.css
+*/
+
+/* @group Basics */
+
+body {
+	background-color: #7f7c77;
+	font: 10pt Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif;
+}
+
+small {
+	font-size: 75%;
+}
+
+big {
+	font-size: 133%;
+}
+
+h2 {
+	font-size: 150%;
+	color: #7f7d77;
+	margin-bottom: 1em;
+}
+
+h3 {
+	font-size: 125%;
+	color: #a39f99;
+	margin: 1em 0 0.25em;
+}
+
+strong, b {
+	font-weight: bold;
+}
+
+em, i {
+	font-style: italic;
+}
+
+u {
+	text-decoration: underline;
+}
+
+.clearfix {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+.clearafter:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+/* @end */
+
+/* @group Layout */
+
+#container {
+	background-color: #fff9f0;
+}
+
+/* @group Header */
+
+#header {
+	position: relative;
+	height: 95px;
+	background: #addae9 url(/assets/images/admin/header_bgr.gif) repeat-x left bottom;
+}
+
+/* @group Account */
+
+#account {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 75%;
+}
+
+#account a {
+	text-decoration: none;
+	color: #d0142e;
+}
+
+/* @end */
+
+/* @group Title */
+
+#title {
+	color: #fff;
+	padding: 10px 20px;
+	font: bold 200% Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+#title small {
+	text-transform: uppercase;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #64bcdf;
+	font-style: normal;
+	font-weight: normal;
+}
+
+/* @end */
+
+/* @group Nav */
+
+#nav {
+	position: absolute;
+	left: 20px;
+	bottom: 0;
+}
+
+#nav ul {
+	margin: 0;
+	padding: 0;
+}
+
+#nav ul li {
+	float: left;
+	margin: 0 5px 0 0;
+	padding: 0;
+	line-height: 1;
+	list-style-image: none;
+	list-style-type: none;
+}
+
+#nav ul li a {
+	display: block;
+	padding: 10px;
+	text-decoration: none;
+	color: #004b69;
+	background: #fff url(/assets/images/admin/nav_li_bgr.gif) repeat-x center bottom;
+}
+
+#nav ul li.active a {
+	color: #4c8ba3;
+	background-image: none;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Content */
+
+#content_inner {
+	padding: 20px;
+	background-color: #fff;
+	min-height: 140px;
+}
+
+/* @end */
+
+/* @group Sidebar */
+
+#sidebar_inner {
+	padding: 20px;
+	background-color: #f2ece3;
+}
+
+/* @end */
+
+/* @group Footer */
+
+#footer {
+	padding: 20px;
+	background-color: #d4d0c8;
+	font-size: 80%;
+	color: #7f7c77;
+}
+
+#footer p,
+#footer {
+	margin-bottom: 1em;
+}
+
+#footer a {
+	color: #3e423f;
+}
+
+#footer ul {
+	list-style-type: none;
+	list-style-image: none;
+	margin: 0;
+	padding: 0;
+}
+
+#footer li,
+#footer li a {
+	float: left;
+	margin-right: 5px;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Messages */
+
+/* @group Errors */
+
+.errors {
+	margin: 0 0 10px 0;
+	font: 75% "Trebuchet MS", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.errors .error {
+	padding: 10px 20px;
+	background-color: #7f0043;
+	margin-bottom: 1px;
+	color: #ff0087;
+}
+
+/* @end */
+
+.flash {
+	padding: 10px;
+	font: 75%/75% "Trebuchet MS", "Helvetica Neue", Helvetica, sans-serif;
+	margin-bottom: 1em;
+}
+
+.flash.notice {
+	color: #b2a920;
+	background-color: #fefbc0;
+}
+
+/* @end */
+
+/* @group Items list */
+
+ul.items{
+	list-style-image: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.items li {
+	position: relative;
+	padding: 5px 10px;
+	padding-left: 48px;
+	padding-right: 150px;
+	border-bottom: 1px solid #eee;
+	min-height: 1.25em;
+}
+
+ul.items li.odd {
+	background-color: #fff;
+}
+
+ul.items li.even {
+	background-color: #fcfcfc;
+}
+
+ul.items li.last,
+ul.items li:last-child {
+	border-bottom: none;
+}
+
+ul.items li.unpublished .info .label *,
+ul.items li.unpublished .info .blurb {
+	color: #ccc!important;
+}
+
+/* @group Label */
+
+ul.items .label {
+	display: block;
+}
+
+ul.items .label .part_1 {
+	color: #7f7c77;
+	margin-left: 0.25em;
+	font-size: 85%;
+}
+
+ul.items .label .part_2 {
+	color: #bfbbb3;
+	font-style: italic;
+	margin-left: 0.25em;
+	font-size: 85%;
+}
+
+ul.items .label .part_3 {
+	color: #bfbbb3;
+	margin-left: 0.25em;
+	font-size: 75%;
+}
+
+/* @end */
+
+ul.items .blurb {
+	display: block;
+	color: #7f7c77;
+	font-style: italic;
+	font-size: 75%;
+}
+
+/* @group Dates */
+
+ul.items .dates {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	width: 125px;
+}
+
+ul.items .date {
+	color: #bfbab3;
+	font: 75%/1.5 "Trebuchet MS", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* @end */
+
+/* @group Options */
+
+ul.items .options {
+	position: absolute;
+	top: -1px;
+	left: -20px;
+	width: 68px;
+	height: 26px;
+	background-color: #fff;
+	border-top: 1px solid #eee;
+}
+
+ul.items .options ul {
+	position: absolute;
+	top: 7px;
+	right: 10px;
+	margin: 0;
+	padding: 0;
+}
+
+ul.items .options li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+ul.items .options li,
+ul.items .options li a,
+ul.items .options li a img {
+	font-size: 0;
+	line-height: 0;
+	vertical-align: bottom;
+}
+
+li.even .options {
+	background-color: #fcfcfc;
+}
+
+li.first .options {
+	border-top: none;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Beauty */
+
+h2 em {
+	color: #d3b069;
+}
+
+h2 em .part_1 {
+	color: #d3c29e;
+	margin-left: 0.25em;
+	font-size: 85%;
+}
+
+h2 em .part_2 {
+	color: #d3cbba;
+	margin-left: 0.25em;
+	font-size: 75%;
+}
+
+h2 em .part_3 {
+	color: #d3cbba;
+	margin-left: 0.25em;
+	font-style: normal;
+	font-size: 75%;
+}
+
+.highlight {
+	color: #b2a920!important;
+	background-color: #fefbc0;
+}
+
+a.cancel {
+	color: #8f0050;
+	text-decoration: none;
+	border-bottom: 1px solid #dc7da6;
+}
+
+a.cancel:hover {
+	border-bottom: 1px solid #c6006b;
+}
+
+/* @end */
+
+/* @group Show */
+
+#show {
+	position: relative;
+	padding-top: 10px;
+}
+
+/* TODO this should be hidden server-side, model-rules, for ex. */
+
+/* hide internals */
+
+#show #get_children,
+#show #get_attached,
+#show #name_fields,
+#show #description_fields,
+#show #id,
+#show #created,
+#show #modified {
+	display: none;
+}
+
+/* hide specials */
+
+#show #condition_id,
+#show #Story,
+#show #Tag {
+	display: none;
+}
+
+#show .info h3 {
+	text-transform: capitalize;
+}
+
+#show .dates {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #7f7c77;
+	font-size: 75%;
+}
+
+/* @end */
+
+/* @group Sidebar */
+
+#sidebar {
+	color: #7f7c77;
+	font: 8pt/1.5 Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+#tools,
+#tools label {
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: bottom;
+}
+
+#tools input {
+	font-weight: normal;
+	font-style: normal;
+	vertical-align: middle;
+}
+
+#tools .group {
+	border: 1px solid #d4d0c8;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+#tools #tool_options a {
+	text-decoration: none;
+	color: #7f7c77;
+}
+
+#tools #tool_options img {
+	vertical-align: text-bottom;
+}
+
+#tools #tool_options li {
+	line-height: 2;
+}
+
+#tools #tool_options .show {
+	display: none;
+}
+
+a.button,
+a.button span {
+	display: block;
+	height: 32px;
+}
+
+a.button {
+	margin-top: 20px;
+	text-decoration: none;
+	color: #7f7c77;
+	background: url(/assets/images/admin/button_left.gif) no-repeat left top;
+}
+
+a.button span {
+	margin-left: 29px;
+	line-height: 32px;
+	background: url(/assets/images/admin/button_right.gif) no-repeat right top;
+}
+
+a.button:hover {
+	color: #3f3e3b;
+	background-position: left -32px;
+}
+
+a.button:hover span {
+	background-position: right -32px;
+}
+
+/* @end */
+
+/* @group Panels */
+
+.panels .panel {
+	margin: 0 0 20px;
+	padding: 20px;
+	border: 1px solid #e2eef2;
+}
+
+.panels .panel .panel_title {
+	font-size: 125%;
+	line-height: 1;
+	margin: 0 0 0.5em;
+	color: #98d2ec;
+}
+
+.panels .panel .panel_content {
+	margin: 0;
+}
+
+/* @group Exceptions */
+
+#panel_featured_lessons {
+	display: none;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Ajax */
+
+#pagination,
+#search_form {
+	color: #999;
+	font: normal 80%/2 Trebuchet, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+#pagination {
+	float: left;
+	width: 65%;
+	text-align: center;
+}
+
+#pagination a {
+	width: 48%;
+	text-decoration: none;
+	color: #333;
+}
+
+#pagination a:hover span {
+	text-decoration: underline;
+}
+
+#pagination a.previous {
+	float: left;
+	text-align: right;
+}
+
+#pagination a.next {
+	float: right;
+	text-align: left;
+}
+
+#search_form {
+	text-align: right;
+	margin-bottom: 20px;
+}
+
+#search_form input {
+	width: 25%;
+	border: 1px solid #ccc;
+	padding: 3px;
+}
+
+ul.items .sec,
+ul.items .options {
+  display: none;
+}
+
+/* @end */

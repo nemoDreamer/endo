@@ -53,7 +53,7 @@ function smarty_function_admin_relations($params=array(), &$smarty)
       $links[] =  smarty_function_admin_link(array(
         'controller' => $controller->name,
         'action' => $action,
-        'text' => "<span>$relation_prefix$text</span>".' <img src="/images/admin/silk/'.$image.'.png" width="16" height="16">'
+        'text' => "<span>$relation_prefix$text</span>".' <img src="/assets/images/admin/silk/'.$image.'.png" width="16" height="16">'
       ), $smarty);
     }
   }

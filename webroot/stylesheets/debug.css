@@ -1,0 +1,21 @@
+/* @override 
+	http://localhost:8888/assets/stylesheets/debug.css
+	http://liveit.devongundry.com/assets/stylesheets/debug.css
+*/
+
+pre {
+	font: 12px "Courier New", Courier, mono;
+	white-space: pre;
+	text-transform: none;
+}
+
+pre.debug {
+	padding: 20px;
+	background-color: #000;
+	color: #444;
+}
+
+#debug_dump > pre.debug {
+	width: 760px;
+	margin: 10px auto;
+}

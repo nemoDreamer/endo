@@ -4,11 +4,11 @@
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
-<link rel="stylesheet" href="/stylesheets/reset.css" type="text/css">
+<link rel="stylesheet" href="/assets/stylesheets/reset.css" type="text/css">
 <link rel="stylesheet" href="/stylesheets/redirect.css" type="text/css">
-<link rel="stylesheet" href="/stylesheets/debug.css" type="text/css">
-<script src="/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="/assets/stylesheets/debug.css" type="text/css">
+<script src="/assets/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="{$id}">
   <div id="wrapper">

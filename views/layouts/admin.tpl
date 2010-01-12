@@ -5,16 +5,16 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
 
-<link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+<link rel="stylesheet" href="/assets/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/assets/stylesheets/blueprint/print.css" type="text/css" media="print">
 <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"/><![endif]-->
 
-<!-- <link rel="stylesheet" href="/stylesheets/reset.css" type="text/css"> -->
-<link rel="stylesheet" href="/stylesheets/forms.css" type="text/css">
-<link rel="stylesheet" href="/stylesheets/debug.css" type="text/css">
-<link rel="stylesheet" href="/stylesheets/admin.css" type="text/css">
+<!-- <link rel="stylesheet" href="/assets/stylesheets/reset.css" type="text/css"> -->
+<link rel="stylesheet" href="/assets/stylesheets/forms.css" type="text/css">
+<link rel="stylesheet" href="/assets/stylesheets/debug.css" type="text/css">
+<link rel="stylesheet" href="/assets/stylesheets/admin.css" type="text/css">
 <!--[if lte IE 6]>
-  <link rel="stylesheet" href="/stylesheets/admin_iefix.css" type="text/css" media="screen" title="style" charset="utf-8">
+  <link rel="stylesheet" href="/assets/stylesheets/admin_iefix.css" type="text/css" media="screen" title="style" charset="utf-8">
   <literal>
   <script type="text/javascript" charset="utf-8">
     if(!Array.indexOf){
@@ -31,17 +31,17 @@
   </literal>
 <![endif]-->
 
-<script src="/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery/jquery.livequery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/jquery/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/jquery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/jquery/jquery.livequery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/jquery/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/jquery/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
 
-<script src="/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my/my.prevalue.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/my/my.prevalue.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/my/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
 <script src="/javascripts/my/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my/my.admin.js" type="text/javascript" charset="utf-8"></script>
+<script src="/assets/javascripts/admin.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="{$id}" class="{$url.action}">
 <div id="container">
