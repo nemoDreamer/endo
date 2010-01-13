@@ -2,46 +2,28 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
+  <title>{$sitename_for_layout} Admin | {$title_for_layout}</title>
 
-<link rel="stylesheet" href="/assets/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
-<link rel="stylesheet" href="/assets/stylesheets/blueprint/print.css" type="text/css" media="print">
-<!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"/><![endif]-->
+  {include file=shared/html_head.tpl}
 
-<!-- <link rel="stylesheet" href="/assets/stylesheets/reset.css" type="text/css"> -->
-<link rel="stylesheet" href="/assets/stylesheets/forms.css" type="text/css">
-<link rel="stylesheet" href="/assets/stylesheets/debug.css" type="text/css">
-<link rel="stylesheet" href="/assets/stylesheets/admin.css" type="text/css">
-<!--[if lte IE 6]>
-  <link rel="stylesheet" href="/assets/stylesheets/admin_iefix.css" type="text/css" media="screen" title="style" charset="utf-8">
-  <literal>
+  <link rel="stylesheet" href="/assets/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+  <link rel="stylesheet" href="/assets/stylesheets/blueprint/print.css" type="text/css" media="print">
+  <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"/><![endif]-->
+
+  <link rel="stylesheet" href="/assets/stylesheets/forms.css" type="text/css">
+  <link rel="stylesheet" href="/assets/stylesheets/admin.css" type="text/css">
+
+  <script src="/javascripts/my/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/javascripts/my/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/assets/javascripts/admin.js" type="text/javascript" charset="utf-8"></script>
+
+  {if isset($head_for_layout)}{$head_for_layout}{/if}
+
+  {if isset($script_for_layout)}
   <script type="text/javascript" charset="utf-8">
-    if(!Array.indexOf){
-      Array.prototype.indexOf = function(obj){
-       for(var i=0; i<this.length; i++){
-        if(this[i]==obj){
-         return i;
-        }
-       }
-       return -1;
-      }
-    }
+  {$script_for_layout}
   </script>
-  </literal>
-<![endif]-->
-
-<script src="/assets/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/jquery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/jquery/jquery.livequery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/jquery/jquery.taconite.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/jquery/jquery.tools.min.js" type="text/javascript" charset="utf-8"></script>
-
-<script src="/assets/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/my/my.prevalue.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my/my.input_tags.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascripts/my/my.input_hours.js" type="text/javascript" charset="utf-8"></script>
-<script src="/assets/javascripts/admin.js" type="text/javascript" charset="utf-8"></script>
+  {/if}
 </head>
 <body id="{$id}" class="{$url.action}">
 <div id="container">
