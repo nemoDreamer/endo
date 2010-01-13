@@ -76,8 +76,14 @@ class Globe {
     $success = true;
 
     foreach ($names as $file) {
+      /*
+        TODO handle via inverse of Globe::classify!
+      */
       if ($type=='model'||$type=='controller') {
         $file = Inflector::underscore($file);
+      }
+      if ($type=='controller' && ($file!='app' && $file!='endo')) {
+        $file = Inflector::pluralize($file);
       }
       if ($type=='class'||$type=='model'||$type=='controller') {
         $file = strtolower($file);

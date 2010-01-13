@@ -29,23 +29,24 @@ function smarty_function_admin_relations($params=array(), &$smarty)
     // cycle object's 'get_' variables
     foreach ($object->{'get_'.$relation_name} as $model_index => $model_name) {
       // get controller
-      $controller = Globe::init(Globe::pluralize($model_name), 'controller');
+      $controller = Globe::init($model_name, 'controller');
       // action & text
       switch ($relation_name) {
         case 'parent':
           $action = 'edit'.DS.$object->{$model_name}->id;
-          $text = $model_name;
+          $text = ucwords(Inflector::titleize($model_name));
           $image = 'page_white_edit';
           break;
         case 'children':
           $prefix = $model_index==0 ? '' : AppModel::Class2Table(get_class($object)).'_id=';
           $action = '?filter='.$prefix.$object->id;
-          $text = ucfirst(Globe::pluralize($model_name));
+          d($model_name);
+          $text = ucwords(Globe::pluralize(Inflector::titleize($model_name)));
           $image = 'magnifier';
           break;
         default:
           $action = '';
-          $text = $model_name;
+          $text = Inflector::titleize($model_name);
           $image = 'magnifier';
           break;
       }
