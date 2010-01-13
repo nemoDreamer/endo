@@ -83,7 +83,7 @@ class Globe {
         $file = Inflector::underscore($file);
       }
       if ($type=='controller' && ($file!='app' && $file!='endo')) {
-        $file = Inflector::pluralize($file);
+        $file = Globe::pluralize($file);
       }
       if ($type=='class'||$type=='model'||$type=='controller') {
         $file = strtolower($file);
@@ -140,7 +140,6 @@ class Globe {
       Error::set("File '$filename' not found in cascade <pre>".print_r(array_merge($paths, $scaffold_paths), true)."</pre>");
       return false;
     }
-
   }
 
   public function init($name, $type='class', $show_errors=true)
@@ -210,6 +209,9 @@ class Globe {
       $words[$key] = $word;
     }
 
+    /*
+      TODO Extend Inflector, instead of in Globe...
+    */
     return Inflector::camelize(implode('_', $words));
   }
 
