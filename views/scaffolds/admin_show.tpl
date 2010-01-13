@@ -8,21 +8,23 @@
       </div>
     {/foreach}
   </div>
-  <div class="dates">
-    <div class="date">
-      created:
-      <span class="created">{$item->date(created)}</span>
+  {if isset($item->created)}
+    <div class="dates">
+      <div class="date">
+        created:
+        <span class="created">{$item->date(created)}</span>
+      </div>
+      {if $item->created!=$item->modified}
+        {assign var='modified' value=true}
+      {else}
+        {assign var='modified' value=false}
+      {/if}
+      <div class="date">
+        modified:
+        <span class="modified {if $modified} highlight{/if}">{$item->date(modified)}</span>
+      </div>
     </div>
-    {if $item->created!=$item->modified}
-      {assign var='modified' value=true}
-    {else}
-      {assign var='modified' value=false}
-    {/if}
-    <div class="date">
-      modified:
-      <span class="modified {if $modified} highlight{/if}" rel="{$item->date(modified, true)}">{$item->date(modified)}</span>
-    </div>
-  </div>
+  {/if}
 </div>
 
 {endo_for_layout assign="sidebar"}
