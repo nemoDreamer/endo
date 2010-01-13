@@ -1,5 +1,7 @@
 <?php
 
-class Admin extends User {}
+Globe::load('Guest', 'model');
+
+class Admin extends Guest {}
 
 ?>

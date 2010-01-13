@@ -11,7 +11,7 @@ class User extends AppModel {
   var $level = 0;
 
   static $levels = array(
-    'User', 'Member', 'Editor', 'Publisher', 'Admin'
+    'Guest', 'Member', 'Editor', 'Publisher', 'Admin'
   );
 
   // --------------------------------------------------
