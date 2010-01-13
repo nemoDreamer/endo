@@ -6,7 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.editorConfig = function( config )
 {
   config.language = 'en';
-  config.uiColor = '#d4d0c8';
+  config.uiColor = '#EAE8E4';//'#FFF9F0';//'#D4D0C8';
 
   config.toolbar = 'EndoAdmin';
 
