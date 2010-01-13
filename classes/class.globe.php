@@ -1,5 +1,8 @@
 <?php
 
+require_once(ENDO_PACKAGES_ROOT.'AkelosInflector/Inflector.php');
+
+
 /**
  * Globe
  * Repository of static functions
@@ -19,7 +22,6 @@ class Globe {
   );
 
   static $pluralize_exceptions = array(
-    'class' => 'classes',
     'missing' => 'missing', // keep this for internal
     'execute' => 'execute'  // keep this for internal
   );
@@ -74,8 +76,11 @@ class Globe {
     $success = true;
 
     foreach ($names as $file) {
+      if ($type=='model'||$type=='controller') {
+        $file = Inflector::underscore($file);
+      }
       if ($type=='class'||$type=='model'||$type=='controller') {
-          $file = strtolower($file);
+        $file = strtolower($file);
       }
       $filename = $prefix.$file.$suffix;
       if ($filepath=Globe::find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, APP_PACKAGES_ROOT.$dir, ENDO_PACKAGES_ROOT.$dir))) {
@@ -135,7 +140,7 @@ class Globe {
   public function init($name, $type='class', $show_errors=true)
   {
     if (Globe::load($name, $type, $show_errors)) {
-      $class_name = Globe::make_class_name($name, $type);
+      $class_name = Globe::classify($name, $type);
       return new $class_name();
     } else {
       return new stdClass();
@@ -146,35 +151,31 @@ class Globe {
   // PLURALIZE / SINGULARIZE
   // --------------------------------------------------
 
-  public function pluralize($str='', $title_case=false)
+  public function pluralize($str='')
   {
     $str = strtolower($str);
     if (array_key_exists($str, Globe::$pluralize_exceptions)) {
-      $output = Globe::$pluralize_exceptions[$str];
+      return Globe::$pluralize_exceptions[$str];
     } else {
-      $output = substr($str,-1)!='s' ? $str.'s': $str;
+      return Inflector::pluralize($str);
     }
-    if ($title_case) {
-      $output = ucfirst($output);
-    }
-    return $output;
   }
 
   public function singularize($str='')
   {
     $str = strtolower($str);
-    $pluralize_exceptions = array_flip(Globe::$pluralize_exceptions);
-    if (array_key_exists($str, $pluralize_exceptions)) {
-      return $pluralize_exceptions[$str];
+    $singularize_exceptions = array_flip(Globe::$pluralize_exceptions);
+    if (array_key_exists($str, $singularize_exceptions)) {
+      return $singularize_exceptions[$str];
     } else {
-      return substr($str,0,-1);
+      return Inflector::singularize($str);
     }
   }
 
-  /*
-    TODO only really used for controllers... maybe turn into "underscore <-> camel" function?
-  */
-  public function make_class_name($name='', $type='class')
+  /**
+   * @todo find possible other uses of 'Globe::classify'
+   */
+  public function classify($name='', $type='class')
   {
     $type = strtolower($type);
 
@@ -195,12 +196,15 @@ class Globe {
           $word = Globe::singularize($word);
         }
       }
-
-      // uppercase first letter
-      $words[$key] = ucfirst($word);
+      // leave last alone
+      // singularize all others
+      elseif ($key!=count($words)-1) {
+        $word = Globe::singularize($word);
+      }
+      $words[$key] = $word;
     }
 
-    return implode('', $words);
+    return Inflector::camelize(implode('_', $words));
   }
 
   // --------------------------------------------------

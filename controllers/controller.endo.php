@@ -41,8 +41,9 @@ class EndoController
     // Model
     if ($this->has_model) {
       // load Model class
-      $this->Model =& Globe::init(Url::$data['modelName'], 'model', false);
-      if (get_class($this->Model)!='stdClass') {
+      // $this->Model =& Globe::init(Url::$data['model'], 'model', false);
+      // if (get_class($this->Model)!='stdClass') {
+      if (Globe::load(Url::$data['model'], 'model')) {
         $this->{Url::$data['modelName']} =& AppModel::Create(Url::$data['modelName']);
         $this->Model =& $this->{Url::$data['modelName']}; // reference for ease
       }

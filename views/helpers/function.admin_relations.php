@@ -40,7 +40,7 @@ function smarty_function_admin_relations($params=array(), &$smarty)
         case 'children':
           $prefix = $model_index==0 ? '' : AppModel::Class2Table(get_class($object)).'_id=';
           $action = '?filter='.$prefix.$object->id;
-          $text = Globe::pluralize($model_name, true);
+          $text = ucfirst(Globe::pluralize($model_name));
           $image = 'magnifier';
           break;
         default:
