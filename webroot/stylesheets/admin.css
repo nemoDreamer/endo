@@ -412,29 +412,62 @@ a.cancel:hover {
 
 /* TODO this should be hidden server-side, model-rules, for ex. */
 
+/* @group Keys */
+
+#show .key {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px dotted #d4d0c8;
+}
+
+#show .key .variable {
+	float: left;
+	width: 25%;
+	font-weight: bold;
+	color: #64bce0;
+}
+
+#show .key .value {
+	float: left;
+	width: 75%;
+}
+
+/* @group Hide */
+
 /* hide internals */
 
-#show #get_children,
-#show #get_attached,
-#show #name_fields,
-#show #description_fields,
-#show #id,
-#show #created,
-#show #modified {
+#show #key_get_children,
+#show #key_get_attached,
+#show #key_name_fields,
+#show #key_description_fields,
+#show #key_id,
+#show #key_order_by,
+#show #key_file_uploads,
+#show #key_do_handle_attachments,
+#show #key___previous_data,
+#show #key_created,
+#show #key_modified {
 	display: none;
 }
 
 /* hide specials */
 
-#show #condition_id,
-#show #Story,
-#show #Tag {
+#show #key_condition_id,
+#show #key_password,
+#show #key_crypted_password,
+#show #key_salt,
+#show #key_Story,
+#show #key_Tag,
+#show #key_Specialty,
+#show #key_Lesson,
+#show #key_Testimonial,
+#show #key_Listing {
 	display: none;
 }
 
-#show .info h3 {
-	text-transform: capitalize;
-}
+/* @end */
+
+/* @end */
 
 #show .dates {
 	position: absolute;
@@ -458,6 +491,13 @@ a.cancel:hover {
 	font-weight: normal;
 	font-style: normal;
 	vertical-align: bottom;
+}
+
+#tools ul {
+	margin: 0;
+	padding: 0;
+	list-style-image: none;
+	list-style-type: none;
 }
 
 #tools input {

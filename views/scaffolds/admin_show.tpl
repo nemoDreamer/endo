@@ -2,8 +2,8 @@
 <div id="show">
   <div class="info">
     {foreach from=$item->_for_show() key=key item=value}
-      <div id="{$key}" class="key">
-        <h3>{$key}</h3>
+      <div id="key_{$key}" class="key clearfix">
+        <span class="variable">{$key}</span>
         <span class="value">{$value}</span>
       </div>
     {/foreach}
