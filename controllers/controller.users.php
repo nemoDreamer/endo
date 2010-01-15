@@ -38,7 +38,7 @@ class UsersController extends AppController
 
   function logout($root=DS)
   {
-    User::UnsetCurrent();
+    AppUser::UnsetCurrent();
     $this->_redirect($root);
   }
 
@@ -68,7 +68,7 @@ class UsersController extends AppController
   private function _feed_form()
   {
     $this->_assign(array(
-      'levels' => build_options(User::$levels),
+      'levels' => build_options(AppUser::$levels),
       'class' => $this->Model->class
     ));
   }

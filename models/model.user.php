@@ -15,6 +15,10 @@ class User extends AppModel {
   );
 
   // --------------------------------------------------
+  // CONSTRUCTOR
+  // --------------------------------------------------
+
+  // --------------------------------------------------
   // CONSTANTS
   // --------------------------------------------------
 
@@ -36,7 +40,6 @@ class User extends AppModel {
   }
 
   public function is_admin() { return $this->is_class('Admin'); }
-  public function is_guest() { return $this->is_class(); }
 
   // --------------------------------------------------
   // HOOKS
@@ -80,27 +83,29 @@ class User extends AppModel {
   static function GetCurrent()
   {
     // session?
-    if ($user=array_get($_SESSION, User::SESSION_KEY, false)) {
+    if ($user=array_get($_SESSION, AppUser::SESSION_KEY, false)) {
       return $user;
     }
     // cookie?
-    elseif ($cookie=array_get($_COOKIE, User::REMEMBER_ME, false)) {
+    elseif ($cookie=array_get($_COOKIE, AppUser::REMEMBER_ME, false)) {
       list($email, $password) = explode('|', $cookie);
       // valid?
-      if (is_a($user=User::FetchUser($email), 'User') && $user->password == $password) {
-        return User::SetCurrent($user);
+      if (is_a($user=AppUser::FetchUser($email), 'User') && $user->password == $password) {
+        return AppUser::SetCurrent($user);
       }
     }
     // data?
     elseif (Url::request('check_data', false) && ($email=Url::request('email', false)) && ($password=Url::request('password', false))) {
       // valid?
-      if (($user = User::FetchUser($email)) && $user->validate($password)) {
-        return User::SetCurrent($user);
+      if (($user = AppUser::FetchUser($email)) && $user->validate($password)) {
+        return AppUser::SetCurrent($user);
       } else {
         Error::set("Invalid Email and/or Password", 'validation');
       }
     }
-    return AppModel::Create(User::$levels[0]);
+    $tmp = AppModel::Create(AppUser::$levels[0]);
+    $tmp->class = AppUser::$levels[0]; // TODO replace by constructor code
+    return $tmp;
   }
 
   /**
@@ -109,13 +114,13 @@ class User extends AppModel {
   static function SetCurrent($user)
   {
     // correct class & extend
-    $user = User::FindById($user->class, $user->id, true);
+    $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
-    if (Url::request(User::REMEMBER_ME, false)) {
-      setcookie(User::REMEMBER_ME, $user->email.'|'.$user->password, time()+60*60*24*30);
+    if (Url::request(AppUser::REMEMBER_ME, false)) {
+      setcookie(AppUser::REMEMBER_ME, $user->email.'|'.$user->password, time()+60*60*24*30);
     }
     // session
-    return $_SESSION[User::SESSION_KEY] = User::Clean($user);
+    return $_SESSION[AppUser::SESSION_KEY] = AppUser::Clean($user);
   }
 
   /**
@@ -125,9 +130,9 @@ class User extends AppModel {
   static function UnsetCurrent()
   {
     // session
-    unset($_SESSION[User::SESSION_KEY]);
+    unset($_SESSION[AppUser::SESSION_KEY]);
     // cookie
-    setcookie(User::REMEMBER_ME, '', time()-3600);
+    setcookie(AppUser::REMEMBER_ME, '', time()-3600);
   }
 
   static function FetchUser($email)

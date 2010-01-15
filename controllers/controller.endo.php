@@ -33,8 +33,11 @@ class EndoController
   // CONSTRUCTOR
   // --------------------------------------------------
 
-  function __construct()
+  public function __construct()
   {
+    // Data
+    $this->data = $_POST; // TODO clean up data for SQL here?
+
     // View
     $this->View =& new AppView();
 
@@ -43,17 +46,14 @@ class EndoController
       // load Model class
       // $this->Model =& Globe::init(Url::$data['model'], 'model', false);
       // if (get_class($this->Model)!='stdClass') {
-      if (Globe::load(Url::$data['model'], 'model')) {
+      if (Globe::load(Url::$data['model'], 'model')) { // TODO analyze merits of this method over previous..
         $this->{Url::$data['modelName']} =& AppModel::Create(Url::$data['modelName']);
         $this->Model =& $this->{Url::$data['modelName']}; // reference for ease
       }
     }
 
     // User
-    $this->LoggedIn = User::GetCurrent();
-
-    // ACL
-    $this->deny(array('admin_dashboard', 'admin_index', 'admin_add', 'admin_edit', 'admin_show', 'admin_remove'));
+    $this->LoggedIn = AppUser::GetCurrent();
   }
 
   // --------------------------------------------------
@@ -66,15 +66,12 @@ class EndoController
     $this->type = $type;
 
     // ACL
-    /*
-      FIXME !!! ACL for multiple user-levels...
-    */
-    if (!$this->LoggedIn->is_admin() && !$this->is_allowed(Url::$data['action'])) {
+    if (!$this->is_allowed(Url::$data['action'])) {
       $this->_redirect(DS.(Url::data('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
 
     // security
-    if (!method_exists($this, $action) || (substr($action, 0, 1)=='_' && Url::$data['controller']!=EXECUTE_CONTROLLER)) {
+    if (!method_exists($this, $action) || (substr($action, 0, 1)=='_' && Url::$data['controller']!=EXECUTE_CONTROLLER)) { // FIXME get 'controller' from $this
       Error::set("Missing Action '$action()' in Controller '".get_class($this)."'", 'fatal');
     } else {
       call_user_func_array(array(&$this, $action), $arguments);
@@ -86,14 +83,19 @@ class EndoController
   // --------------------------------------------------
 
   function _beforeFilter() {
-    // data
-    $this->data = $_POST;
 
-    // admin?
+    // is Admin?
+    // --------------------------------------------------
     if (Url::data('is_admin')) {
       $this->layout = 'admin';
       $this->_set_filter();
     }
+
+    // ACL
+    // --------------------------------------------------
+    $admin_actions = array('admin_dashboard', 'admin_index', 'admin_add', 'admin_edit', 'admin_show', 'admin_remove');
+    $this->deny( $admin_actions);
+    $this->allow($admin_actions, 'Admin');
   }
 
   function _afterFilter() {}
@@ -161,7 +163,7 @@ class EndoController
     // ACL
     // --------------------------------------------------
 
-    Globe::for_layout('LoggedIn', $this->_assign('LoggedIn', User::Clean($this->LoggedIn)));
+    Globe::for_layout('LoggedIn', $this->_assign('LoggedIn', AppUser::Clean($this->LoggedIn)));
   }
 
   function _afterRender() {}
@@ -372,27 +374,45 @@ class EndoController
   // ACL
   // --------------------------------------------------
 
-  public function allow($strOrArray)
-  {
-    $array = (array) $strOrArray;
-    $this->allow = array_unique(array_merge($this->allow, $array));
-    foreach ($array as $action) {
-      unset($this->deny[$action]);
-    }
-  }
+  public function allow($strOrArray, $levels='*') { $this->_allow_or_deny('allow', $strOrArray, $levels); }
+  public function deny($strOrArray, $levels='*') { $this->_allow_or_deny('deny', $strOrArray, $levels); }
 
-  public function deny($strOrArray)
+  private function _allow_or_deny($which='allow', $strOrArray, $levels='*')
   {
-    $array = (array) $strOrArray;
-    $this->deny = array_unique(array_merge($this->deny, $array));
-    foreach ($array as $action) {
-      unset($this->allow[$action]);
+    if ($which=='allow') {
+      $other = 'deny';
+    } else {
+      $which = 'deny';
+      $other = 'allow';
+    }
+
+    $array = is_array($strOrArray) ? $strOrArray : array_map('trim', explode(',', $strOrArray));
+    $levels = $this->_get_levels($levels);
+
+    foreach ($levels as $level) {
+      $this->{$which}[$level] = array_unique(array_merge(array_get($this->{$which}, $level, array()), $array));
+      foreach ($array as $action) {
+        if (array_key_exists($level, $this->{$other}) && ($tmp_pos=array_search($action, $this->{$other}[$level]))!==false) {
+          unset($this->{$other}[$level][$tmp_pos]);
+        }
+      }
     }
   }
 
   public function is_allowed($action)
   {
-    return !in_array($action, $this->deny);
+    return !in_array($action, array_get($this->deny, $this->LoggedIn->class, array()));
+  }
+
+  private function _get_levels($levels)
+  {
+    if (is_array($levels)) {
+      return $levels;
+    } elseif ($levels=='*') {
+      return AppUser::$levels;
+    } else {
+      return explode(',', (string) $levels);
+    }
   }
 
   // --------------------------------------------------

@@ -49,6 +49,7 @@ Globe::load(array(
   'endo',
   'app',
   'user',
+  'app_user',
   'admin'
 ), 'model');
 
