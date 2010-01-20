@@ -41,6 +41,11 @@ class User extends AppModel {
 
   public function is_admin() { return $this->is_class('Admin'); }
 
+  public function __toString()
+  {
+    return $this->email.'|'.$this->password;
+  }
+
   // --------------------------------------------------
   // HOOKS
   // --------------------------------------------------
@@ -83,15 +88,15 @@ class User extends AppModel {
   static function GetCurrent()
   {
     // session?
-    if ($user=array_get($_SESSION, AppUser::SESSION_KEY, false)) {
-      return $user;
+    if ($session=array_get($_SESSION, AppUser::SESSION_KEY, false)) {
+      if ($user=AppUser::FetchFromString($session)) {
+        return $user;
+      }
     }
     // cookie?
     elseif ($cookie=array_get($_COOKIE, AppUser::REMEMBER_ME, false)) {
-      list($email, $password) = explode('|', $cookie);
-      // valid?
-      if (is_a($user=AppUser::FetchUser($email), 'User') && $user->password == $password) {
-        return AppUser::SetCurrent($user);
+      if ($user=AppUser::FetchFromString($cookie)) {
+        return $user;
       }
     }
     // data?
@@ -103,6 +108,7 @@ class User extends AppModel {
         Error::set("Invalid Email and/or Password", 'validation');
       }
     }
+    // create Guest...
     $tmp = AppModel::Create(AppUser::$levels[0]);
     $tmp->class = AppUser::$levels[0]; // TODO replace by constructor code
     return $tmp;
@@ -117,10 +123,12 @@ class User extends AppModel {
     $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
     if (Url::request(AppUser::REMEMBER_ME, false)) {
-      setcookie(AppUser::REMEMBER_ME, $user->email.'|'.$user->password, time()+60*60*24*30);
+      setcookie(AppUser::REMEMBER_ME, (string) $user, time()+60*60*24*30);
     }
     // session
-    return $_SESSION[AppUser::SESSION_KEY] = AppUser::Clean($user);
+    $_SESSION[AppUser::SESSION_KEY] = (string) $user;
+    // return
+    return AppUser::Clean($user);
   }
 
   /**
@@ -143,6 +151,17 @@ class User extends AppModel {
   static function FetchPassword($email)
   {
     return array_pop(mysql_fetch_row(AppModel::query(AppModel::Prepare("SELECT `password` FROM `user` WHERE `email`='%s' LIMIT 1", $email))));
+  }
+
+  static function FetchFromString($string='')
+  {
+    list($email, $password) = explode('|', $string);
+    // valid?
+    if (is_a($user=AppUser::FetchUser($email), 'User') && $user->password == $password) {
+      return AppUser::SetCurrent($user);
+    } else {
+      return false;
+    }
   }
 
   static function Clean($user)

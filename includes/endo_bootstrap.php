@@ -165,6 +165,15 @@ function build_options($array, $null=false)
 }
 
 // --------------------------------------------------
+// OBJECT
+// --------------------------------------------------
+
+function obj_get(&$obj, $key, $default=null, $allow_false=true)
+{
+  return (!is_object($obj) || !isset($obj->$key) || (!$allow_false && !$obj->$key)) ? $default : $obj->$key;
+}
+
+// --------------------------------------------------
 // VARIABLES
 // --------------------------------------------------
 

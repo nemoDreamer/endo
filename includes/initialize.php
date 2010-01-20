@@ -1,7 +1,7 @@
 <?php
 
 /**
- * initialize.php
+ * Endo initialize.php
  * includes all required files, classes & packages
  * initializes Sessions, Smarty & MyActiveRecord
  *
