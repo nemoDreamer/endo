@@ -51,9 +51,6 @@ class EndoController
         $this->Model =& $this->{Url::$data['modelName']}; // reference for ease
       }
     }
-
-    // User
-    $this->LoggedIn = AppUser::GetCurrent();
   }
 
   // --------------------------------------------------
@@ -83,6 +80,10 @@ class EndoController
   // --------------------------------------------------
 
   function _beforeFilter() {
+
+    // User
+    // --------------------------------------------------
+    $this->LoggedIn = AppUser::GetCurrent();
 
     // is Admin?
     // --------------------------------------------------
