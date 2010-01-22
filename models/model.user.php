@@ -123,7 +123,8 @@ class User extends AppModel {
     $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
     if (Url::request(AppUser::REMEMBER_ME, false)) {
-      setcookie(AppUser::REMEMBER_ME, (string) $user, time()+60*60*24*30);
+      setcookie(AppUser::REMEMBER_ME, (string) $user, time()+60*60*24*30, DS);
+      d_('setting cookie!');
     }
     // session
     $_SESSION[AppUser::SESSION_KEY] = (string) $user;
@@ -140,7 +141,7 @@ class User extends AppModel {
     // session
     unset($_SESSION[AppUser::SESSION_KEY]);
     // cookie
-    setcookie(AppUser::REMEMBER_ME, '', time()-3600);
+    setcookie(AppUser::REMEMBER_ME, '', time()-3600, DS);
   }
 
   static function FetchUser($email)
