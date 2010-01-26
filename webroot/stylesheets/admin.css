@@ -639,3 +639,20 @@ ul.items .options {
 }
 
 /* @end */
+
+.ui-widget {
+	font-size: 12px;
+}
+
+thead th {
+	background: #addae9;
+	font-weight: normal;
+	font-style: normal;
+}
+
+button.ui-datepicker-trigger {
+	padding: 0;
+	line-height: 3em;
+	border: none;
+	background: none;
+}

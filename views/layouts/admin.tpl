@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="/assets/stylesheets/blueprint/print.css" type="text/css" media="print">
   <!--[if lt IE 8]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection"/><![endif]-->
 
+  <link rel="stylesheet" href="/assets/stylesheets/themes/smoothness/jquery-ui-1.7.2.custom.css" type="text/css">
+
   <link rel="stylesheet" href="/assets/stylesheets/forms.css" type="text/css">
   <link rel="stylesheet" href="/assets/stylesheets/admin.css" type="text/css">
 
@@ -18,6 +20,8 @@
   <script src="/assets/javascripts/admin.js" type="text/javascript" charset="utf-8"></script>
 
   {if isset($head_for_layout)}{$head_for_layout}{/if}
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 
   {if isset($script_for_layout)}
   <script type="text/javascript" charset="utf-8">
