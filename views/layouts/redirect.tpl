@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="/assets/stylesheets/reset.css" type="text/css">
 <link rel="stylesheet" href="/stylesheets/redirect.css" type="text/css">
 <link rel="stylesheet" href="/assets/stylesheets/debug.css" type="text/css">
-<script src="/assets/javascripts/jquery/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="/assets/javascripts/my/my.debug.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="{$id}">
