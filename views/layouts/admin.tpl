@@ -28,7 +28,7 @@
 <body id="{$id}" class="{$url.action}">
 <div id="container">
   <div id="header" class="container">
-    <h1 id="title">{$sitename_for_layout} <small>| {$title_for_layout}</small></h1>
+    <h1 id="heading">{$sitename_for_layout} <small>| {$title_for_layout}</small></h1>
     <div id="nav">
       <ul>
         {foreach from=$nav_for_layout key=label item=link}
