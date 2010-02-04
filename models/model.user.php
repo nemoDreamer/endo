@@ -15,10 +15,6 @@ class User extends AppModel {
   );
 
   // --------------------------------------------------
-  // CONSTRUCTOR
-  // --------------------------------------------------
-
-  // --------------------------------------------------
   // CONSTANTS
   // --------------------------------------------------
 
@@ -31,7 +27,7 @@ class User extends AppModel {
 
   public function validate($password)
   {
-    return $this->password == $this->_salt_it($password);
+    return $this->crypted_password == $this->_salt_it($password);
   }
 
   public function is_class($class=null)
@@ -43,7 +39,7 @@ class User extends AppModel {
 
   public function __toString()
   {
-    return $this->email.'|'.$this->password;
+    return $this->email.'|'.$this->crypted_password;
   }
 
   // --------------------------------------------------
@@ -52,7 +48,6 @@ class User extends AppModel {
 
   /**
    * This hook handles password encoding.
-   * FIXME replace 'password' by 'crypted_password' in table (avoids overwrite problem...)
    */
   function _beforeSave()
   {
@@ -68,8 +63,6 @@ class User extends AppModel {
         return false;
       }
       $this->_new_password($this->password);
-    } else {
-      $this->password = $this->__previous_data['password'];
     }
     return parent::_beforeSave();
   }
@@ -156,9 +149,9 @@ class User extends AppModel {
 
   static function FetchFromString($string='')
   {
-    list($email, $password) = explode('|', $string);
+    list($email, $crypted_password) = explode('|', $string);
     // valid?
-    if (is_a($user=AppUser::FetchUser($email), 'User') && $user->password == $password) {
+    if (is_a($user=AppUser::FetchUser($email), 'User') && $user->crypted_password == $crypted_password) {
       return AppUser::SetCurrent($user);
     } else {
       return false;
@@ -170,6 +163,7 @@ class User extends AppModel {
     if (is_a($user, 'User') || is_subclass_of($user, 'User')) {
       unset($user->salt);
       unset($user->password);
+      unset($user->crypted_password);
     }
     return $user;
   }
@@ -186,7 +180,7 @@ class User extends AppModel {
   private function _new_password($password)
   {
     $this->salt = md5(rand());
-    $this->password = $this->_salt_it($password);
+    $this->crypted_password = $this->_salt_it($password);
   }
 
 }

@@ -13,7 +13,6 @@ class EndoModel extends MyActiveRecord
 
   var $do_handle_attachments = true;
 
-  var $__previous_data = array();
 
   // --------------------------------------------------
   // STORAGE
@@ -269,13 +268,6 @@ class EndoModel extends MyActiveRecord
 
   function populate($arrVals)
   {
-    // save previous data
-    foreach ($this as $key => $value) {
-      if ($key != '__previous_data') {
-        $this->__previous_data[$key] = $value;
-      }
-    }
-
     $success = parent::populate($arrVals);
 
     // attachments

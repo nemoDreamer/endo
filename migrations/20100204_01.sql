@@ -1,0 +1,1 @@
+ALTER TABLE `user` CHANGE `password` `crypted_password` VARCHAR( 256 ) ;

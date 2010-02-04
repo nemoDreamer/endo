@@ -444,7 +444,6 @@ a.cancel:hover {
 #show #key_order_by,
 #show #key_file_uploads,
 #show #key_do_handle_attachments,
-#show #key___previous_data,
 #show #key_created,
 #show #key_modified {
 	display: none;
