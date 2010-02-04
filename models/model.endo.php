@@ -340,15 +340,17 @@ class EndoModel extends MyActiveRecord
     return $this->display_field('name', false);
   }
 
-  static function CollectionToOptions($collection)
+  static function CollectionToOptions($collection, $sort=true, $fancy=false)
   {
     // only keep display-name
     foreach ($collection as $key => $object) {
-      $collection[$key] = $object->display_field('name', false);
+      $collection[$key] = $object->display_field('name', $fancy);
     }
 
-    // sort by display-name
-    asort($collection);
+    if ($sort) {
+      // sort by display-name
+      asort($collection);
+    }
 
     return $collection;
   }

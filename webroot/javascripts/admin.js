@@ -138,8 +138,8 @@ $(document).ready(function () {
 function sortFunction(a, b) {
 
   if (sort_by=='label') {
-    var x = $(a).find('.sort.label:first').text().toLowerCase();
-    var y = $(b).find('.sort.label:first').text().toLowerCase();
+    var x = pad_all($(a).find('.sort.label:first').text().toLowerCase());
+    var y = pad_all($(b).find('.sort.label:first').text().toLowerCase());
   } else if(sort_by=='modified') {
     var x = Date.parse($(a).find('.sort.modified:first').attr('rel'));
     var y = Date.parse($(b).find('.sort.modified:first').attr('rel'));
@@ -154,6 +154,17 @@ function sortFunction(a, b) {
   return z;
 }
 
+// for correct alpha-numerical sorting
+function pad_all (string) {
+  return string.replace(/\b(\d+)\b/g, pad);
+}
+
+function pad(s) {
+  if (s.length < 10) {
+    s = ('0000000000' + s).slice(-10); // slice wasn't working...
+  }
+  return s;
+}
 // --------------------------------------------------
 // ITEM OPTIONS
 // --------------------------------------------------
