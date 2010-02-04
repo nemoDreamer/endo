@@ -102,9 +102,7 @@ class User extends AppModel {
       }
     }
     // create Guest...
-    $tmp = AppModel::Create(AppUser::$levels[0]);
-    $tmp->class = AppUser::$levels[0]; // TODO replace by constructor code
-    return $tmp;
+    return AppModel::Create(AppUser::$levels[0]);
   }
 
   /**
