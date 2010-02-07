@@ -27,11 +27,11 @@
   {/if}
 </div>
 
-{endo_for_layout assign="sidebar"}
+{for_layout assign="sidebar"}
   <div id="tools">
     <div id="tool_options" class="group">
       {admin_options controller=$url.controller object=$item wrap=true show_label=true}
     </div>
   </div>
   <p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
-{/endo_for_layout}
+{/for_layout}

@@ -1,8 +1,8 @@
 <form id="users_login_form" action="login" method="post" accept-charset="utf-8" class="front centered">
   <h2>Log in</h2>
   <div id="validation_errors" class="errors">
-    {endo_errors key=validation}
-    {endo_errors}
+    {errors key=validation}
+    {errors}
   </div>
   <input type="hidden" name="redirect_to" value="{$redirect_to}" id="redirect_to">
   <input type="hidden" name="check_data" value="1" id="check_data">

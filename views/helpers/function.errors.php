@@ -1,5 +1,5 @@
 <?php
-function smarty_function_endo_errors($params=array(), &$smarty)
+function smarty_function_errors($params=array(), &$smarty)
 {
   if (!array_key_exists('key', $params)) {
     $params['key'] = 'default';

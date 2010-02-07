@@ -21,11 +21,11 @@
 {/foreach}
 </ul>
 
-{endo_for_layout assign="sidebar"}
+{for_layout assign="sidebar"}
   <input type="hidden" name="url" value="/{$ADMIN_ROUTE}/{$url.controller}" id="url">
   <input type="hidden" name="is_publishable" value="{$is_publishable}" id="is_publishable">
   <p>{admin_link controller=$url.controller action="add" text="<span>Add a `$url.modelName`</span>" class="button add" set_gets=true}</a></p>
-{/endo_for_layout}
+{/for_layout}
 
 <script type="text/javascript" charset="utf-8">
   <literal>

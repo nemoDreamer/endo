@@ -50,9 +50,9 @@
     <div id="content" class="span-16">
       {if $has_errors}
       <div id="errors" class="errors">
-        {endo_errors key=notice}
-        {endo_errors key=fatal}
-        {endo_errors}
+        {errors key=notice}
+        {errors key=fatal}
+        {errors}
       </div>
       {/if}
       <div id="content_inner">

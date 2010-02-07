@@ -1,9 +1,9 @@
 $('#{$url.url}_response').html("{escape}
 {if $has_errors}
   <div class="failure">
-    {endo_errors key=notice}
-    {endo_errors key=fatal}
-    {endo_errors}
+    {errors key=notice}
+    {errors key=fatal}
+    {errors}
   </div>
 {/if}
 {if $content}

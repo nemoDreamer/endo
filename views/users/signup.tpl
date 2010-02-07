@@ -1,8 +1,8 @@
 <form id="users_signup_form" action="/{$url.url}" method="post" accept-charset="utf-8" class="front centered">
   <h2>Sign Up</h2>
   <div id="validation_errors" class="errors">
-    {endo_errors key=validation}
-    {endo_errors}
+    {errors key=validation}
+    {errors}
   </div>
   <input type="hidden" name="redirect_to" value="{$redirect_to}" id="redirect_to">
   <div id="email_div" class="input text">

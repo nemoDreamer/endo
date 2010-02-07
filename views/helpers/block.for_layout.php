@@ -1,6 +1,6 @@
 <?php
 
-function smarty_block_endo_for_layout($params, $content, &$smarty)
+function smarty_block_for_layout($params, $content, &$smarty)
 {
   foreach ($params as $_key => $_value) {
     switch ($_key) {
@@ -9,7 +9,7 @@ function smarty_block_endo_for_layout($params, $content, &$smarty)
         break;
 
       default:
-        $smarty->trigger_error("endo_for_layout: unknown attribute '$_key'");
+        $smarty->trigger_error("for_layout: unknown attribute '$_key'");
         break;
     }
   }
