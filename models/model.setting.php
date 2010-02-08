@@ -9,7 +9,7 @@ class Setting extends EndoModel {
   function Group($group, $reindex=false)
   {
     $tmp = self::FindAll('Setting', false, "`group`='$group'", '`variable` ASC');
-    return $reindex ? array_reindex($tmp, 'variable') : $tmp;
+    return $reindex ? collection_reindex($tmp, 'variable') : $tmp;
   }
 
   function Get($variable, $group = 'default', $value_only = true)
@@ -32,7 +32,7 @@ class Setting extends EndoModel {
     } else {
       $where = null;
     }
-    return array_group(self::FindAll('Setting', false, $where), 'group');
+    return collection_group(self::FindAll('Setting', false, $where), 'group');
   }
 
 }
