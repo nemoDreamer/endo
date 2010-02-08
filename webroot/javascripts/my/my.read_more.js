@@ -3,7 +3,7 @@
  *
  * @author Philip Blyth (philip dot blyth at gmail)
  * @url http://www.nemodreaming.com
- * @requires jquery.truncate.js
+ * @requires jquery.truncate.js, jquery.livequery.js
 */
 (function($) {
 

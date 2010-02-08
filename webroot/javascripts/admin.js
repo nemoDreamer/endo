@@ -161,7 +161,7 @@ function pad_all (string) {
 
 function pad(s) {
   if (s.length < 10) {
-    s = ('0000000000' + s).slice(-10); // slice wasn't working...
+    s = ('0000000000' + s).slice(-10); // faster than 'while'-padding
   }
   return s;
 }

@@ -13,6 +13,10 @@ class EndoModel extends MyActiveRecord
 
   var $do_handle_attachments = true;
 
+  /*
+    TODO add 'acts_as_publishable' & 'acts_as_datable' used all over Endo...
+    TODO better 'name_fields', with sprintf support!
+  */
 
   // --------------------------------------------------
   // STORAGE
