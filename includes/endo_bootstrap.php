@@ -219,6 +219,16 @@ function get_default(&$variable, $default=null)
   }
 }
 
+function dual(&$variable, $true, $false)
+{
+  if ($variable!==$true) {
+    $variable = $false;
+    return false;
+  } else {
+    return true;
+  }
+}
+
 // --------------------------------------------------
 // SORTING CALLBACKS
 // --------------------------------------------------

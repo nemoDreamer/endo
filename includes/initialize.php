@@ -30,6 +30,7 @@ Globe::load(array(
   'MyActiveRecord/MyActiveRecord.0.4',
   'Smarty/Smarty.class'
 ), 'package');
+
 // --------------------------------------------------
 // CLASSES
 // --------------------------------------------------
@@ -61,5 +62,14 @@ Globe::load(array(
   'endo',
   'app'
 ), 'controller');
+
+// --------------------------------------------------
+// BEHAVIORS
+// --------------------------------------------------
+
+Globe::load(array(
+  'endo',
+  'app'
+), STR_BEHAVIOR);
 
 ?>

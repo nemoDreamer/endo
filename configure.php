@@ -60,10 +60,17 @@ ddefine('INCLUDES_DIR',                     'includes'.DS);
 ddefine('CLASSES_DIR',                      'classes'.DS);
 ddefine('MODELS_DIR',                       'models'.DS);
 ddefine('CONTROLLERS_DIR',                  'controllers'.DS);
+ddefine('BEHAVIORS_DIR',                    'behaviors'.DS);
 ddefine('EXECUTE_DIR',                      'execute'.DS);
 ddefine('CACHES_DIR',                       'caches'.DS);
 ddefine('PAGES_CONTROLLER',                 'pages');
 ddefine('EXECUTE_CONTROLLER',               'execute');
+
+// --------------------------------------------------
+// STRINGS (CLASS-NAMES / PRE/SUFFIXES)
+// --------------------------------------------------
+
+define('STR_BEHAVIOR',                      'Behavior');
 
 // --------------------------------------------------
 // LOGS

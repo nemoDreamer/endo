@@ -13,10 +13,28 @@ class EndoModel extends MyActiveRecord
 
   var $do_handle_attachments = true;
 
+  var $acts_as = array();
+
   /*
     TODO add 'acts_as_publishable' & 'acts_as_datable' used all over Endo...
     TODO better 'name_fields', with sprintf support!
   */
+
+  // --------------------------------------------------
+  // CONSTRUCTOR
+  // --------------------------------------------------
+
+  public function __construct()
+  {
+    // Behaviors
+    // --------------------------------------------------
+    foreach ($this->acts_as as $behavior => $config) {
+      if (Globe::load($behavior, STR_BEHAVIOR)) {
+        $class_name = $behavior.STR_BEHAVIOR;
+        $this->{'acts_as_'.$behavior} = new $class_name($this, $config);
+      }
+    }
+  }
 
   // --------------------------------------------------
   // STORAGE
@@ -24,9 +42,11 @@ class EndoModel extends MyActiveRecord
 
   function save()
   {
-    // --------------------------------------------------
     // Extend w/ datetime stamps
     // --------------------------------------------------
+    /*
+      TODO implement hooks in filters for behaviors
+    */
     if (!isset($this->id)) {
       $this->set_datetime('created');
     }
@@ -63,6 +83,7 @@ class EndoModel extends MyActiveRecord
   // RETRIEVAL
   // --------------------------------------------------
 
+  // TODO move to dateable
 	function date($strKey, $for_js=false)
 	{
     return date($for_js ? DATE_FORMAT_JS : DATE_FORMAT, $this->get_timestamp($strKey));
