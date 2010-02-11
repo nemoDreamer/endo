@@ -151,9 +151,11 @@ class EndoModel extends MyActiveRecord
     return $objects[0];
   }
 
-  function FindFirst($strClass, $extend=false, $strWhere=null, $strOrderBy='id ASC')
+  function FindFirst($strClass, $extend=false, $strWhere=null, $strOrderBy=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
+
+    $strOrderBy = get_default($strOrderBy, AppModel::Create($strClass)->order_by);
 
     if ($object = parent::FindFirst($strClass, $strWhere, $strOrderBy)) {
       $objects = array($object);
