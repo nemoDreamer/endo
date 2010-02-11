@@ -16,6 +16,16 @@ class SortableBehavior extends AppBehavior
   public $config = array();
 
   // --------------------------------------------------
+  // CONSTRUCTOR
+  // --------------------------------------------------
+
+  public function __construct($root, $config=array())
+  {
+    parent::__construct($root, $config);
+    $this->root->order_by = 'position ASC';
+  }
+
+  // --------------------------------------------------
   // PARENT
   // --------------------------------------------------
 
