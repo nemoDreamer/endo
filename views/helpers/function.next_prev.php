@@ -19,6 +19,7 @@ function smarty_function_next_prev($params, &$smarty)
   // --------------------------------------------------
 
   require_once $smarty->_get_plugin_filepath('function','link');
+  require_once $smarty->_get_plugin_filepath('modifier','truncate');
 
   // --------------------------------------------------
   // DO!
@@ -54,7 +55,8 @@ function smarty_function_next_prev($params, &$smarty)
 
 function expand_name($curr_obj, $parent)
 {
-  return '<span class="number">'.$curr_obj->{$parent}->position.'.'.$curr_obj->position.'</span> '.$curr_obj->name;
+  $truncated = smarty_modifier_truncate($curr_obj->name, 50, ' [...]');
+  return '<span class="number">'.$curr_obj->{$parent}->position.'.'.$curr_obj->position.'</span> '.$truncated;
 }
 
 ?>
