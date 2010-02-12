@@ -28,6 +28,8 @@ function smarty_function_next_prev($params, &$smarty)
   $both = $object->acts_as_sortable->get_both(true);
   $parent = $object->acts_as_sortable->get_parent();
 
+  $first_last = array('You are at the beginning.', 'You have reached the end.');
+
   $output  = "<ul id=\"$id\" class=\"next_prev $class\">";
 
   foreach (array('prev', 'next') as $i => $label) {
@@ -40,7 +42,7 @@ function smarty_function_next_prev($params, &$smarty)
       $name = $curr_obj->name;
     }
 
-    $name = ' <span class="name">'.($show_name ? ($href ? expand_name($curr_obj, $parent) : 'You have reached the end.') : null).'</span>';
+    $name = ' <span class="name">'.($show_name ? ($href ? expand_name($curr_obj, $parent) : $first_last[$i]) : null).'</span>';
     $text = ($i==0 ? '<span class="aquo">&laquo;</span> ' : null) . '<span class="label">'.ucfirst($label).'</span>' . ($i==1 ? ' <span class="aquo">&raquo;</span>' : null);
 
     $output .= "<li class=\"$label\">";
