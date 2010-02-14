@@ -68,8 +68,7 @@ class UsersController extends AppController
   private function _feed_form()
   {
     $this->_assign(array(
-      'levels' => build_options(AppUser::$levels),
-      'class' => $this->Model->class
+      'levels' => build_options(AppUser::$levels)
     ));
   }
 }
