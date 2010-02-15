@@ -73,7 +73,7 @@ class EndoModel extends MyActiveRecord
   function Update( $strClass, $id, $properties )
   {
     $cache_reset = rand();
-    $object = array_shift(AppModel::FindAll($strClass, false, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
+    $object = array_shift(AppModel::FindAll($strClass, true, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
     $object->populate($properties);
     return $object->save();
   }
