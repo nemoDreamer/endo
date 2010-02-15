@@ -339,15 +339,15 @@ class EndoModel extends MyActiveRecord
   // SCAFFOLD TOOLS
   // --------------------------------------------------
 
-  function display_field($scaffold_name, $span_wrap=true, $separator=', ')
+  function display_field($scaffold_name, $fancy=true, $separator=', ')
   {
-    $output = '';
-    foreach ($this->{$scaffold_name.'_fields'} as $key => $value) {
-      if ($this->$value!=null) {
-        $output .= $span_wrap ? '<span class="part_'.$key.'">'.$this->$value.'</span> ' : $this->$value.($key<count($this->{$scaffold_name.'_fields'})-1 ? $separator : '');
+    $parts = array();
+    foreach ($this->{$scaffold_name.'_fields'} as $field) {
+      if ($fancy || $this->$field!=null) {
+        array_push($parts, $this->$field);
       }
     }
-    return trim($output);
+    return $fancy ? fancyize($parts) : implode($separator, $parts);
   }
 
   function is_publishable()

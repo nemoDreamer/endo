@@ -45,6 +45,17 @@ function wrap($string, $before='', $after='', $default=false)
   }
 }
 
+function fancyize($parts)
+{
+  $output = '';
+  $i = 0; // don't work w/ key, because you never know if you're passed a numeric array
+  foreach ($parts as $part) {
+    $output .= wrap($part, ($i!=1?' ':'').'<span class="part part_'.$i.'">', '</span>');
+    $i++;
+  }
+  return $output;
+}
+
 // --------------------------------------------------
 // ARRAY
 // --------------------------------------------------
