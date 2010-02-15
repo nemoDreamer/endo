@@ -69,9 +69,9 @@ function array_extract(&$array, $keys, $unset=false)
   return $output;
 }
 
-function add_all($array)
+function add_all($array, $label='All')
 {
-  $tmp = array(0 => 'All');
+  $tmp = array(0 => $label);
   foreach ($array as $key => $value) {
     $tmp[$key] = $value;
   }
