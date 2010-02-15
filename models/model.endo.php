@@ -436,7 +436,7 @@ class EndoModel extends MyActiveRecord
       $file = new Upload($_FILES[$field]);
       if ($file->uploaded) {
         // path
-        $path = 'uploads'.DS.Globe::pluralize(get_class($this)).DS.$path.DS.$this->id.DS;
+        $path = 'uploads'.DS.AppInflector::pluralize(get_class($this)).DS.$path.DS.$this->id.DS;
         $folder = WEB_ROOT.$path;
 
         // settings

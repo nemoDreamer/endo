@@ -1,7 +1,6 @@
 <?php
 
-require_once(ENDO_PACKAGES_ROOT.'AkelosInflector/Inflector.php');
-
+require_once(APP_ROOT.CLASSES_DIR.'class.app_inflector.php');
 
 /**
  * Globe
@@ -21,10 +20,6 @@ class Globe {
     'sidebar_for_layout' => ''
   );
 
-  static $pluralize_exceptions = array(
-    'missing' => 'missing', // keep this for internal
-    'execute' => 'execute'  // keep this for internal
-  );
   static $caches = array();
 
   const FOR_LAYOUT_SUFFIX = '_for_layout';
@@ -48,7 +43,7 @@ class Globe {
     }
 
     $type = strtolower($type);
-    $constant_name = strtoupper(Globe::pluralize($type)).'_DIR';
+    $constant_name = strtoupper(AppInflector::pluralize($type)).'_DIR';
 
     list($dir, $prefix, $suffix) = array(
       defined($constant_name) ? constant($constant_name) : '',
@@ -76,17 +71,8 @@ class Globe {
     $success = true;
 
     foreach ($names as $file) {
-      /*
-        TODO handle via inverse of Globe::classify!
-      */
-      if ($type=='model'||$type=='controller') {
-        $file = Inflector::underscore($file);
-      }
-      if ($type=='controller' && ($file!='app' && $file!='endo')) {
-        $file = Globe::pluralize($file);
-      }
-      if ($type=='class'||$type=='model'||$type=='controller') {
-        $file = strtolower($file);
+      if ($type=='class'||$type=='model' || ($type=='controller' && ($file!='app' && $file!='endo'))) {
+        $file = AppInflector::fileize($file, $type);
       }
       $filename = $prefix.$file.$suffix;
       if ($filepath=Globe::find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, APP_PACKAGES_ROOT.$dir, ENDO_PACKAGES_ROOT.$dir))) {
@@ -145,74 +131,11 @@ class Globe {
   public function init($name, $type='class', $show_errors=true)
   {
     if (Globe::load($name, $type, $show_errors)) {
-      $class_name = Globe::classify($name, $type);
+      $class_name = AppInflector::classify($name, $type);
       return new $class_name();
     } else {
       return new stdClass();
     }
-  }
-
-  // --------------------------------------------------
-  // PLURALIZE / SINGULARIZE
-  // --------------------------------------------------
-
-  public function pluralize($str='')
-  {
-    $str = strtolower($str);
-    if (array_key_exists($str, Globe::$pluralize_exceptions)) {
-      return Globe::$pluralize_exceptions[$str];
-    } else {
-      return Inflector::pluralize($str);
-    }
-  }
-
-  public function singularize($str='')
-  {
-    $str = strtolower($str);
-    $singularize_exceptions = array_flip(Globe::$pluralize_exceptions);
-    if (array_key_exists($str, $singularize_exceptions)) {
-      return $singularize_exceptions[$str];
-    } else {
-      return Inflector::singularize($str);
-    }
-  }
-
-  /**
-   * @todo find possible other uses of 'Globe::classify'
-   */
-  public function classify($name='', $type='class')
-  {
-    $type = strtolower($type);
-
-    // unify
-    if (!preg_match('/'.$type.'$/Ui', $name) && $type=='controller') {
-      $name .= '_'.$type;
-    }
-
-    // split
-    $words = explode('_', $name);
-
-    foreach ($words as $key => $word) {
-      // singularize/pluralize before-last?
-      if ($key==count($words)-2) {
-        if ($type=='controller' && ($word!='app' && $word!='endo')) {
-          $word = Globe::pluralize($word);
-        } elseif ($type=='model') {
-          $word = Globe::singularize($word);
-        }
-      }
-      // leave last alone
-      // singularize all others
-      elseif ($key!=count($words)-1) {
-        $word = Globe::singularize($word);
-      }
-      $words[$key] = $word;
-    }
-
-    /*
-      TODO Extend Inflector, instead of in Globe...
-    */
-    return Inflector::camelize(implode('_', $words));
   }
 
   // --------------------------------------------------

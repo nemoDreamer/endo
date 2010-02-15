@@ -25,16 +25,6 @@ function str_replace_js($string='')
   return str_replace($search, $replace, $string);
 }
 
-function camelcase($str='')
-{
-  return str_replace(' ', '', titlecase(preg_replace('/\W/', ' ', $str)));
-}
-
-function titlecase($str='')
-{
-  return ucwords((string) $str);
-}
-
 function wrap($string, $before='', $after='', $default=false)
 {
   $string = trim($string);

@@ -7,7 +7,7 @@ function smarty_function_admin_relations($params=array(), &$smarty)
   $relations = array(
     'parent' =>   'edit ',
     'children' => 'add/edit '
-    // 'attached' => array('attached ',  '', 'Globe::pluralize') // TODO filter: support for 'attached' filtering...
+    // 'attached' => array('attached ',  '', 'AppInflector::pluralize') // TODO filter: support for 'attached' filtering...
   );
 
   $object=null;
@@ -34,19 +34,19 @@ function smarty_function_admin_relations($params=array(), &$smarty)
       switch ($relation_name) {
         case 'parent':
           $action = 'edit'.DS.$object->{$model_name}->id;
-          $text = ucwords(Inflector::titleize($model_name));
+          $text = ucwords(AppInflector::titleize($model_name));
           $image = 'page_white_edit';
           break;
         case 'children':
           $prefix = $model_index==0 ? '' : AppModel::Class2Table(get_class($object)).'_id=';
           $action = '?filter='.$prefix.$object->id;
           d($model_name);
-          $text = ucwords(Globe::pluralize(Inflector::titleize($model_name)));
+          $text = ucwords(AppInflector::pluralize(AppInflector::titleize($model_name)));
           $image = 'magnifier';
           break;
         default:
           $action = '';
-          $text = Inflector::titleize($model_name);
+          $text = AppInflector::titleize($model_name);
           $image = 'magnifier';
           break;
       }

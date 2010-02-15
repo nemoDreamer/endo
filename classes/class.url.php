@@ -107,11 +107,11 @@ class Url {
 
       // set controller
       Url::$data['controller'] = array_shift($parts);
-      Url::$data['controllerName'] = Globe::classify(Url::$data['controller'], 'controller');
+      Url::$data['controllerName'] = AppInflector::classify(Url::$data['controller'], 'controller');
 
       // set model
-      Url::$data['model'] = Globe::singularize(Url::$data['controller']);
-      Url::$data['modelName'] = Globe::classify(Url::$data['model'], 'model');
+      Url::$data['model'] = AppInflector::singularize(Url::$data['controller']);
+      Url::$data['modelName'] = AppInflector::classify(Url::$data['model'], 'model');
       // set action
       Url::$data['action'] = ($action=array_shift($parts)) != null ? $action : 'index';
 
