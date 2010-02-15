@@ -42,6 +42,15 @@ class EndoModel extends MyActiveRecord
 
   function save()
   {
+    /*
+      TODO implement class change
+    */
+    // CLASS CHANGE
+    // --------------------------------------------------
+    // if ($this->class != get_class($this)) {
+    //   # code...
+    // }
+
     // Extend w/ datetime stamps
     // --------------------------------------------------
     /*
@@ -61,9 +70,13 @@ class EndoModel extends MyActiveRecord
     return true;
   }
 
-  /*
-    TODO 'update' wrapper
-  */
+  function Update( $strClass, $id, $properties )
+  {
+    $cache_reset = rand();
+    $object = array_shift(AppModel::FindAll($strClass, false, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
+    $object->populate($properties);
+    return $object->save();
+  }
 
   // --------------------------------------------------
   // CREATION

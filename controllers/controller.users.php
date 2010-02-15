@@ -49,27 +49,14 @@ class UsersController extends AppController
   function admin_login()  { $this->login(DS.ADMIN_ROUTE); }
   function admin_logout() { $this->logout(DS.ADMIN_ROUTE); }
 
-  function admin_add()
-  {
-    parent::admin_add();
-    $this->_feed_form();
-  }
-
-  function admin_edit($id)
-  {
-    parent::admin_edit($id);
-    $this->_feed_form();
-  }
 
   // --------------------------------------------------
-  // PRIVATE METHODS
+  // FORM DATA
   // --------------------------------------------------
 
-  private function _feed_form()
+  public function form_levels()
   {
-    $this->_assign(array(
-      'levels' => build_options(AppUser::$levels)
-    ));
+    return build_options(AppUser::$levels);
   }
 }
 

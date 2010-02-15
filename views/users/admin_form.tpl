@@ -4,7 +4,7 @@
 </div>
 <div class="input select">
   <label for="class">Level:</label>
-  {html_options name=class options=$levels selected=`$item->class` id=class}
+  {html_options name=class options=$this->form_levels() selected=$item->class id=class}
 </div>
 
 {include file='app_users/admin_class_options.tpl'}

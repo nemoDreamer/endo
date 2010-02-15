@@ -42,6 +42,7 @@
     </div>
     <div id="account">
       {if !$LoggedIn_for_layout->is_guest()}
+        {$LoggedIn_for_layout->email}! |
         <a href="/logout">log out &times;</a>
       {/if}
     </div>

@@ -109,6 +109,7 @@ class EndoController
     /*
       FIXME replace with single 'registered object' in smarty!
     */
+    $this->_assign('this', $this);
     $this->_assign('url', Url::$data);
     Globe::for_layout('url', Url::$data);
 
@@ -313,7 +314,7 @@ class EndoController
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
       // save & redirect?
       if ($this->Model->save()) {
-        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
+        $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
       }
     } else {
       // pre-data?
@@ -333,7 +334,7 @@ class EndoController
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
         $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id']);
-        $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
+        $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
       }
     }
     $this->_assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
@@ -358,7 +359,7 @@ class EndoController
     // destroy
     if ($success = $this->Model->destroy(true)) {
       // redirect
-      $this->_redirect(DS.ADMIN_ROUTE.DS.$this->name, false);
+      $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
     }
   }
 
