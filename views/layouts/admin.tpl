@@ -42,8 +42,8 @@
     </div>
     <div id="account">
       {if !$LoggedIn_for_layout->is_guest()}
-        {$LoggedIn_for_layout->email}! |
-        <a href="/logout">log out &times;</a>
+        Welcome, {admin_link controller=admins action=edit parameters=`$LoggedIn_for_layout->id` text=$LoggedIn_for_layout->get_full_name()}. |
+        <a href="/logout" class="logout">log out &times;</a>
       {/if}
     </div>
   </div>

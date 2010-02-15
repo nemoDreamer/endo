@@ -81,6 +81,10 @@ u {
 }
 
 #account a {
+	color: #4C8BA3;
+}
+
+#account a.logout {
 	text-decoration: none;
 	color: #d0142e;
 }

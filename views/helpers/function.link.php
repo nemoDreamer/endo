@@ -16,6 +16,7 @@ function smarty_function_link($params=array(), &$smarty)
       case 'text':
       case 'controller':
       case 'action':
+      case 'parameters':
       case 'href':
       case 'set_gets':
         $$_key = $_value;
@@ -50,6 +51,10 @@ function smarty_function_link($params=array(), &$smarty)
 
     if (!empty($action)) {
       $output .= DS.$action;
+    }
+
+    if (!empty($parameters)) {
+      $output .= DS.$parameters;
     }
   } else {
     $output .= '<a href="';

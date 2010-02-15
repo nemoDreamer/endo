@@ -4,7 +4,7 @@ class User extends AppModel {
 
   var $name = 'user';
 
-  var $name_fields = array('email');
+  var $name_fields = array('last_name', 'first_name', 'email');
   var $description_fields = array('class');
   var $order_by = 'email';
 
@@ -40,6 +40,21 @@ class User extends AppModel {
   public function __toString()
   {
     return $this->email.'|'.$this->crypted_password;
+  }
+
+  // --------------------------------------------------
+  // GET/SETTERS
+  // --------------------------------------------------
+
+  public function get_full_name($fancy=false)
+  {
+    $parts = $this->get_full_name_parts();
+    return $fancy ? fancyize($parts) : implode(' ', $parts); // TODO move fancyize to Inflector
+  }
+
+  public function get_full_name_parts()
+  {
+    return array($this->first_name, $this->last_name);
   }
 
   // --------------------------------------------------
