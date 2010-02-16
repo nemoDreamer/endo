@@ -1,0 +1,1 @@
+ALTER TABLE  `user` ADD  `parent_id` INT( 11 ) UNSIGNED NULL DEFAULT NULL AFTER  `id` ;

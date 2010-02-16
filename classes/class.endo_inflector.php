@@ -52,7 +52,10 @@ class EndoInflector extends Inflector {
         $name = AppInflector::singularize($name);
         break;
       case 'controller':
-        $name = AppInflector::pluralize(AppInflector::singularize($name)).'Controller';
+        $name = AppInflector::pluralize(AppInflector::singularize($name));
+        if (!preg_match('/Controller$/i', $name)) {
+          $name .= 'Controller';
+        }
         break;
     }
 
@@ -62,15 +65,19 @@ class EndoInflector extends Inflector {
   public function fileize($name='', $type='class')
   {
     $type = strtolower($type);
-    $name = AppInflector::classify($name, $type);
+    $name = AppInflector::underscore($name);
 
     switch ($type) {
       case 'controller':
-        $name = preg_replace('/Controller$/', null, $name);
+        $name = AppInflector::pluralize(AppInflector::singularize(preg_replace('/_?Controller$/i', '', $name)));
         break;
     }
+    return $name;
+  }
 
-    return AppInflector::underscore($name);
+  function tableize($class_name)
+  {
+    return strtolower(AppInflector::camelize(AppInflector::singularize($class_name)));
   }
 
 }

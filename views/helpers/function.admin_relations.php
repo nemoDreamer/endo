@@ -27,20 +27,21 @@ function smarty_function_admin_relations($params=array(), &$smarty)
   // cycle relations
   foreach ($relations as $relation_name => $relation_prefix) {
     // cycle object's 'get_' variables
-    foreach ($object->{'get_'.$relation_name} as $model_index => $model_name) {
+    $i=0;
+    foreach ($object->{'get_'.$relation_name} as $model_name => $model_params) {
+      AppModel::RelationNameParams($model_name, $model_params);
       // get controller
-      $controller = Globe::init($model_name, 'controller');
+      $controller = Globe::init($model_name, 'controller'); // TODO replace by ::singleton, find others
       // action & text
       switch ($relation_name) {
         case 'parent':
-          $action = 'edit'.DS.$object->{$model_name}->id;
+          $action = ($model=object_get($object, $model_name)) ? 'edit'.DS.$model->id : null;
           $text = ucwords(AppInflector::titleize($model_name));
           $image = 'page_white_edit';
           break;
         case 'children':
-          $prefix = $model_index==0 ? '' : AppModel::Class2Table(get_class($object)).'_id=';
+          $prefix = $i==0 ? '' : AppInflector::tableize(get_class($object)).'_id=';
           $action = '?filter='.$prefix.$object->id;
-          d($model_name);
           $text = ucwords(AppInflector::pluralize(AppInflector::titleize($model_name)));
           $image = 'magnifier';
           break;
@@ -52,10 +53,12 @@ function smarty_function_admin_relations($params=array(), &$smarty)
       }
       // build link
       $links[] =  smarty_function_admin_link(array(
-        'controller' => $controller->name,
+        'controller' => AppInflector::fileize(get_class($controller), 'controller'),
         'action' => $action,
         'text' => "<span>$relation_prefix$text</span>".' <img src="/assets/images/admin/silk/'.$image.'.png" width="16" height="16">'
       ), $smarty);
+
+      $i++;
     }
   }
 

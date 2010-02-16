@@ -120,9 +120,15 @@ class EndoModel extends MyActiveRecord
 
     // get related
     foreach ($objects as $key => $object) {
-      foreach ($object->$get_related as $related_name) {
+      foreach ($object->$get_related as $related_name => $related_params) {
+        AppModel::RelationNameParams($related_name, $related_params);
+        // d($find_related.': '.$related_name.' '.print_r($related_params, true));
         $model = Globe::init($related_name, 'model');
-        $objects[$key]->$related_name = $object->$find_related($related_name, null, $model->order_by);
+        $strForeignKey = array_get($related_params, 'foreignKey', null);
+        // TODO hook in 'where' from behavior:
+        $strWhere = null;
+        $array = $relation=='parent' ? array($related_name, $strForeignKey) : array($related_name, $strWhere, $model->order_by, 10000, 0, $strForeignKey);
+        $objects[$key]->$related_name = call_user_func_array(array($object, $find_related), $array);
       }
     }
     return $objects;
@@ -134,6 +140,14 @@ class EndoModel extends MyActiveRecord
     AppModel::AddRelated('children', $objects);
     AppModel::AddRelated('parent', $objects);
     return $objects;
+  }
+
+  function RelationNameParams(&$related_name, &$related_params)
+  {
+    if (is_numeric($related_name)) {
+      $related_name = $related_params;
+      $related_params = array();
+    }
   }
 
   function FindAll($strClass, $extend=false, $mxdWhere=null, $strOrderBy=null, $intLimit=null, $intOffset=null)
@@ -222,7 +236,7 @@ class EndoModel extends MyActiveRecord
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
-    $model = AppModel::Create($strClass);
+    $model = AppModel::Create($strClass); // TODO replace by ::singleton
 
     $strOrderBy = get_default($strOrderBy, $model->order_by);
 
@@ -369,6 +383,12 @@ class EndoModel extends MyActiveRecord
       }
     }
     return $output;
+  }
+
+  function get_first_parent()
+  {
+    reset($this->get_parent);
+    return each($this->get_parent);
   }
 
   // --------------------------------------------------

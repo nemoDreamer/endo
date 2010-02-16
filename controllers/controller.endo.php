@@ -426,11 +426,14 @@ class EndoController
     // filter?
     $value = Url::request('filter', null);
 
-    if ($this->name != 'execute') {
-      // parents?
-      $parents = ($parent = array_get($this->Model->get_parent, 0, false)) ? add_all(AppModel::FindAllAssoc_options($parent)) : false;
+    // parents?
+    $parents = $this->Model->get_first_parent();
+    if ($this->name != 'execute' && !empty($parents)) {
+      $parent = $parents['key'];
+      $parent_params = $parents['value'];
+      AppModel::RelationNameParams($parent, $parent_params);
+      $parents = add_all(AppModel::FindAllAssoc_options($parent));
     } else {
-      // no model on ExecuteController...
       $parents = $parent = false;
     }
 
@@ -438,7 +441,7 @@ class EndoController
     if ($short = is_numeric($value)) {
       if ($parent) {
         Globe::load($parent, 'model');
-        $field = AppModel::Class2Table($parent).'_id';
+        $field = array_get($parent_params, 'foreignKey', AppInflector::tableize($parent).'_id');
         if ($value!=false) {
           $where = "$field=$value";
         } else {
