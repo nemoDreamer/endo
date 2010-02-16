@@ -6,7 +6,7 @@ class User extends AppModel {
 
   var $name_fields = array('last_name', 'first_name', 'email');
   var $description_fields = array('class');
-  var $order_by = 'email';
+  var $order_by = 'last_name, first_name, email';
 
   var $level = 0;
 
