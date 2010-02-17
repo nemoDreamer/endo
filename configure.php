@@ -80,6 +80,20 @@ ddefine('STR_LOG',                          APP_ROOT.CACHES_DIR.'log.txt');
 ddefine('STR_FINDCACHE',                    'find');
 
 // --------------------------------------------------
+// EVENTS
+// --------------------------------------------------
+
+ddefine('EVENT_ADD',                        'added');
+ddefine('EVENT_EDIT',                       'edited');
+ddefine('EVENT_REMOVE',                     'removed');
+ddefine('EVENT_SHOW',                       'viewed');
+ddefine('EVENT_LOGIN',                      'logged in');
+ddefine('EVENT_LOGOUT',                     'logged out');
+ddefine('EVENT_SIGNUP',                     'signed up');
+ddefine('EVENT_FORGOT_PASSWORD',            'forgot their password');
+ddefine('EVENT_RESET_PASSWORD',             'reset their password');
+
+// --------------------------------------------------
 // SMARTY
 // --------------------------------------------------
 

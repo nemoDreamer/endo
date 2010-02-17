@@ -36,6 +36,7 @@ Globe::Load(array(
 // --------------------------------------------------
 
 Globe::Load(array(
+  'log',
   'endo_view',
   'app_view',
   'url', // endo url
@@ -49,6 +50,7 @@ Globe::Load(array(
 Globe::Load(array(
   'endo',
   'app',
+  'event',
   'user',
   'app_user',
   'admin'
