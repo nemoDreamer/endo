@@ -2,7 +2,7 @@
 
 class Event extends AppModel {
 
-  var $order_by = 'timestamp';
+  var $order_by = 'timestamp DESC';
 
   /*
    * i'm using populate because i can't use the
