@@ -8,7 +8,7 @@ class Event extends AppModel {
    * i'm using populate because i can't use the
    * automatic AddRelations (since added model-classes are dynamic)
    */
-  function populate($data)
+  public function populate($data)
   {
     $success = parent::populate($data);
 
@@ -24,7 +24,7 @@ class Event extends AppModel {
   // STATIC METHODS
   // --------------------------------------------------
 
-  static public function Set($Subject, $action, $Object=false)
+  static function Set($Subject, $action, $Object=false)
   {
     $Event = AppModel::Create('Event', array_merge(
       array(

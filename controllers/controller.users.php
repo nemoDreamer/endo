@@ -4,7 +4,7 @@ class UsersController extends AppController
 {
   var $name = 'users';
 
-  function signup()
+  public function signup()
   {
     if ($this->data) {
       if (!$this->data('email') || !$this->data('password')) {
@@ -15,38 +15,38 @@ class UsersController extends AppController
       $this->Model = AppModel::Create(CLASS_USER_MEMBER, $this->data);
       // valid?
       if ($this->Model->save()) {
-        $this->_redirect('/users/login');
+        $this->redirect('/users/login');
       }
     } else {
-      $this->_assign(array(
+      $this->assign(array(
         'redirect_to' => null,
         'email' => null
       ));
     }
   }
 
-  function login($root=DS) {
+  public function login($root=DS) {
     if (!$this->LoggedIn->is_guest()) {
-      $this->_redirect($this->data('redirect_to', $root));
+      $this->redirect($this->data('redirect_to', $root));
     } else {
-      $this->_assign(array(
+      $this->assign(array(
         'redirect_to' => Url::GetRequest('redirect_to', $root),
         'email' => Url::GetRequest('email')
       ));
     }
   }
 
-  function logout($root=DS)
+  public function logout($root=DS)
   {
     AppUser::UnsetCurrent();
-    $this->_redirect($root);
+    $this->redirect($root);
   }
 
   // --------------------------------------------------
   // ADMIN
   // --------------------------------------------------
 
-  function admin_login()  { $this->login(DS.ADMIN_ROUTE); }
+  public function admin_login()  { $this->login(DS.ADMIN_ROUTE); }
   function admin_logout() { $this->logout(DS.ADMIN_ROUTE); }
 
 

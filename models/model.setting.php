@@ -6,13 +6,13 @@ class Setting extends EndoModel {
   var $description_fields = array('value');
   var $order_by = 'variable';
 
-  function Group($group, $reindex=false)
+  static function Group($group, $reindex=false)
   {
     $tmp = self::FindAll('Setting', false, "`group`='$group'", '`variable` ASC');
     return $reindex ? collection_reindex($tmp, 'variable') : $tmp;
   }
 
-  function Get($variable, $group = 'default', $value_only = true)
+  static function Get($variable, $group = 'default', $value_only = true)
   {
     $tmp = self::FindFirst('Setting', false, "`variable`=\"$variable\" AND `group`='$group'");
     if (!$tmp) {
@@ -21,7 +21,7 @@ class Setting extends EndoModel {
     return !$value_only ? $tmp : $tmp->value;
   }
 
-  function Groups($exclude=array())
+  static function Groups($exclude=array())
   {
     if (!empty($exclude)) {
       $where = array();

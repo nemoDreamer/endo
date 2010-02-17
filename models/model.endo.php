@@ -37,52 +37,10 @@ class EndoModel extends MyActiveRecord
   }
 
   // --------------------------------------------------
-  // STORAGE
-  // --------------------------------------------------
-
-  function save()
-  {
-    /*
-      TODO implement class change
-    */
-    // CLASS CHANGE
-    // --------------------------------------------------
-    // if ($this->class != get_class($this)) {
-    //   # code...
-    // }
-
-    // Extend w/ datetime stamps
-    // --------------------------------------------------
-    /*
-      TODO implement hooks in filters for behaviors
-    */
-    if (!isset($this->id)) {
-      $this->set_datetime('created');
-    }
-    $this->set_datetime('modified');
-
-    // go through filters
-    if (!$this->_beforeSave()) return false;
-    if (!parent::save()) return false;
-    if (!$this->_afterSave()) return false;
-
-    // success!
-    return true;
-  }
-
-  function Update( $strClass, $id, $properties )
-  {
-    $cache_reset = rand();
-    $object = array_shift(AppModel::FindAll($strClass, true, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
-    $object->populate($properties);
-    return $object->save();
-  }
-
-  // --------------------------------------------------
   // CREATION
   // --------------------------------------------------
 
-  function &Create($strClass, $arrVals = null)
+  static function &Create($strClass, $arrVals = null)
   {
     AppModel::_smartLoadModel($strClass);
     $obj = parent::Create($strClass, $arrVals);
@@ -92,17 +50,19 @@ class EndoModel extends MyActiveRecord
     return $obj;
   }
 
+  static function Update( $strClass, $id, $properties )
+  {
+    $cache_reset = rand();
+    $object = array_shift(AppModel::FindAll($strClass, true, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
+    $object->populate($properties);
+    return $object->save();
+  }
+
   // --------------------------------------------------
   // RETRIEVAL
   // --------------------------------------------------
 
-  // TODO move to dateable
-	function date($strKey, $for_js=false)
-	{
-    return date($for_js ? DATE_FORMAT_JS : DATE_FORMAT, $this->get_timestamp($strKey));
-	}
-
-  function AddRelated ($relation, &$objects=array())
+  static function AddRelated ($relation, &$objects=array())
   {
     // set defaults
     switch ($relation) {
@@ -134,7 +94,7 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  function AddAllRelated(&$objects=array())
+  static function AddAllRelated(&$objects=array())
   {
     AppModel::AddRelated('attached', $objects);
     AppModel::AddRelated('children', $objects);
@@ -142,7 +102,7 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  function RelationNameParams(&$related_name, &$related_params)
+  static function RelationNameParams(&$related_name, &$related_params)
   {
     if (is_numeric($related_name)) {
       $related_name = $related_params;
@@ -150,7 +110,7 @@ class EndoModel extends MyActiveRecord
     }
   }
 
-  function FindAll($strClass, $extend=false, $mxdWhere=null, $strOrderBy=null, $intLimit=null, $intOffset=null)
+  static function FindAll($strClass, $extend=false, $mxdWhere=null, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -167,7 +127,7 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  function FindById( $strClass, $mxdID, $extend=FALSE )
+  static function FindById( $strClass, $mxdID, $extend=FALSE )
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -178,7 +138,7 @@ class EndoModel extends MyActiveRecord
     return $objects[0];
   }
 
-  function FindFirst($strClass, $extend=false, $strWhere=null, $strOrderBy=null)
+  static function FindFirst($strClass, $extend=false, $strWhere=null, $strOrderBy=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -204,7 +164,7 @@ class EndoModel extends MyActiveRecord
    * @return array
    * @author Philip Blyth
    */
-  function FindAllFreq($ofClass, $toClass, &$min=null, &$max=null)
+  static function FindAllFreq($ofClass, $toClass, &$min=null, &$max=null)
   {
     if (!AppModel::_smartLoadModel(array($ofClass, $toClass))) return false;
 
@@ -232,7 +192,7 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
-  function FindAllAssoc($strClass, $extend=FALSE, $mxdWhere=NULL, $strIndexBy='id', $strOrderBy=null, $intLimit=10000, $intOffset=0)
+  static function FindAllAssoc($strClass, $extend=FALSE, $mxdWhere=NULL, $strIndexBy='id', $strOrderBy=null, $intLimit=10000, $intOffset=0)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -252,7 +212,7 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
-  function FindAllAssoc_options($strClass, $mxdWhere=null, $strIndexBy='id')
+  static function FindAllAssoc_options($strClass, $mxdWhere=null, $strIndexBy='id')
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -262,7 +222,7 @@ class EndoModel extends MyActiveRecord
     return AppModel::CollectionToOptions($collection);
   }
 
-  function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy=null, $intLimit=null, $intOffset=null)
+  static function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -294,11 +254,78 @@ class EndoModel extends MyActiveRecord
     return AppModel::FindBySql($strClass, $query);
   }
 
+  static function CollectionToOptions($collection, $sort=true, $fancy=false)
+  {
+    // only keep display-name
+    foreach ($collection as $key => $object) {
+      $collection[$key] = $object->display_field('name', $fancy);
+    }
+
+    if ($sort) {
+      // sort by display-name
+      asort($collection);
+    }
+
+    return $collection;
+  }
+
+  // --------------------------------------------------
+  // SAVE
+  // --------------------------------------------------
+
+  public function save()
+  {
+    /*
+      TODO implement class change
+    */
+    // CLASS CHANGE
+    // --------------------------------------------------
+    // if ($this->class != get_class($this)) {
+    //   # code...
+    // }
+
+    // Extend w/ datetime stamps
+    // --------------------------------------------------
+    /*
+      TODO implement hooks in filters for behaviors
+    */
+    if (!isset($this->id)) {
+      $this->set_datetime('created');
+    }
+    $this->set_datetime('modified');
+
+    // go through filters
+    if (!$this->_beforeSave()) return false;
+    if (!parent::save()) return false;
+    if (!$this->_afterSave()) return false;
+
+    // success!
+    return true;
+  }
+
+  // --------------------------------------------------
+  // POPULATE
+  // --------------------------------------------------
+
+  public function populate($arrVals)
+  {
+    $success = parent::populate($arrVals);
+
+    // attachments
+    foreach ($this->get_attached as $model) {
+      if (!isset($this->$model)) {
+        $this->$model = array();
+      }
+    }
+
+    return $success;
+  }
+
   // --------------------------------------------------
   // DESTRUCTION
   // --------------------------------------------------
 
-  function destroy( $extend=false )
+  public function destroy( $extend=false )
   {
     // destroy?
     if (($success = parent::destroy()) && $extend) {
@@ -321,31 +348,13 @@ class EndoModel extends MyActiveRecord
   }
 
   // --------------------------------------------------
-  // POPULATE
-  // --------------------------------------------------
-
-  function populate($arrVals)
-  {
-    $success = parent::populate($arrVals);
-
-    // attachments
-    foreach ($this->get_attached as $model) {
-      if (!isset($this->$model)) {
-        $this->$model = array();
-      }
-    }
-
-    return $success;
-  }
-
-  // --------------------------------------------------
   // FILTERS
   // --------------------------------------------------
 
-  function _beforeSave() {
+  protected function _beforeSave() {
     return true;
   }
-  function _afterSave() {
+  protected function _afterSave() {
     return $this->_handle_file_uploads() && $this->_handle_attachments();
   }
 
@@ -353,7 +362,7 @@ class EndoModel extends MyActiveRecord
   // SCAFFOLD TOOLS
   // --------------------------------------------------
 
-  function display_field($scaffold_name, $fancy=true, $separator=', ')
+  public function display_field($scaffold_name, $fancy=true, $separator=', ')
   {
     $parts = array();
     foreach ($this->{$scaffold_name.'_fields'} as $field) {
@@ -364,17 +373,24 @@ class EndoModel extends MyActiveRecord
     return $fancy ? fancyize($parts) : implode($separator, $parts);
   }
 
-  function is_publishable()
+  // TODO move to dateable
+  public function date($strKey, $for_js=false)
+  {
+    return date($for_js ? DATE_FORMAT_JS : DATE_FORMAT, $this->get_timestamp($strKey));
+  }
+
+  // TODO move to publishable
+  public function is_publishable()
   {
     return array_key_exists('is_published', $this);
   }
 
-  function is_published()
+  public function is_published()
   {
     return !$this->is_publishable() || ($this->is_publishable() && $this->is_published);
   }
 
-  function _for_show()
+  public function _for_show()
   {
     $output = clone $this;
     foreach ($output as $key => $value) {
@@ -385,7 +401,7 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
-  function get_first_parent()
+  public function get_first_parent()
   {
     reset($this->get_parent);
     return each($this->get_parent);
@@ -395,24 +411,9 @@ class EndoModel extends MyActiveRecord
   // CONVERSION
   // --------------------------------------------------
 
-  function __toString()
+  public function __toString()
   {
     return $this->display_field('name', false);
-  }
-
-  static function CollectionToOptions($collection, $sort=true, $fancy=false)
-  {
-    // only keep display-name
-    foreach ($collection as $key => $object) {
-      $collection[$key] = $object->display_field('name', $fancy);
-    }
-
-    if ($sort) {
-      // sort by display-name
-      asort($collection);
-    }
-
-    return $collection;
   }
 
   // --------------------------------------------------
@@ -431,7 +432,7 @@ class EndoModel extends MyActiveRecord
   // UPLOADS
   // --------------------------------------------------
 
-  function _handle_file_uploads()
+  private function _handle_file_uploads()
   {
     $success = true;
     foreach ($this->file_uploads as $field => $params) {
@@ -440,7 +441,7 @@ class EndoModel extends MyActiveRecord
     return $success;
   }
 
-  function _handle_file_upload($field=null, $params=array())
+  private function _handle_file_upload($field=null, $params=array())
   {
     require_once(ENDO_PACKAGES_ROOT.'VerotUpload'.DS.'class.upload.php');
 
@@ -521,7 +522,7 @@ class EndoModel extends MyActiveRecord
   // ATTACHMENTS
   // --------------------------------------------------
 
-  function _handle_attachments()
+  private function _handle_attachments()
   {
     if (!$this->do_handle_attachments) {
       return true;
@@ -550,7 +551,7 @@ class EndoModel extends MyActiveRecord
   }
 
 
-  function _attach_to_all($class)
+  private function _attach_to_all($class)
   {
     Globe::Load($class, 'model');
     // get all objects:
@@ -562,7 +563,7 @@ class EndoModel extends MyActiveRecord
     }
   }
 
-  function _detach_from_all($class)
+  private function _detach_from_all($class)
   {
     Globe::Load($class, 'model');
     // get all objects:
@@ -583,7 +584,7 @@ class EndoModel extends MyActiveRecord
    *  - array: array of variable-names
    *  - array: 0: array of variable-names, 1: default
    */
-  function has_($arrayOrVar, &$scope=false)
+  public function has_($arrayOrVar, &$scope=false)
   {
     if (!$scope) {
       $scope =& $this;

@@ -98,7 +98,7 @@ class Url {
       Url::$data['modelName'] = 'AppModel';
       Url::$data['controller'] = EXECUTE_CONTROLLER;
       Url::$data['controllerName'] = ucfirst(EXECUTE_CONTROLLER).'Controller';
-      Url::$data['action'] = '_include_to_buffer';
+      Url::$data['action'] = 'include_to_buffer';
       // set filename
       Url::$data['params'] = array(
         'filename' => implode(DS, $parts).'.php'

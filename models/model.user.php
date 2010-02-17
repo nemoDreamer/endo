@@ -64,7 +64,7 @@ class User extends AppModel {
   /**
    * This hook handles password encoding.
    */
-  function _beforeSave()
+  protected function _beforeSave()
   {
     if (!empty($this->password)) { // changing password?
       // valid?

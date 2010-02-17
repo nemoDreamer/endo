@@ -57,14 +57,14 @@ class EndoController
   // CALL
   // --------------------------------------------------
 
-  function _call($action='', $arguments=array(), $type=null)
+  public function call($action='', $arguments=array(), $type=null)
   {
     $this->action = $action;
     $this->type = $type;
 
     // ACL
     if (!$this->is_allowed(Url::$data['action'])) {
-      $this->_redirect(DS.(Url::GetData('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
+      $this->redirect(DS.(Url::GetData('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
 
     // security
@@ -79,7 +79,10 @@ class EndoController
   // FILTERS
   // --------------------------------------------------
 
-  function _beforeFilter() {
+  public function call_beforeFilter() { $this->_beforeFilter(); }
+  public function call_afterFilter()  { $this->_afterFilter(); }
+
+  protected function _beforeFilter() {
 
     // User
     // --------------------------------------------------
@@ -99,9 +102,12 @@ class EndoController
     $this->allow($admin_actions, 'Admin');
   }
 
-  function _afterFilter() {}
+  protected function _afterFilter() {}
 
-  function _beforeRender() {
+  public function call_beforeRender() { $this->_beforeRender(); }
+  public function call_afterRender()  { $this->_afterRender(); }
+
+  protected function _beforeRender() {
 
     // URL
     // --------------------------------------------------
@@ -109,8 +115,8 @@ class EndoController
     /*
       FIXME replace with single 'registered object' in smarty!
     */
-    $this->_assign('this', $this);
-    $this->_assign('url', Url::$data);
+    $this->assign('this', $this);
+    $this->assign('url', Url::$data);
     Globe::ForLayout('url', Url::$data);
 
     // SITE
@@ -124,7 +130,7 @@ class EndoController
     // --------------------------------------------------
 
     if (Url::GetData('is_admin')) {
-      $this->_assign('ADMIN_ROUTE', ADMIN_ROUTE);
+      $this->assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
 
     // SUBDOMAIN
@@ -160,26 +166,26 @@ class EndoController
     // AJAX
     // --------------------------------------------------
 
-    $this->_assign('is_ajax', $this->is_ajax());
+    $this->assign('is_ajax', $this->is_ajax());
 
     // ACL
     // --------------------------------------------------
 
-    Globe::ForLayout('LoggedIn', $this->_assign('LoggedIn', AppUser::Clean($this->LoggedIn)));
+    Globe::ForLayout('LoggedIn', $this->assign('LoggedIn', AppUser::Clean($this->LoggedIn)));
   }
 
-  function _afterRender() {}
+  protected function _afterRender() {}
 
   // --------------------------------------------------
   // OUTPUT
   // --------------------------------------------------
 
-  function _assign($variable, $value=null)
+  public function assign($variable, $value=null)
   {
     return $this->View->assign($variable, $value);
   }
 
-  function _include_to_buffer($filename)
+  public function include_to_buffer($filename)
   {
     if($filepath=Globe::Find($filename, array(APP_ROOT.EXECUTE_DIR, ENDO_ROOT.EXECUTE_DIR))) {
       ob_start();
@@ -191,7 +197,7 @@ class EndoController
     }
   }
 
-  function _get_template()
+  public function get_template()
   {
     if ($this->template!=null) {
       if ($this->type!=null) {
@@ -203,17 +209,17 @@ class EndoController
     }
   }
 
-  function _render()
+  public function render()
   {
     // assign data
-    $this->_assign($this->data);
+    $this->assign($this->data);
     // de-activate debug
     if ($this->type!=DEFAULT_REQUEST_TYPE) {
       $this->View->debugging = false;
       $this->View->error_reporting = false;
     }
     // render!
-    if (($template = $this->_get_template()) != false) {
+    if (($template = $this->get_template()) != false) {
       return $this->output = $this->View->fetch($template);
     } else {
       Error::Set('Couldn\'t render!');
@@ -221,12 +227,12 @@ class EndoController
     }
   }
 
-  function _display($resource_name, $cache_id = null, $compile_id = null)
+  public function display($resource_name, $cache_id = null, $compile_id = null)
   {
     $this->View->display($resource_name, $cache_id, $compile_id);
   }
 
-  function _redirect($url='', $do_die=true, $wait=true)
+  public function redirect($url='', $do_die=true, $wait=true)
   {
     $this->has_redirected = true;
     if (DEBUG && $wait) {
@@ -240,7 +246,7 @@ class EndoController
     }
   }
 
-  function data($variable, $default=null)
+  public function data($variable, $default=null)
   {
     return array_get($this->data, $variable, $default, true);
   }
@@ -249,17 +255,17 @@ class EndoController
   // ADMIN SCAFFOLDING
   // --------------------------------------------------
 
-  function admin_login()
+  public function admin_login()
   {
-    $this->_redirect(DS.ADMIN_ROUTE.DS.'login');
+    $this->redirect(DS.ADMIN_ROUTE.DS.'login');
   }
 
-  function admin_index()
+  public function admin_index()
   {
     // ajax?
     if ($this->is_ajax) {
       // page?
-      $page = $this->_assign(
+      $page = $this->assign(
         'page',
         (integer) Url::GetRequest('page', 1)
       );
@@ -267,7 +273,7 @@ class EndoController
       $limit = 10;
       $offset = ($page-1) * $limit;
       // page count
-      $page_count = $this->_assign(
+      $page_count = $this->assign(
         'page_count',
         ceil(count(AppModel::FindAllSearched(
           Url::$data['modelName'],
@@ -276,7 +282,7 @@ class EndoController
         )) / $limit)
       );
       // items
-      $this->_assign(
+      $this->assign(
         'items',
         AppModel::FindAllSearched(
           Url::$data['modelName'],
@@ -289,7 +295,7 @@ class EndoController
       );
     } else {
       // items
-      $this->_assign(
+      $this->assign(
         'items',
         AppModel::FindAll(
           Url::$data['modelName'],
@@ -301,20 +307,20 @@ class EndoController
     }
 
     // options
-    $this->_assign('is_publishable', $this->Model->is_publishable());
+    $this->assign('is_publishable', $this->Model->is_publishable());
   }
 
   // ADD
   // --------------------------------------------------
 
-  function admin_add()
+  public function admin_add()
   {
     if ($this->data!=null) {
       // create
       $this->Model = AppModel::create(Url::$data['modelName'], $this->data);
       // save & redirect?
       if ($this->Model->save()) {
-        $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
+        $this->redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
       }
     } else {
       // pre-data?
@@ -322,36 +328,36 @@ class EndoController
       // create empty
       $this->Model = AppModel::create(Url::$data['modelName'], $pre_data);
     }
-    $this->_assign('item', $this->Model);
+    $this->assign('item', $this->Model);
   }
 
   // EDIT
   // --------------------------------------------------
 
-  function admin_edit($id)
+  public function admin_edit($id)
   {
     if ($this->data!=null) {
       // save & redirect?
       if (AppModel::Update(Url::$data['modelName'], $this->data['id'], $this->data)) {
         $this->Model = AppModel::FindById(Url::$data['modelName'], $this->data['id']);
-        $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
+        $this->redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
       }
     }
-    $this->_assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // SHOW
   // --------------------------------------------------
 
-  function admin_show($id)
+  public function admin_show($id)
   {
-    $this->_assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
+    $this->assign('item', $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true));
   }
 
   // REMOVE
   // --------------------------------------------------
 
-  function admin_remove($id)
+  public function admin_remove($id)
   {
     // load
     $this->Model = AppModel::FindById(Url::$data['modelName'], $id, true);
@@ -359,7 +365,7 @@ class EndoController
     // destroy
     if ($success = $this->Model->destroy(true)) {
       // redirect
-      $this->_redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
+      $this->redirect(DS.ADMIN_ROUTE.DS.Url::$data['controller'], false);
     }
   }
 
@@ -367,7 +373,7 @@ class EndoController
   // AJAX
   // --------------------------------------------------
 
-  function is_ajax($action=null)
+  public function is_ajax($action=null)
   {
     return $this->is_ajax && (in_array(is_null($action) ? $this->action : $action, $this->is_ajax) || in_array('*', $this->is_ajax));
   }
@@ -461,7 +467,7 @@ class EndoController
       }
     }
 
-    $this->_assign('filter', $this->filter = (object) array(
+    $this->assign('filter', $this->filter = (object) array(
       'short' => $short,
       'where' => $where,
       'field' => $field,

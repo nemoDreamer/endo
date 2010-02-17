@@ -42,14 +42,14 @@ if (get_class($Controller)=='stdClass') {
 // --------------------------------------------------
 
 // go through filters
-$Controller->_beforeFilter();
-$Controller->_call(Url::$data['action'], Url::$data['params'], Url::$data['type']);
-$Controller->_beforeRender();
+$Controller->call_beforeFilter();
+$Controller->call(Url::$data['action'], Url::$data['params'], Url::$data['type']);
+$Controller->call_beforeRender();
 if (!Error::IsFatal()) {
-  $Controller->_render();
+  $Controller->render();
 }
-$Controller->_afterRender();
-$Controller->_afterFilter();
+$Controller->call_afterRender();
+$Controller->call_afterFilter();
 
 // --------------------------------------------------
 // Debug

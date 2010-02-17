@@ -4,7 +4,7 @@ class MissingController extends AppController
 {
   var $name = 'missing';
 
-  function _call() {}
+  public function call() {}
 }
 
 ?>
