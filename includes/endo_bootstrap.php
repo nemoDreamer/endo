@@ -40,7 +40,7 @@ function fancyize($parts)
   $output = '';
   $i = 0; // don't work w/ key, because you never know if you're passed a numeric array
   foreach ($parts as $part) {
-    $output .= wrap($part, ($i!=1?' ':'').'<span class="part part_'.$i.'">', '</span>');
+    $output .= wrap($part, ($i!=1?' ':'').'<span class="part part_'.$i.'">', '</span> ');
     $i++;
   }
   return $output;
@@ -122,6 +122,7 @@ function to_array($obj)
 
 define('COLLECTION_INDEX_NO_GROUP', '__ungroupable__');
 
+// TODO move global collection functions to EndoModel statics
 function collection_group($array, $group_bys)
 {
   if (is_array($group_bys)) {

@@ -27,6 +27,7 @@ class UsersController extends AppController
 
   public function login($root=DS) {
     if (!$this->LoggedIn->is_guest()) {
+      Event::Set($this->LoggedIn, 'login');
       $this->redirect($this->data('redirect_to', $root));
     } else {
       $this->assign(array(
@@ -38,6 +39,7 @@ class UsersController extends AppController
 
   public function logout($root=DS)
   {
+    Event::Set($this->LoggedIn, 'logout');
     AppUser::UnsetCurrent();
     $this->redirect($root);
   }

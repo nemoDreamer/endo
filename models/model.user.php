@@ -37,7 +37,7 @@ class User extends AppModel {
 
   public function is_admin() { return $this->is_class('Admin'); }
 
-  public function __toString()
+  public function store_tag()
   {
     return $this->email.'|'.$this->crypted_password;
   }
@@ -129,11 +129,11 @@ class User extends AppModel {
     $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
     if (Url::GetRequest(AppUser::REMEMBER_ME, false)) {
-      setcookie(AppUser::REMEMBER_ME, (string) $user, time()+60*60*24*30, DS);
+      setcookie(AppUser::REMEMBER_ME, $user->store_tag(), time()+60*60*24*30, DS);
       d_('setting cookie!');
     }
     // session
-    $_SESSION[AppUser::SESSION_KEY] = (string) $user;
+    $_SESSION[AppUser::SESSION_KEY] = $user->store_tag();
     // return
     return AppUser::Clean($user);
   }
