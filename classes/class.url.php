@@ -53,13 +53,13 @@ class Url {
   // PARSE
   // --------------------------------------------------
 
-  static function parse($url)
+  static function Parse($url)
   {
     // save 'original'
     Url::$data['_url'] = $url;
 
     // send through routes
-    Url::$data['url'] = Url::do_routes($url);
+    Url::$data['url'] = Url::DoRoutes($url);
 
     // get extension
     preg_match('/(.*)\.(\w{1,4})$/Ui', Url::$data['url'], $matches);
@@ -83,12 +83,12 @@ class Url {
 
     // nothing left?
     if (array_empty($parts)) {
-      if (Url::data('is_admin')) {
+      if (Url::GetData('is_admin')) {
         // is admin
         $parts = array(ADMIN_DEFAULT_CONTROLLER, ADMIN_DEFAULT_ACTION);
       } else{
         // is default
-        $parts = explode(DS, Url::data('is_subdomain') ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
+        $parts = explode(DS, Url::GetData('is_subdomain') ? SUBDOMAIN_DEFAULT_URL : DEFAULT_URL);
       }
     }
 
@@ -116,7 +116,7 @@ class Url {
       Url::$data['action'] = ($action=array_shift($parts)) != null ? $action : 'index';
 
       // add prefix to admin actions
-      if(Url::data('is_admin')) {
+      if(Url::GetData('is_admin')) {
         Url::$data['action'] = ADMIN_PREFIX.Url::$data['action'];
       }
 
@@ -140,9 +140,9 @@ class Url {
   // ROUTES
   // --------------------------------------------------
 
-  static function do_routes($url)
+  static function DoRoutes($url)
   {
-    $routes = Url::get_routes();
+    $routes = Url::GetRoutes();
 
     // add slash
     $url = preg_replace('/([^\/])$/', '${1}/', $url);
@@ -163,7 +163,7 @@ class Url {
     return preg_replace('/\/$/', '', strtolower($url));
   }
 
-  static function get_routes()
+  static function GetRoutes()
   {
     $include = array();
     // admin route
@@ -179,18 +179,18 @@ class Url {
   // HELPERS
   // --------------------------------------------------
 
-  static function data($variable, $default=null)
+  static function GetData($variable, $default=null)
   {
     return array_get(Url::$data, $variable, $default);
   }
 
-  static function data_array($key, $variable, $default=null)
+  static function GetDataArray($variable, $key, $default=null)
   {
-    return array_get(array_get(Url::$data, $key, array()), $variable, $default);
+    return array_get(array_get(Url::$data, $variable, array()), $key, $default);
   }
 
-  static function param($variable, $default=null) { return Url::data_array('params', $variable, $default); }
-  static function request($variable, $default=null) { return Url::data_array('request', $variable, $default); }
+  static function GetParam($variable, $default=null) { return Url::GetDataArray('params', $variable, $default); }
+  static function GetRequest($variable, $default=null) { return Url::GetDataArray('request', $variable, $default); }
 
   static function GetSubdomain()
   {

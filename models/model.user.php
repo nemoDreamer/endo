@@ -69,12 +69,12 @@ class User extends AppModel {
     if (!empty($this->password)) { // changing password?
       // valid?
       if (isset($this->old_password) && !$this->validate($old_password)) {
-        Error::set("Old Password invalid!", 'validation');
+        Error::Set("Old Password invalid!", 'validation');
         return false;
       }
       // confirmed?
       if ($this->password != $this->password_confirm) {
-        Error::set("Password &amp; confirm don't match!", 'validation');
+        Error::Set("Password &amp; confirm don't match!", 'validation');
         return false;
       }
       $this->_new_password($this->password);
@@ -108,12 +108,12 @@ class User extends AppModel {
       }
     }
     // data?
-    elseif (Url::request('check_data', false) && ($email=Url::request('email', false)) && ($password=Url::request('password', false))) {
+    elseif (Url::GetRequest('check_data', false) && ($email=Url::GetRequest('email', false)) && ($password=Url::GetRequest('password', false))) {
       // valid?
       if (($user = AppUser::FetchUser($email)) && $user->validate($password)) {
         return AppUser::SetCurrent($user);
       } else {
-        Error::set("Invalid Email and/or Password", 'validation');
+        Error::Set("Invalid Email and/or Password", 'validation');
       }
     }
     // create Guest...
@@ -128,7 +128,7 @@ class User extends AppModel {
     // correct class & extend
     $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
-    if (Url::request(AppUser::REMEMBER_ME, false)) {
+    if (Url::GetRequest(AppUser::REMEMBER_ME, false)) {
       setcookie(AppUser::REMEMBER_ME, (string) $user, time()+60*60*24*30, DS);
       d_('setting cookie!');
     }

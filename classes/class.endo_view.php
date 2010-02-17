@@ -53,11 +53,11 @@ class EndoView extends Smarty
 
 function template_handler($resource_type, $resource_name, &$source_content, &$source_timestamp, &$smarty)
 {
-  if ($filepath=Globe::find($resource_name, array(APP_ROOT.SMARTY_TEMPLATE_DIR.DS, ENDO_ROOT.SMARTY_TEMPLATE_DIR.DS))) {
+  if ($filepath=Globe::Find($resource_name, array(APP_ROOT.SMARTY_TEMPLATE_DIR.DS, ENDO_ROOT.SMARTY_TEMPLATE_DIR.DS))) {
     return set_resource($filepath, &$source_content, &$source_timestamp, &$smarty);
   } else {
     // not found. set error...
-    Error::set("Template '".Globe::clean_dir($filepath)."' not found!");
+    Error::Set("Template '".Globe::CleanDir($filepath)."' not found!");
     return false;
   }
 }

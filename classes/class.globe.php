@@ -36,7 +36,7 @@ class Globe {
    * @return bool success?
    * @author Philip Blyth
    */
-  public function load($names, $type='class', $show_errors=true)
+  static function Load($names, $type='class', $show_errors=true)
   {
     if (!is_array($names)) {
       $names = array($names);
@@ -75,11 +75,11 @@ class Globe {
         $file = AppInflector::fileize($file, $type);
       }
       $filename = $prefix.$file.$suffix;
-      if ($filepath=Globe::find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, APP_PACKAGES_ROOT.$dir, ENDO_PACKAGES_ROOT.$dir))) {
+      if ($filepath=self::Find($filename, array(APP_ROOT.$dir, ENDO_ROOT.$dir, APP_PACKAGES_ROOT.$dir, ENDO_PACKAGES_ROOT.$dir))) {
         require_once($filepath);
       } else {
         if ($show_errors) {
-          Error::set(ucfirst($type)." not found in '".Globe::clean_dir($filepath)."'!", 'fatal');
+          Error::Set(ucfirst($type)." not found in '".self::CleanDir($filepath)."'!", 'fatal');
         }
         $success = false;
       }
@@ -88,16 +88,16 @@ class Globe {
     return $success;
   }
 
-  public function find($filename='', $paths=array(), $hit_cache=true)
+  static function Find($filename='', $paths=array(), $hit_cache=true)
   {
     // read cache?
-    if ($hit_cache && empty(Globe::$caches[STR_FINDCACHE])) {
-      Globe::$caches[STR_FINDCACHE] = Globe::file_get_split(APP_ROOT.CACHES_DIR.STR_FINDCACHE);
+    if ($hit_cache && empty(self::$caches[STR_FINDCACHE])) {
+      self::$caches[STR_FINDCACHE] = self::FileGetSplit(APP_ROOT.CACHES_DIR.STR_FINDCACHE);
     }
     // check cache
-    if ($hit_cache && array_key_exists($filename, Globe::$caches[STR_FINDCACHE])) {
+    if ($hit_cache && array_key_exists($filename, self::$caches[STR_FINDCACHE])) {
       // return found in cache!
-      return Globe::$caches[STR_FINDCACHE][$filename][0];
+      return self::$caches[STR_FINDCACHE][$filename][0];
     } else {
 
       // else, cascade through paths
@@ -123,14 +123,14 @@ class Globe {
       }
 
       // not found. set error...
-      Error::set("File '$filename' not found in cascade <pre>".print_r(array_merge($paths, $scaffold_paths), true)."</pre>");
+      Error::Set("File '$filename' not found in cascade <pre>".print_r(array_merge($paths, $scaffold_paths), true)."</pre>");
       return false;
     }
   }
 
-  public function init($name, $type='class', $show_errors=true)
+  static function Init($name, $type='class', $show_errors=true)
   {
-    if (Globe::load($name, $type, $show_errors)) {
+    if (self::Load($name, $type, $show_errors)) {
       $class_name = AppInflector::classify($name, $type);
       return new $class_name();
     } else {
@@ -142,19 +142,19 @@ class Globe {
   // PATH FUNCTIONS
   // --------------------------------------------------
 
-  public function clean_dir($path='')
+  static function CleanDir($path='')
   {
     return str_replace(ROOT, '', $path);
   }
 
-  public function get_template($name, $model=null, $type=null)
+  static function GetTemplate($name, $model=null, $type=null)
   {
     $name = $name==false || $name==null ? 'none' : $name;
     $type = $type!=DEFAULT_REQUEST_TYPE && $type!='php' ? $type.DS : '';
     return $filename = $model.DS.$type.$name.'.'.SMARTY_TEMPLATE_EXT;
   }
 
-  function file_get_split($filename, $delimiter='|')
+  static function FileGetSplit($filename, $delimiter='|')
   {
     $output = array();
     $file_lines = explode("\n", file_get_contents($filename));
@@ -171,14 +171,14 @@ class Globe {
   // VIEW FUNCTIONS
   // --------------------------------------------------
 
-  public function for_layout($variable, $value=null, $append=false)
+  static function ForLayout($variable, $value=null, $append=false)
   {
-    $variable = $variable.Globe::FOR_LAYOUT_SUFFIX;
+    $variable = $variable.self::FOR_LAYOUT_SUFFIX;
     if ($append) {
-      if (!array_key_exists($variable, Globe::$variables_for_layout)) {
+      if (!array_key_exists($variable, self::$variables_for_layout)) {
         $tmp = !is_string($value) ? array($value) : $value;
       } else {
-        $tmp = Globe::$variables_for_layout[$variable];
+        $tmp = self::$variables_for_layout[$variable];
         if (!is_string($tmp)) {
           array_push($tmp, $value);
         } else {
@@ -187,19 +187,19 @@ class Globe {
       }
       $value = $tmp;
     }
-    return Globe::$variables_for_layout[$variable] = $value;
+    return self::$variables_for_layout[$variable] = $value;
   }
 
-  public function get_for_layout($variable)
+  static function GetForLayout($variable)
   {
-    return array_get(Globe::$variables_for_layout, $variable.Globe::FOR_LAYOUT_SUFFIX);
+    return array_get(self::$variables_for_layout, $variable.self::FOR_LAYOUT_SUFFIX);
   }
 
   // --------------------------------------------------
   // TOOLS
   // --------------------------------------------------
 
-  public function reindex_collection($collection, $current_id=0, &$current_index=0)
+  static function ReindexCollection($collection, $current_id=0, &$current_index=0)
   {
     $index = 0;
     $output = array();
@@ -213,7 +213,7 @@ class Globe {
     return $output;
   }
 
-  public function collection_to_options($collection)
+  static function CollectionToOptions($collection)
   {
     foreach ($collection as $id => $object) {
       $collection[$id] = $object->{$object->name_fields[0]};

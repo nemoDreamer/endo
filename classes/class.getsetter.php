@@ -9,32 +9,32 @@
  */
 class GetSetter {
 
-  static function get(&$source, $variable, $default=null)
+  static function Get(&$source, $variable, $default=null)
   {
     return array_get($source, $variable, $default);
   }
 
-  static function set(&$source, $variable, $data=null)
+  static function Set(&$source, $variable, $data=null)
   {
     return $source[$variable] = $data;
   }
 
-  static function update(&$source, $variable, $data=array(), $unique=false)
+  static function Update(&$source, $variable, $data=array(), $unique=false)
   {
     if (!is_array($data)) {
       $data = array($data);
     }
-    if (!is_array($tmp=self::get($source, $variable))) {
+    if (!is_array($tmp=self::Get($source, $variable))) {
       $tmp = $tmp==null ? array() : array($tmp);
     }
     $tmp = array_merge($tmp, $data);
     if ($unique) {
       $tmp = array_unique($tmp);
     }
-    return self::set($source, $variable, $tmp);
+    return self::Set($source, $variable, $tmp);
   }
 
-  static function remove(&$source, $variable, $data=array())
+  static function Remove(&$source, $variable, $data=array())
   {
     if (!is_array($data)) {
       $data = array($data);

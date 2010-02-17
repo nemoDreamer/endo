@@ -29,7 +29,7 @@ class EndoModel extends MyActiveRecord
     // Behaviors
     // --------------------------------------------------
     foreach ($this->acts_as as $behavior => $config) {
-      if (Globe::load($behavior, STR_BEHAVIOR)) {
+      if (Globe::Load($behavior, STR_BEHAVIOR)) {
         $class_name = $behavior.STR_BEHAVIOR;
         $this->{'acts_as_'.$behavior} = new $class_name($this, $config);
       }
@@ -123,7 +123,7 @@ class EndoModel extends MyActiveRecord
       foreach ($object->$get_related as $related_name => $related_params) {
         AppModel::RelationNameParams($related_name, $related_params);
         // d($find_related.': '.$related_name.' '.print_r($related_params, true));
-        $model = Globe::init($related_name, 'model');
+        $model = Globe::Init($related_name, 'model');
         $strForeignKey = array_get($related_params, 'foreignKey', null);
         // TODO hook in 'where' from behavior:
         $strWhere = null;
@@ -421,7 +421,7 @@ class EndoModel extends MyActiveRecord
 
   private function _smartLoad($strClass, $type='model')
   {
-    return Globe::load($strClass, $type) != false;
+    return Globe::Load($strClass, $type) != false;
   }
 
   private function _smartLoadModel($strClass)       { return AppModel::_smartLoad($strClass, 'model'); }
@@ -552,7 +552,7 @@ class EndoModel extends MyActiveRecord
 
   function _attach_to_all($class)
   {
-    Globe::load($class, 'model');
+    Globe::Load($class, 'model');
     // get all objects:
     $objects = Listing::FindAll($class, true);
     // cycle listings
@@ -564,7 +564,7 @@ class EndoModel extends MyActiveRecord
 
   function _detach_from_all($class)
   {
-    Globe::load($class, 'model');
+    Globe::Load($class, 'model');
     // get all objects:
     $objects = Listing::FindAll($class, true);
     // cycle listings

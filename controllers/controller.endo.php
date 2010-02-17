@@ -44,9 +44,9 @@ class EndoController
     // Model
     if ($this->has_model) {
       // load Model class
-      // $this->Model =& Globe::init(Url::$data['model'], 'model', false);
+      // $this->Model =& Globe::Init(Url::$data['model'], 'model', false);
       // if (get_class($this->Model)!='stdClass') {
-      if (Globe::load(Url::$data['model'], 'model')) { // TODO analyze merits of this method over previous..
+      if (Globe::Load(Url::$data['model'], 'model')) { // TODO analyze merits of this method over previous..
         $this->{Url::$data['modelName']} =& AppModel::Create(Url::$data['modelName']);
         $this->Model =& $this->{Url::$data['modelName']}; // reference for ease
       }
@@ -64,12 +64,12 @@ class EndoController
 
     // ACL
     if (!$this->is_allowed(Url::$data['action'])) {
-      $this->_redirect(DS.(Url::data('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
+      $this->_redirect(DS.(Url::GetData('is_admin') ? ADMIN_ROUTE.DS : null).'login?redirect_to='.DS.Url::$data['_url'], true, false);
     }
 
     // security
     if (!method_exists($this, $action) || (substr($action, 0, 1)=='_' && Url::$data['controller']!=EXECUTE_CONTROLLER)) { // FIXME get 'controller' from $this
-      Error::set("Missing Action '$action()' in Controller '".get_class($this)."'", 'fatal');
+      Error::Set("Missing Action '$action()' in Controller '".get_class($this)."'", 'fatal');
     } else {
       call_user_func_array(array(&$this, $action), $arguments);
     }
@@ -87,7 +87,7 @@ class EndoController
 
     // is Admin?
     // --------------------------------------------------
-    if (Url::data('is_admin')) {
+    if (Url::GetData('is_admin')) {
       $this->layout = 'admin';
       $this->_set_filter();
     }
@@ -111,26 +111,26 @@ class EndoController
     */
     $this->_assign('this', $this);
     $this->_assign('url', Url::$data);
-    Globe::for_layout('url', Url::$data);
+    Globe::ForLayout('url', Url::$data);
 
     // SITE
     // --------------------------------------------------
 
-    Globe::for_layout('sitename', SITE_NAME);
-    Globe::for_layout('footer', FOOTER);
-    Globe::for_layout('time', time());
+    Globe::ForLayout('sitename', SITE_NAME);
+    Globe::ForLayout('footer', FOOTER);
+    Globe::ForLayout('time', time());
 
     // ADMIN
     // --------------------------------------------------
 
-    if (Url::data('is_admin')) {
+    if (Url::GetData('is_admin')) {
       $this->_assign('ADMIN_ROUTE', ADMIN_ROUTE);
     }
 
     // SUBDOMAIN
     // --------------------------------------------------
 
-    if (Url::data('is_subdomain') && $this->layout == DEFAULT_LAYOUT) {
+    if (Url::GetData('is_subdomain') && $this->layout == DEFAULT_LAYOUT) {
       $this->layout = 'subdomain';
     }
 
@@ -145,15 +145,15 @@ class EndoController
     );
 
     // save
-    Globe::for_layout('nav', $this->nav);
+    Globe::ForLayout('nav', $this->nav);
 
     // active?
-    Globe::for_layout('nav_active', '');
+    Globe::ForLayout('nav_active', '');
     foreach ($this->nav as $label => $link) {
       if (strpos(DS.Url::$data['_url'], $link)===0) {
-        Globe::for_layout('nav_active', $label);
+        Globe::ForLayout('nav_active', $label);
         // FIXME what the hell is this doing in endo?!
-        Globe::for_layout('title', $label!='LiveIt! Lessons' ? trim(str_replace('LiveIt!', '', $label)) : 'Lesson '.$this->View->_tpl_vars['lesson']);
+        Globe::ForLayout('title', $label!='LiveIt! Lessons' ? trim(str_replace('LiveIt!', '', $label)) : 'Lesson '.$this->View->_tpl_vars['lesson']);
       }
     }
 
@@ -165,7 +165,7 @@ class EndoController
     // ACL
     // --------------------------------------------------
 
-    Globe::for_layout('LoggedIn', $this->_assign('LoggedIn', AppUser::Clean($this->LoggedIn)));
+    Globe::ForLayout('LoggedIn', $this->_assign('LoggedIn', AppUser::Clean($this->LoggedIn)));
   }
 
   function _afterRender() {}
@@ -181,13 +181,13 @@ class EndoController
 
   function _include_to_buffer($filename)
   {
-    if($filepath=Globe::find($filename, array(APP_ROOT.EXECUTE_DIR, ENDO_ROOT.EXECUTE_DIR))) {
+    if($filepath=Globe::Find($filename, array(APP_ROOT.EXECUTE_DIR, ENDO_ROOT.EXECUTE_DIR))) {
       ob_start();
       include($filepath);
       $this->output = ob_get_contents();
       ob_end_clean();
     } else {
-      Error::set("File '$filepath' could not be found!", 'fatal');
+      Error::Set("File '$filepath' could not be found!", 'fatal');
     }
   }
 
@@ -199,7 +199,7 @@ class EndoController
       }
       return $this->template;
     } else {
-      return Globe::get_template($this->action, $this->name, $this->type);
+      return Globe::GetTemplate($this->action, $this->name, $this->type);
     }
   }
 
@@ -216,7 +216,7 @@ class EndoController
     if (($template = $this->_get_template()) != false) {
       return $this->output = $this->View->fetch($template);
     } else {
-      Error::set('Couldn\'t render!');
+      Error::Set('Couldn\'t render!');
       return false;
     }
   }
@@ -231,7 +231,7 @@ class EndoController
     $this->has_redirected = true;
     if (DEBUG && $wait) {
       $this->layout = 'redirect';
-      Globe::for_layout('redirect', $url);
+      Globe::ForLayout('redirect', $url);
     } else {
       header('Location: '.$url);
       if ($do_die) {
@@ -261,7 +261,7 @@ class EndoController
       // page?
       $page = $this->_assign(
         'page',
-        (integer) Url::request('page', 1)
+        (integer) Url::GetRequest('page', 1)
       );
       // limit
       $limit = 10;
@@ -271,7 +271,7 @@ class EndoController
         'page_count',
         ceil(count(AppModel::FindAllSearched(
           Url::$data['modelName'],
-          Url::request('search', null), // search
+          Url::GetRequest('search', null), // search
           $this->filter->where // where
         )) / $limit)
       );
@@ -280,7 +280,7 @@ class EndoController
         'items',
         AppModel::FindAllSearched(
           Url::$data['modelName'],
-          Url::request('search', null), // search
+          Url::GetRequest('search', null), // search
           $this->filter->where, // where
           null, // automatic order
           $limit,
@@ -424,7 +424,7 @@ class EndoController
   private function _set_filter()
   {
     // filter?
-    $value = Url::request('filter', null);
+    $value = Url::GetRequest('filter', null);
 
     // parents?
     $parents = $this->Model->get_first_parent();
@@ -440,7 +440,7 @@ class EndoController
     // short filter?
     if ($short = is_numeric($value)) {
       if ($parent) {
-        Globe::load($parent, 'model');
+        Globe::Load($parent, 'model');
         $field = array_get($parent_params, 'foreignKey', AppInflector::tableize($parent).'_id');
         if ($value!=false) {
           $where = "$field=$value";

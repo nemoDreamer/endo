@@ -17,7 +17,7 @@ require_once(ENDO_ROOT.CLASSES_DIR.'class.globe.php');
 // INCLUDES
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'endo_bootstrap',
   'app_bootstrap',
 ), 'include');
@@ -26,7 +26,7 @@ Globe::load(array(
 // PACKAGES
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'MyActiveRecord/MyActiveRecord.0.4',
   'Smarty/Smarty.class'
 ), 'package');
@@ -35,7 +35,7 @@ Globe::load(array(
 // CLASSES
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'endo_view',
   'app_view',
   'url', // endo url
@@ -46,7 +46,7 @@ Globe::load(array(
 // MODELS
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'endo',
   'app',
   'user',
@@ -58,7 +58,7 @@ Globe::load(array(
 // CONTROLLERS
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'endo',
   'app'
 ), 'controller');
@@ -67,7 +67,7 @@ Globe::load(array(
 // BEHAVIORS
 // --------------------------------------------------
 
-Globe::load(array(
+Globe::Load(array(
   'endo',
   'app'
 ), STR_BEHAVIOR);

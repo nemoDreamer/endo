@@ -1,6 +1,6 @@
 <?php
 
-require_once(ENDO_PACKAGES_ROOT.'AkelosInflector/Inflector.php'); // can't use Globe::load, since loaded before Globe...
+require_once(ENDO_PACKAGES_ROOT.'AkelosInflector/Inflector.php'); // can't use Globe::Load, since loaded before Globe...
 
 class EndoInflector extends Inflector {
 

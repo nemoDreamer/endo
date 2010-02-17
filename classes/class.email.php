@@ -1,6 +1,6 @@
 <?php
 
-Globe::load('Setting', 'model');
+Globe::Load('Setting', 'model');
 
 class Email {
 

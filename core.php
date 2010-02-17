@@ -24,17 +24,17 @@ session_start();
 // URL
 // --------------------------------------------------
 
-Url::parse(array_get($_REQUEST, 'url'));
+Url::Parse(array_get($_REQUEST, 'url'));
 
 // --------------------------------------------------
 // Controller
 // --------------------------------------------------
 
-$Controller = Globe::init(Url::$data['controller'], 'controller');
+$Controller = Globe::Init(Url::$data['controller'], 'controller');
 
 if (get_class($Controller)=='stdClass') {
-  Error::set("Create Controller '".Url::$data['controllerName']."'!", 'fatal');
-  $Controller = Globe::init('missing', 'controller');
+  Error::Set("Create Controller '".Url::$data['controllerName']."'!", 'fatal');
+  $Controller = Globe::Init('missing', 'controller');
 }
 
 // --------------------------------------------------
@@ -45,7 +45,7 @@ if (get_class($Controller)=='stdClass') {
 $Controller->_beforeFilter();
 $Controller->_call(Url::$data['action'], Url::$data['params'], Url::$data['type']);
 $Controller->_beforeRender();
-if (!Error::is_fatal()) {
+if (!Error::IsFatal()) {
   $Controller->_render();
 }
 $Controller->_afterRender();
@@ -76,12 +76,12 @@ $View->assign(array(
   // 'id' => Url::$data['controller'].'_'.Url::$data['action'],
   'id' => $Controller->name.'_'.$Controller->action,
   'url' => Url::$data,
-  'has_errors' => Error::has_errors(),
+  'has_errors' => Error::HasErrors(),
   'debug_dump' => $debug_dump
 ));
 
 // assign content if no fatal
-$View->assign('content', !Error::is_fatal() || DEBUG!=0 ? $Controller->output : null);
+$View->assign('content', !Error::IsFatal() || DEBUG!=0 ? $Controller->output : null);
 
 // assign case-specific
 $View->assign(Globe::$variables_for_layout);
@@ -93,7 +93,7 @@ if ($Controller->type!=DEFAULT_REQUEST_TYPE) {
 }
 
 // echo
-$View->display(Globe::get_template($Controller->layout, 'layouts', $Controller->type));
+$View->display(Globe::GetTemplate($Controller->layout, 'layouts', $Controller->type));
 
 // d_pre("execution time:".(microtime(true) - $time));
 

@@ -31,7 +31,7 @@ function smarty_function_admin_relations($params=array(), &$smarty)
     foreach ($object->{'get_'.$relation_name} as $model_name => $model_params) {
       AppModel::RelationNameParams($model_name, $model_params);
       // get controller
-      $controller = Globe::init($model_name, 'controller'); // TODO replace by ::singleton, find others
+      $controller = Globe::Init($model_name, 'controller'); // TODO replace by ::singleton, find others
       // action & text
       switch ($relation_name) {
         case 'parent':

@@ -14,7 +14,7 @@ function smarty_block_for_layout($params, $content, &$smarty)
     }
   }
 
-  Globe::for_layout($assign, $content);
+  Globe::ForLayout($assign, $content);
 }
 
 ?>

@@ -4,31 +4,31 @@ class Error
 {
   static $errors = array();
 
-  static function set($message='', $key='default')
+  static function Set($message='', $key='default')
   {
-    if (!array_key_exists($key, Error::$errors)) {
-      Error::$errors[$key] = array();
+    if (!array_key_exists($key, self::$errors)) {
+      self::$errors[$key] = array();
     }
 
-    array_push(Error::$errors[$key], $message);
+    array_push(self::$errors[$key], $message);
   }
 
-  static function output($key='default', $layout='default')
+  static function Output($key='default', $layout='default')
   {
     $View = new AppView();
 
-    if (array_key_exists($key, Error::$errors)) {
+    if (array_key_exists($key, self::$errors)) {
 
       $output = '';
 
-      foreach (Error::$errors[$key] as $index => $message) {
+      foreach (self::$errors[$key] as $index => $message) {
         $View->assign('key', $key);
         $View->assign('index', $index);
         $View->assign('message', $message);
-        $output .= $View->fetch(Globe::get_template($layout, 'errors', Url::$data['type']))."\n";
+        $output .= $View->fetch(Globe::GetTemplate($layout, 'errors', Url::$data['type']))."\n";
       }
 
-      unset(Error::$errors[$key]);
+      unset(self::$errors[$key]);
 
       return $output;
     } else {
@@ -36,19 +36,19 @@ class Error
     }
   }
 
-  static function has_errors()
+  static function HasErrors()
   {
-    return count(Error::$errors)!=0;
+    return count(self::$errors)!=0;
   }
 
-  static function is_fatal()
+  static function IsFatal()
   {
-    return Error::is_('fatal');
+    return self::Is('fatal');
   }
 
-  static function is_($key)
+  static function Is($key)
   {
-    return array_key_exists($key, Error::$errors);
+    return array_key_exists($key, self::$errors);
   }
 }
 

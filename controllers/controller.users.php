@@ -8,7 +8,7 @@ class UsersController extends AppController
   {
     if ($this->data) {
       if (!$this->data('email') || !$this->data('password')) {
-        Error::set("Fields blank!", 'validation');
+        Error::Set("Fields blank!", 'validation');
         return false;
       }
       // create
@@ -30,8 +30,8 @@ class UsersController extends AppController
       $this->_redirect($this->data('redirect_to', $root));
     } else {
       $this->_assign(array(
-        'redirect_to' => Url::request('redirect_to', $root),
-        'email' => Url::request('email')
+        'redirect_to' => Url::GetRequest('redirect_to', $root),
+        'email' => Url::GetRequest('email')
       ));
     }
   }

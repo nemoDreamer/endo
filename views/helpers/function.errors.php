@@ -8,6 +8,6 @@ function smarty_function_errors($params=array(), &$smarty)
     $params['layout'] = 'default';
   }
 
-  return Error::output($params['key'], $params['layout']);
+  return Error::Output($params['key'], $params['layout']);
 }
 ?>
