@@ -379,6 +379,34 @@ class EndoModel extends MyActiveRecord
     return date($for_js ? DATE_FORMAT_JS : DATE_FORMAT, $this->get_timestamp($strKey));
   }
 
+  public function relative_date($strKey) {
+    $time=$this->get_timestamp($strKey);
+    $diff = time() - $time;
+
+    if ($diff < 1) {
+      return 'just now';
+    }
+
+    $a = array(
+      12 * 30 * 24 * 60 * 60  =>  'year',
+           30 * 24 * 60 * 60  =>  'month',
+                24 * 60 * 60  =>  'day',
+                     60 * 60  =>  'hour',
+                          60  =>  'minute',
+                           1  =>  'second'
+    );
+
+    foreach ($a as $seconds => $str) {
+      $d = $diff / $seconds;
+      if ($d > 1 && $str=='year') {
+        return date(DATE_FORMAT, $time);
+      } elseif ($d >= 1) {
+        $r = round($d);
+        return $r.' '.$str.($r > 1 ? 's' : '').' ago';
+      }
+    }
+  }
+
   // TODO move to publishable
   public function is_publishable()
   {
