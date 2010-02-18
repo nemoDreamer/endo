@@ -21,8 +21,12 @@ function smarty_function_list_classes($params, &$smarty)
     $type = $params['type'];
   }
 
+  // get offset
+  $offset = array_get($params, 'offset', 0);
+  $values = $offset%2!=0 ? 'even,odd' : 'odd,even';
+
   // odd/even
-  $output .= smarty_function_cycle(array_merge($params, array('values' => 'odd,even')), &$smarty);
+  $output .= smarty_function_cycle(array_merge($params, array('values' => $values)), &$smarty);
 
   // first/last
   $loop = $smarty->_foreach[$name];
