@@ -52,8 +52,13 @@ class EndoModel extends MyActiveRecord
 
   static function Update( $strClass, $id, $properties )
   {
+    // make sure we're not loading from cache!
     $cache_reset = rand();
     $object = array_shift(AppModel::FindAll($strClass, true, array('id' => $id, "'$cache_reset'" => $cache_reset), 'id', 1));
+    // are we allowed to make these changes?
+    if (!$object->_validate_changes($properties)) {
+      return false;
+    }
     $object->populate($properties);
     return $object->save();
   }
@@ -634,6 +639,15 @@ class EndoModel extends MyActiveRecord
       $has = $has || (isset($scope->$var) && !in_array($scope->$var, $default));
     }
     return $has;
+  }
+
+  // --------------------------------------------------
+  // VALIDATION
+  // --------------------------------------------------
+
+  protected function _validate_changes($new_data)
+  {
+    return true;
   }
 
 }
