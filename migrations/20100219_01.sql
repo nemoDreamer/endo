@@ -1,0 +1,1 @@
+ALTER TABLE  `event` CHANGE  `object_class`  `object_class` VARCHAR( 256 ) ;
