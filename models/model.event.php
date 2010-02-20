@@ -17,7 +17,7 @@ class Event extends AppModel {
       if ($this->object_id > 0) {
         $success = $success && ($this->Object = AppModel::FindById($this->object_class, $this->object_id, false)) != false;
       } else {
-        $this->Object = new EventObject($this->object_class);
+        $this->Object = new StringEvent($this->object_class);
         $this->object_class = $this->Object->class;
       }
     }
@@ -58,10 +58,11 @@ class Event extends AppModel {
 /*
  * used when object is a string
  */
-class EventObject {
+class StringEvent {
 
   var $class = '';
   var $string = '';
+  var $id = 0;
 
   public function __construct($string)
   {
