@@ -10,6 +10,7 @@ function smarty_function_link($params=array(), &$smarty)
   $action='';
   $set_gets=false;
   $extra='';
+  $prefix = DS;
 
   foreach ($params as $_key => $_value) {
     switch ($_key) {
@@ -19,6 +20,7 @@ function smarty_function_link($params=array(), &$smarty)
       case 'parameters':
       case 'href':
       case 'set_gets':
+      case 'prefix':
         $$_key = $_value;
         break;
 
@@ -45,9 +47,18 @@ function smarty_function_link($params=array(), &$smarty)
     if (empty($controller)) {
       $smarty->trigger_error("link: missing 'controller' parameter", E_USER_NOTICE);
       return;
+    } else {
+      if (!is_string($controller)) {
+        if (is_subclass_of($controller, 'AppModel') || is_subclass_of($controller, 'AppController')) {
+          $controller = AppInflector::fileize(get_class($controller), 'controller');
+        } else {
+          // no link possible...
+          return $text;
+        }
+      }
     }
 
-    $output .= '<a href="'.DS.$controller;
+    $output .= '<a href="'.$prefix.$controller;
 
     if (!empty($action)) {
       $output .= DS.$action;
