@@ -132,7 +132,7 @@ class Globe {
   {
     if (self::Load($name, $type, $show_errors)) {
       $class_name = AppInflector::classify($name, $type);
-      return new $class_name();
+      return $type=='model' ? AppModel::Create($class_name) : new $class_name();
     } else {
       return new stdClass();
     }
