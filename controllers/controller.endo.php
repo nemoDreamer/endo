@@ -430,8 +430,8 @@ class EndoController
     $value = Url::GetRequest('filter', null);
 
     // parents?
-    $parents = $this->Model->get_first_parent();
-    if ($this->name != 'execute' && !empty($parents)) {
+    $parents = $this->Model ? $this->Model->get_first_parent() : false;
+    if (!empty($parents)) {
       $parent = $parents['key'];
       $parent_params = $parents['value'];
       AppModel::RelationNameParams($parent, $parent_params);
