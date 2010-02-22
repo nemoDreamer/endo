@@ -1,6 +1,6 @@
 <?php
 
-class Setting extends EndoModel {
+class Setting extends AppModel {
 
   var $name_fields = array('label', 'variable');
   var $description_fields = array('value');
@@ -9,7 +9,7 @@ class Setting extends EndoModel {
   static function Group($group, $reindex=false)
   {
     $tmp = self::FindAll('Setting', false, "`group`='$group'", '`variable` ASC');
-    return $reindex ? collection_reindex($tmp, 'variable') : $tmp;
+    return $reindex ? AppModel::CollectionIndexBy($tmp, 'variable') : $tmp;
   }
 
   static function Get($variable, $group = 'default', $value_only = true)
@@ -32,7 +32,7 @@ class Setting extends EndoModel {
     } else {
       $where = null;
     }
-    return collection_group(self::FindAll('Setting', false, $where), 'group');
+    return AppModel::CollectionGroupBy(self::FindAll('Setting', false, $where), 'group');
   }
 
 }

@@ -108,95 +108,15 @@ function array_empty($array)
 // COLLECTION
 // --------------------------------------------------
 
-/*
- * use to format array for html_options helper
- */
-function to_array($obj)
+function build_options($collection, $null=false)
 {
-  $output = array();
-  foreach ($obj as $key => $value) {
-    $output[$key] = $value;
-  }
-  return $output;
-}
-
-define('COLLECTION_INDEX_NO_GROUP', '__ungroupable__');
-
-// TODO move global collection functions to EndoModel statics
-function collection_group($array, $group_bys)
-{
-  if (is_array($group_bys)) {
-    $group_by = array_shift($group_bys);
-  } else {
-    $group_by = (string) $group_bys;
-    $group_bys = null;
-  }
-
-  $tmp = array();
-  foreach ($array as $index => $row) {
-    $group_name = !isset($row->$group_by) ? COLLECTION_INDEX_NO_GROUP : $row->$group_by;
-    if (!array_key_exists($group_name, $tmp)) {
-      $tmp[$group_name] = array();
-    }
-    $tmp[$group_name][$index] = $row;
-  }
-
-  if (is_array($group_bys) && !empty($group_bys)) {
-    foreach ($tmp as $key => $value) {
-      $tmp[$key] = collection_group($value, $group_bys);
-    }
-  }
-
-  return $tmp;
-}
-
-function collection_reindex($array=array(), $index='id')
-{
-  $tmp = array();
-  foreach ($array as $key => $value) {
-    if (!is_array($value)) {
-      $value = (array)$value;
-    }
-    $tmp[$value[$index]] = $value;
-  }
-  return $tmp;
-}
-
-function build_options($array, $null=false)
-{
-  foreach ($array as $key => $value) {
+  foreach ($collection as $key => $value) {
     if (is_numeric($key) && is_string($value)) {
-      unset($array[$key]);
-      $array[htmlentities($value)] = $null ? null : $value;
+      unset($collection[$key]);
+      $collection[htmlentities($value)] = $null ? null : $value;
     }
   }
-  return $array;
-}
-
-function collection_slice($array, $id, $offset, $length, $preserve_keys=false)
-{
-  // prepare
-  $array_keys = array_keys($array);
-  $array_keys = array_pad($array_keys, -(abs($offset)+count($array_keys)), null); // left pad array to allow too small/large offset
-  $array_keys = array_pad($array_keys, abs($offset)+count($array_keys), null); // right pad
-  $id_as_index = array_search($id, $array_keys);
-  $array_slice = array_slice($array_keys, $id_as_index + $offset, $length);
-  // replicate
-  $output = array();
-  for ($i=0; $i < $length; $i++) {
-    $index = $preserve_keys ? $array_slice[$i] : $i;
-    $output[(string)$index] = array_get($array, $array_slice[$i]);
-  }
-  return $output;
-}
-
-function collection_extract($array, $keys)
-{
-  $output = array();
-  foreach ($array as $key => $value) {
-    $output[$key] = array_extract($value, $keys);
-  }
-  return $output;
+  return $collection;
 }
 
 // --------------------------------------------------

@@ -64,7 +64,7 @@ class EndoModel extends MyActiveRecord
   }
 
   // --------------------------------------------------
-  // RETRIEVAL
+  // RELATIONS
   // --------------------------------------------------
 
   static function AddRelated ($relation, &$objects=array())
@@ -114,6 +114,10 @@ class EndoModel extends MyActiveRecord
       $related_params = array();
     }
   }
+
+  // --------------------------------------------------
+  // FIND
+  // --------------------------------------------------
 
   static function FindAll($strClass, $extend=false, $mxdWhere=null, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
@@ -257,6 +261,108 @@ class EndoModel extends MyActiveRecord
     $query = "SELECT *, $display_name FROM `$table` WHERE $where ORDER BY $strOrderBy LIMIT $intOffset,$intLimit";
 
     return AppModel::FindBySql($strClass, $query);
+  }
+
+  static function PureSql( $strSQL )
+  {
+    static $cache = array();
+    $md5 = md5($strSQL);
+
+    if( isset( $cache[$md5] ) && defined('MYACTIVERECORD_CACHE_SQL') && MYACTIVERECORD_CACHE_SQL )
+    {
+      return $cache[$md5];
+    }
+    else
+    {
+      if( $rscResult = MyActiveRecord::query($strSQL) )
+      {
+        $arrObjects = array();
+        while( $arrVals = mysql_fetch_assoc($rscResult) )
+        {
+          array_push($arrObjects, (object) $arrVals);
+        }
+        mysql_free_result($rscResult);
+        return $cache[$md5] = $arrObjects;
+      }
+      else
+      {
+        trigger_error("MyActiveRecord::FindBySql() - SQL Query Failed: $strSQL", E_USER_ERROR);
+        return $cache[$md5] = false;
+      }
+    }
+  }
+
+  // --------------------------------------------------
+  // COLLECTION MANIPULATION
+  // --------------------------------------------------
+
+  const COLLECTION_INDEX_NO_GROUP = '__ungroupable__';
+
+  /**
+   * @static
+   * @param Array of Model Objects (usually returned by a 'Find')
+   * @param String or array of keys (if array, will group recursively cycling through keys)
+   */
+  static function CollectionGroupBy($collection, $group_bys)
+  {
+    if (is_array($group_bys)) {
+      $group_by = array_shift($group_bys);
+    } else {
+      $group_by = (string) $group_bys;
+      $group_bys = null;
+    }
+
+    $tmp = array();
+    foreach ($collection as $index => $row) {
+      $group_name = !isset($row->$group_by) ? AppModel::COLLECTION_INDEX_NO_GROUP : $row->$group_by;
+      if (!array_key_exists($group_name, $tmp)) {
+        $tmp[$group_name] = array();
+      }
+      $tmp[$group_name][$index] = $row;
+    }
+
+    if (is_array($group_bys) && !empty($group_bys)) {
+      foreach ($tmp as $key => $value) {
+        $tmp[$key] = AppModel::CollectionGroupBy($value, $group_bys);
+      }
+    }
+
+    return $tmp;
+  }
+
+  static function CollectionIndexBy($collection=array(), $index='id')
+  {
+    $tmp = array();
+    foreach ($collection as $key => $value) {
+      $tmp[$value->$index] = $value;
+    }
+    return $tmp;
+  }
+
+  static function CollectionSlice($collection, $id, $offset, $length, $preserve_keys=false)
+  {
+    // prepare
+    $collection_keys = array_keys($collection);
+    $collection_keys = array_pad($collection_keys, -(abs($offset)+count($collection_keys)), null); // left pad array to allow too small/large offset
+    $collection_keys = array_pad($collection_keys, abs($offset)+count($collection_keys), null); // right pad
+    $id_as_index = array_search($id, $collection_keys);
+    $collection_slice = array_slice($collection_keys, $id_as_index + $offset, $length);
+    // replicate
+    $output = array();
+    for ($i=0; $i < $length; $i++) {
+      $index = $preserve_keys ? $collection_slice[$i] : $i;
+      $output[(string)$index] = array_get($collection, $collection_slice[$i]);
+    }
+    return $output;
+  }
+
+  static function CollectionExtract($collection, $keys)
+  {
+    $output = array();
+    foreach ($collection as $key => $value) {
+      $output[$key] = array_extract($value, $keys);
+    }
+    return $output;
   }
 
   static function CollectionToOptions($collection, $sort=true, $fancy=false)
