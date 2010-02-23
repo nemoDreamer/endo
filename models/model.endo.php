@@ -365,6 +365,15 @@ class EndoModel extends MyActiveRecord
     return $output;
   }
 
+  static function CollectionClone($collection)
+  {
+    $output = array();
+    foreach ($collection as $key => $value) {
+      $output[$key] = clone $value;
+    }
+    return $output;
+  }
+
   static function CollectionToOptions($collection, $sort=true, $fancy=false)
   {
     // only keep display-name
