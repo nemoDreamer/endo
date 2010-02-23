@@ -26,6 +26,22 @@ class Event extends AppModel {
     return $success;
   }
 
+  public function populate_alt($arrVals)
+  {
+    if( is_array($arrVals) )
+    {
+      foreach($arrVals as $key=>$val)
+      {
+        $this->$key=$val;
+      }
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   // --------------------------------------------------
   // STATIC METHODS
   // --------------------------------------------------
@@ -36,7 +52,9 @@ class Event extends AppModel {
       return false;
     }
 
-    $Event = AppModel::Create('Event', array_merge(
+    $Event = new Event();
+
+    $Event->populate_alt(array_merge(
       array(
         'subject_class' => get_class($Subject),
         'subject_id' => $Subject->id,
@@ -47,7 +65,6 @@ class Event extends AppModel {
         'object_id' => !$object_is_string ? $Object->id : null
       ) : array()
     ));
-
     $Event->set_datetime('timestamp');
 
     return $Event->save();
@@ -63,10 +80,11 @@ class StringEvent {
   var $class = '';
   var $string = '';
   var $id = 0;
+  const STRING_SEP = '|';
 
   public function __construct($string)
   {
-    list($this->class, $this->string) = explode('|', $string);
+    list($this->class, $this->string) = explode(self::STRING_SEP, $string);
   }
 
   public function display_field()
