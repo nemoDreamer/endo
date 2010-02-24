@@ -58,8 +58,9 @@ $Controller->call_afterFilter();
 $debug_dump = '';
 $debug_dump .= d_pre('Url::$data', false).d_arr(Url::$data, false);
 $debug_dump .= d_pre('$Controller->LoggedIn', false).d_arr($Controller->LoggedIn, false);
-// $debug_dump .= d_pre('Error::$errors').d_arr(Error::$errors, false);
-$debug_dump .= d_pre('$_SESSION', false).d_arr($_SESSION, false);
+$debug_dump .= d_pre('$Controller->filter', false).d_arr($Controller->filter, false);
+// $debug_dump .= d_pre('Error::$errors', false).d_arr(Error::$errors, false);
+// $debug_dump .= d_pre('$_SESSION', false).d_arr($_SESSION, false);
 // $debug_dump .= d_pre('$_SERVER', false).d_arr($_SERVER, false);
 // $debug_dump .= d_pre('CONSTANTS', false).d_arr(get_constants(), false);
 
