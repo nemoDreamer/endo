@@ -376,6 +376,9 @@ class EndoModel extends MyActiveRecord
 
   static function CollectionToOptions($collection, $sort=true, $fancy=false)
   {
+    if (!is_array($collection)) {
+      return array();
+    }
     // only keep display-name
     foreach ($collection as $key => $object) {
       $collection[$key] = $object->display_field('name', $fancy);
