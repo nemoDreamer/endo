@@ -6,7 +6,9 @@
 */
 class SortableBehavior extends AppBehavior
 {
-  public $parent, $parent_obj = false;
+  static $name = 'sortable';
+
+  public $parent, $parent_obj, $parent_behavior = false;
   private $next, $previous = false;
 
   protected $defaults = array(
@@ -22,7 +24,13 @@ class SortableBehavior extends AppBehavior
   public function __construct($root, $config=array())
   {
     parent::__construct($root, $config);
-    $this->root->order_by = 'position ASC';
+    if ($this->root->order_by=='name') {
+      $this->root->order_by = 'position ASC';
+    }
+
+    $tmp = explode(' ', $this->root->order_by);
+    $this->position_field = strtolower($tmp[0]);
+    $this->order_direction = strtoupper(array_get($tmp, 1, 'asc'));
   }
 
   // --------------------------------------------------
@@ -39,10 +47,18 @@ class SortableBehavior extends AppBehavior
 
   public function get_parent_obj()
   {
-    if ($this->parent) {
+    if (!$this->parent_obj && $this->parent) {
       $this->parent_obj = object_get($this->root, $this->parent);
     }
     return $this->parent_obj;
+  }
+
+  public function get_parent_behavior()
+  {
+    if (!$this->parent_behavior && $this->parent_obj) {
+      $this->parent_behavior = object_get($this->parent_obj, 'acts_as_'.self::$name);
+    }
+    return $this->parent_behavior;
   }
 
   // --------------------------------------------------
@@ -52,18 +68,32 @@ class SortableBehavior extends AppBehavior
   private function get_($previousNext, $extend=false)
   {
     $previousNext_b = dual($previousNext, 'previous', 'next');
+    if ($this->order_direction=='DESC') {
+      $previousNext_b = !$previousNext_b; // invert sort order
+    }
 
     if (!$this->{$previousNext}) {
       $class_name = get_class($this->root);
       $ltGt = $previousNext_b ? '<' : '>';
       $ascDesc = $previousNext_b ? 'DESC' : 'ASC';
       $parent_where = $this->get_parent() ? " AND `{$this->get_parent()}_id`={$this->get_parent_obj()->id}" : null;
-      $where = "`position` $ltGt {$this->root->position}".$parent_where;
+      $where = "`{$this->position_field}` $ltGt '{$this->get_position()}'".$parent_where;
 
       // is first/last?
-      if(!$object = AppModel::FindFirst($class_name, $extend, $where, "`position` $ascDesc")) {
-        if ($adjacent_parent = AppModel::FindFirst($this->parent, false, "`position` $ltGt {$this->parent_obj->position}", "`position` $ascDesc")) {
-          $object = AppModel::FindFirst($class_name, $extend, "`{$this->parent}_id`=$adjacent_parent->id", "`position` $ascDesc");
+      if((!$object = AppModel::FindFirst(
+        $class_name,
+        $extend,
+        $where,
+        "`{$this->position_field}` $ascDesc"
+      )) && $this->parent) {
+        $parent_behavior = $this->get_parent_behavior();
+        if ($adjacent_parent = AppModel::FindFirst(
+          $this->parent,
+          false, // don't extent
+          "`{$parent_behavior->position_field}` $ltGt '{$parent_behavior->get_position()}'",
+          "`{$parent_behavior->position_field}` $ascDesc"
+        )) {
+          $object = AppModel::FindFirst($class_name, $extend, "`{$this->parent}_id`=$adjacent_parent->id", "`{$this->position_field}` $ascDesc");
         }
       }
 
@@ -82,6 +112,15 @@ class SortableBehavior extends AppBehavior
       $this->get_previous($extend),
       $this->get_next($extend)
     );
+  }
+
+  // --------------------------------------------------
+  // DATA
+  // --------------------------------------------------
+
+  public function get_position()
+  {
+    return $this->root->{$this->position_field};
   }
 }
 

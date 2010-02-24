@@ -13,6 +13,7 @@ function smarty_function_next_prev($params, &$smarty)
   $id = array_get($params, 'id', '');
   $class = array_get($params, 'class', '');
   $show_name = array_get($params, 'show_name', false);
+  $show_position = array_get($params, 'show_position', true);
 
   // --------------------------------------------------
   // DEPENDENCIES
@@ -42,7 +43,7 @@ function smarty_function_next_prev($params, &$smarty)
       $name = $curr_obj->name;
     }
 
-    $name = ' <span class="name">'.($show_name ? ($href ? expand_name($curr_obj, $parent) : $first_last[$i]) : null).'</span>';
+    $name = ' <span class="name">'.($show_name ? ($href ? expand_name($curr_obj, $parent, $show_position) : $first_last[$i]) : null).'</span>';
     $text = ($i==0 ? '<span class="aquo">&laquo;</span> ' : null) . '<span class="label">'.ucfirst($label).'</span>' . ($i==1 ? ' <span class="aquo">&raquo;</span>' : null);
 
     $output .= "<li class=\"$label\">";
@@ -55,10 +56,11 @@ function smarty_function_next_prev($params, &$smarty)
   return $output;
 }
 
-function expand_name($curr_obj, $parent)
+function expand_name($curr_obj, $parent, $show_position)
 {
   $truncated = smarty_modifier_truncate($curr_obj->name, 50, ' [...]');
-  return '<span class="number">'.$curr_obj->{$parent}->position.'.'.$curr_obj->position.'</span> '.$truncated;
+  $position = $show_position ? '<span class="number">'.$curr_obj->{$parent}->acts_as_sortable->get_position().'.'.$curr_obj->acts_as_sortable->get_position().'</span> ' : null;
+  return $position.$truncated;
 }
 
 ?>
