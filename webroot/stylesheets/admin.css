@@ -294,6 +294,10 @@ ul.items .label .part_3 {
 	font-size: 75%;
 }
 
+ul.items .label em {
+  display: block;
+}
+
 /* @end */
 
 ul.items .blurb {
