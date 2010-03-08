@@ -17,6 +17,8 @@ class SortableBehavior extends AppBehavior
 
   public $config = array();
 
+  const ORDER_BY_DEFAULT = 'position ASC';
+
   // --------------------------------------------------
   // CONSTRUCTOR
   // --------------------------------------------------
@@ -24,13 +26,19 @@ class SortableBehavior extends AppBehavior
   public function __construct($root, $config=array())
   {
     parent::__construct($root, $config);
-    if ($this->root->order_by=='name') {
-      $this->root->order_by = 'position ASC';
-    }
 
+    // set default order_by?
+    if ($this->root->order_by=='name') {
+      $this->root->order_by = SortableBehavior::ORDER_BY_DEFAULT;
+    }
+    // get position_field & order_direction
     $tmp = explode(' ', $this->root->order_by);
     $this->position_field = strtolower($tmp[0]);
     $this->order_direction = strtoupper(array_get($tmp, 1, 'asc'));
+    // has parent_position field?
+    if (isset($this->root->parent_position)) {
+      $this->root->order_by = 'parent_position ASC '.$this->root->order_by;
+    }
   }
 
   // --------------------------------------------------
@@ -49,6 +57,10 @@ class SortableBehavior extends AppBehavior
   {
     if (!$this->parent_obj && $this->parent) {
       $this->parent_obj = object_get($this->root, $this->parent);
+      if (!$this->parent_obj) {
+        Globe::Load($this->parent, 'model');
+        $this->parent_obj = $this->root->{$this->parent} = $this->root->find_parent($this->parent);
+      }
     }
     return $this->parent_obj;
   }
@@ -59,6 +71,15 @@ class SortableBehavior extends AppBehavior
       $this->parent_behavior = object_get($this->parent_obj, 'acts_as_'.self::$name);
     }
     return $this->parent_behavior;
+  }
+
+  public function get_parent_position($recursive=false)
+  {
+    if ($this->get_parent() && $this->get_parent_obj() && $this->get_parent_behavior()) {//
+      return $this->parent_behavior->get_position($recursive);
+    } else {
+      return false;
+    }
   }
 
   // --------------------------------------------------
@@ -118,11 +139,12 @@ class SortableBehavior extends AppBehavior
   // DATA
   // --------------------------------------------------
 
-  public function get_position()
+  public function get_position($recursive=false)
   {
-    return $this->root->{$this->position_field};
+    $parent_position = ($recursive && ($tmp=$this->get_parent_position())!==false) ? $tmp.'.' : null;
+    return $parent_position.$this->root->{$this->position_field};
   }
-}
 
+}
 
 ?>
