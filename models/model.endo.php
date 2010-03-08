@@ -494,7 +494,7 @@ class EndoModel extends MyActiveRecord
     $parts = array();
     foreach ($this->{$scaffold_name.'_fields'} as $field) {
       if ($fancy || $this->$field!=null) {
-        array_push($parts, $this->$field);
+        array_push($parts, method_exists($this, $tmp='get_'.$field) ? $this->$tmp() : $this->$field);
       }
     }
     return $fancy ? fancyize($parts) : implode($separator, $parts);
