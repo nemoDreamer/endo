@@ -75,7 +75,9 @@ class SortableBehavior extends AppBehavior
 
   public function get_parent_position($recursive=false)
   {
-    if ($this->get_parent() && $this->get_parent_obj() && $this->get_parent_behavior()) {//
+    if (isset($this->root->parent_position) && $this->root->parent_position!=null) {
+      return $this->root->parent_position;
+    } elseif ($this->get_parent() && $this->get_parent_obj() && $this->get_parent_behavior()) {//
       return $this->parent_behavior->get_position($recursive);
     } else {
       return false;
