@@ -275,6 +275,7 @@ class EndoController
         ceil(count(AppModel::FindAllSearched(
           Url::$data['modelName'],
           Url::GetRequest('search', null), // search
+          false, // extend
           $this->filter->where // where
         )) / $limit)
       );
@@ -284,6 +285,7 @@ class EndoController
         AppModel::FindAllSearched(
           Url::$data['modelName'],
           Url::GetRequest('search', null), // search
+          false, // extend
           $this->filter->where, // where
           null, // automatic order
           $limit,

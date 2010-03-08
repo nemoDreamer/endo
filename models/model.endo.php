@@ -231,7 +231,7 @@ class EndoModel extends MyActiveRecord
     return AppModel::CollectionToOptions($collection);
   }
 
-  static function FindAllSearched($strClass, $search='', $strWhere=NULL, $strOrderBy=null, $intLimit=null, $intOffset=null)
+  static function FindAllSearched($strClass, $search='', $extend=false, $strWhere=NULL, $strOrderBy=null, $intLimit=null, $intOffset=null)
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
@@ -260,7 +260,11 @@ class EndoModel extends MyActiveRecord
 
     $query = "SELECT *, $display_name FROM `$table` WHERE $where ORDER BY $strOrderBy LIMIT $intOffset,$intLimit";
 
-    return AppModel::FindBySql($strClass, $query);
+    $objects = AppModel::FindBySql($strClass, $query);
+    if ($extend) {
+      AppModel::AddAllRelated($objects);
+    }
+    return $objects;
   }
 
   static function PureSql( $strSQL )
