@@ -44,6 +44,7 @@ ddefine('ADMIN_DEFAULT_ACTION',             'dashboard');
 // --------------------------------------------------
 
 ddefine('CLASS_USER_MEMBER',                'Member');
+ddefine('LOGIN_REDIRECT',                   DS);
 
 // --------------------------------------------------
 // FORMATTING

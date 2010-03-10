@@ -25,7 +25,10 @@ class UsersController extends AppController
     }
   }
 
-  public function login($root=DS) {
+  public function login($root=LOGIN_REDIRECT) {
+    if (!Url::$data['is_admin']) {
+      $this->layout = 'login';
+    }
     if (!$this->LoggedIn->is_guest()) {
       Event::Set($this->LoggedIn, 'login');
       $this->redirect($this->data('redirect_to', $root));
