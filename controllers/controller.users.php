@@ -26,6 +26,7 @@ class UsersController extends AppController
   }
 
   public function login($root=LOGIN_REDIRECT) {
+    $this->is_login = true;
     if (!Url::$data['is_admin']) {
       $this->layout = 'login';
     }

@@ -10,6 +10,7 @@ class EndoController
   var $data = array();
   var $filter = null;
   var $has_redirected = false;
+  var $is_login = false;
   var $nav = array();
   var $nav_prepend = array();
   var $nav_append = array();
