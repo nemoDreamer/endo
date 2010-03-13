@@ -275,7 +275,8 @@ div.input.tags select option[disabled] {
 }
 
 div.input.tags .selected {
-	padding-left: 78px;
+	padding-left: 15%;
+	margin-left: 10px;
 }
 
 div.input.tags .selected:after {
@@ -291,6 +292,7 @@ div.input.tags .selected .tag {
 	background-color: #d4d0c8;
 	color: #646665;
 	text-decoration: none;
+	white-space: nowrap;
 }
 
 div.input.tags .selected .tag:hover {
