@@ -64,9 +64,9 @@ form textarea {
 	display: block;
 	float: left;
 	margin: 0 10px 0 0!important;
-	padding: 0 5px;
+	padding: 8px 5px;
 	height: auto;
-	font: 100%/30px Cambria, Georgia, Times, "Times New Roman", serif;
+	font: 12px/14px Cambria, Georgia, Times, "Times New Roman", serif;
 	background: url(/assets/images/admin/input.gif) no-repeat left top;
 	border: 1px solid #edece8!important;
 }
@@ -351,27 +351,18 @@ form .select_all a {
 
 /* @group Login */
 
-/*#users_login_form {
-	margin-top: 100px;
-	margin-bottom: 100px;
-}*/
-
 #validation_errors .error {
 	padding: 10px;
 }
 
 #users_login_form .text label {
 	float: left;
-	width: 20%;
-}
-
-#users_login_form .text input {
-	width: 40%;
+	width: 20%!important;
 }
 
 #users_login_form .checkbox,
 #users_login_form .submit {
-	margin-left: 20%;
+	margin-left: 20%!important;
 }
 
 /* @end */
