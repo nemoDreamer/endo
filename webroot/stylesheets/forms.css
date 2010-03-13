@@ -308,6 +308,11 @@ div.input.hours {
 	line-height: 2em;
 }
 
+div.input.hours select {
+	float: left;
+	margin-right: 10px;
+}
+
 /* @end */
 
 /* @group Lessons */
