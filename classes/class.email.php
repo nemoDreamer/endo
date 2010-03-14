@@ -9,7 +9,7 @@ class Email {
 
   function __construct($from, $to, $include_admin=false)
   {
-    $admin = Setting::Get('admin', 'email', true);
+    $admin = Setting::Get('admin', 'emails', true);
     if ($include_admin) {
       $to = $admin.wrap($to,', ');
     }
@@ -42,7 +42,7 @@ class Email {
       $this->headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
     }
 
-    // $this->headers .= "To: $this->to\r\n"; // handled by mail()...
+    $this->headers .= "To: $this->to\r\n"; // handled by mail()...
     $this->headers .= "From: $this->from\r\n";
     $this->headers .= "Reply-To: $this->from\r\n";
 
