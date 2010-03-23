@@ -70,6 +70,20 @@ class Event extends AppModel {
     return $Event->save();
   }
 
+  static function Exists($action, $Subject, $Object=false)
+  {
+    $object_where = ($Object!=false) ? "AND `object_class`='".get_class($Object)."' AND `object_id`=$Object->id" : null;
+    $tmp=AppModel::PureSQL(
+      "SELECT * FROM `event`
+      WHERE
+        `action`='$action'
+        AND `subject_class`='".get_class($Subject)."' AND `subject_id`=$Subject->id
+        $object_where
+      "
+    );
+    return !empty($tmp);
+  }
+
 }
 
 /*
