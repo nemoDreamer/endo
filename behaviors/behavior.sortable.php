@@ -147,6 +147,12 @@ class SortableBehavior extends AppBehavior
     return $parent_position.$this->root->{$this->position_field};
   }
 
+  public function is_last()
+  {
+    $tmp = AppModel::FindFirst(get_class($this->root), false, "{$this->position_field} > {$this->root->position}");
+    return empty($tmp);
+  }
+
 }
 
 ?>
