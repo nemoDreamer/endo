@@ -46,14 +46,11 @@ form label.full {
 	padding: 0;
 }
 
-/*form label.inline {
-	display: inline;
-	float: none;
-	width: auto;
-	text-align: left;
-	margin: 0;
-	padding: 0;
-}*/
+form div.editor label {
+  float: none;
+  margin: 0;
+  padding: 0;
+}
 
 /* @end */
 
