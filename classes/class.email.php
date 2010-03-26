@@ -4,10 +4,10 @@ Globe::Load('Setting', 'model');
 
 class Email {
 
-  var $from, $to, $subject, $message;
+  var $from, $to, $cc, $bcc, $subject, $message;
   var $parts = array();
 
-  function __construct($from, $to, $include_admin=false)
+  function __construct($from, $to, $include_admin=false, $options=array())
   {
     $admin = Setting::Get('admin', 'emails', true);
     if ($include_admin) {
@@ -15,6 +15,10 @@ class Email {
     }
     $this->from = $from ? $from : $admin;
     $this->to = $to ? $to : $admin;
+
+    foreach ($options as $key => $value) {
+      $this->$key = $value;
+    }
   }
 
   function send_data($data, $subject='[Data Send]')
@@ -42,7 +46,9 @@ class Email {
       $this->headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
     }
 
-    $this->headers .= "To: $this->to\r\n"; // handled by mail()...
+    // $this->headers .= "To: $this->to\r\n"; // handled by mail()...
+    if($this->cc) $this->headers .= "Cc: $this->cc\r\n";
+    if($this->bcc) $this->headers .= "Bcc: $this->bcc\r\n";
     $this->headers .= "From: $this->from\r\n";
     $this->headers .= "Reply-To: $this->from\r\n";
 
