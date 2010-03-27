@@ -46,7 +46,7 @@ class Event extends AppModel {
   // STATIC METHODS
   // --------------------------------------------------
 
-  static function Set($Subject, $action, $Object=false, $object_is_string=false)
+  static function Set($Subject, $action, $Object=false, $object_is_string=false, $offset=0)
   {
     if (!$Subject || !$action) {
       return false;
@@ -65,7 +65,8 @@ class Event extends AppModel {
         'object_id' => !$object_is_string ? $Object->id : null
       ) : array()
     ));
-    $Event->set_datetime('timestamp');
+
+    $Event->set_datetime('timestamp', $offset != 0 ? time() + ((integer) $offset) : null);
 
     return $Event->save();
   }
