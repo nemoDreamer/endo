@@ -15,7 +15,7 @@
     <input type="password" name="password" id="password">
   </div>
   <div id="remember_me_div" class="input checkbox">
-    <label for="remember_me"><input type="checkbox" name="remember_me" id="remember_me"> remember me?</label>
+    <label for="remember_me"><input type="checkbox" name="remember_me" id="remember_me" checked="checked"> remember me?</label>
   </div>
   <div id="submit_div" class="input submit">
     <input type="submit" value="Log in &rarr;">
