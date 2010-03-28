@@ -155,6 +155,46 @@ form div.checkbox input {
 
 /* @end */
 
+/* @group Radio */
+
+form div.radio {
+	margin-left: 15%;
+	padding-left: 10px;
+}
+
+form div.radio .radio {
+	float: left;
+	margin: 1px 10px 0 0;
+	line-height: 1;
+}
+
+form div.radio .radio label {
+	float: none;
+	display: inline;
+	width: auto;
+	margin: 0;
+	padding: 0;
+	line-height: 2.5;
+}
+
+form div.radio .radio input {
+	float: none;
+	display: inline;
+	width: auto;
+	height: auto;
+	padding: 0;
+	margin: 0 5px 0 0!important;
+	line-height: 2.5;
+}
+
+form div.radio .sep {
+	float: left;
+	margin: 1px 10px 0 0;
+	line-height: 2.5;
+}
+
+/* @end */
+
 /* @group Submit */
 
 form div.submit {
