@@ -73,13 +73,13 @@ class User extends AppModel {
   {
     if (!empty($this->password)) { // changing password?
       // valid?
-      if (isset($this->old_password) && !$this->validate($old_password)) {
-        Error::Set("Old Password invalid!", 'validation');
+      if (isset($this->old_password) && !$this->validate($this->old_password)) {
+        Error::Set("Old Password invalid!");
         return false;
       }
       // confirmed?
       if ($this->password != $this->password_confirm) {
-        Error::Set("Password &amp; confirm don't match!", 'validation');
+        Error::Set("Password &amp; confirm don't match!");
         return false;
       }
       $this->_new_password($this->password);
