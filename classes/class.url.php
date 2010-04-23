@@ -150,6 +150,12 @@ class Url {
     foreach ($routes as $pattern => $data) {
       $pattern = "%^$pattern$%Uis"; // add pattern defaults & flags
       if (preg_match($pattern, $url)!==0) {
+        // redirect?
+        if ($redirect = array_get($data, 'redirect')) {
+          header('Location: '.str_replace('DOMAIN', DOMAIN, $redirect));
+          die();
+        }
+        // params
         $params = array_extract($data, array('replace', 'continue'), true);
         $url = preg_replace($pattern, $params['replace'], $url);
         Url::$data = array_merge(Url::$data, $data);
