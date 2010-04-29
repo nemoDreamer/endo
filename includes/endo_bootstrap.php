@@ -159,4 +159,70 @@ function sort_name($a, $b) {
   return strnatcasecmp($a->name, $b->name);
 }
 
+// --------------------------------------------------
+// FILESYSTEM
+// use with caution...
+// --------------------------------------------------
+
+function emptyResource($path)
+{
+  if (removeResource($path, false)) {
+    createEmptyFile($path);
+  }
+}
+
+function removeResource( $_target, $remove_last=true ) {
+
+  if (!file_exists($_target)) {
+    return false;
+  }
+
+  //file?
+  if( is_file($_target) ) {
+    if( is_writable($_target) ) {
+      if( @unlink($_target) ) {
+        return true;
+      }
+    }
+  }
+
+  //dir?
+  if( is_dir($_target) ) {
+    if( is_writeable($_target) ) {
+      foreach( new DirectoryIterator($_target) as $_res ) {
+        if( $_res->isDot() ) {
+          unset($_res);
+          continue;
+        }
+
+        if( $_res->isFile() ) {
+          removeResource( $_res->getPathName() );
+        } elseif( $_res->isDir() ) {
+          removeResource( $_res->getRealPath() );
+        }
+
+        unset($_res);
+      }
+
+      if ( $remove_last ) {
+        if( @rmdir($_target) ) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function createEmptyFile($path, $name='empty')
+{
+  if (substr($path, -1)!=DS) {
+    $path .= DS;
+  }
+  $handle = fopen($path.$name, 'w');
+  fclose($handle);
+}
+
 ?>
