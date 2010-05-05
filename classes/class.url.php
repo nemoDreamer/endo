@@ -73,7 +73,7 @@ class Url {
 
     // is subdomain?
     // if (count($host_parts=explode('.', $_SERVER['HTTP_HOST'])) > 2 && $host_parts[0]!='www') {
-    if (($subdomain=Url::GetSubdomain()) != null && $subdomain != 'www') {
+    if (($subdomain=Url::GetSubdomain()) != null) {
       Url::$data['is_subdomain'] = true;
       Url::$data['subdomain'] = $subdomain;
       Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.$subdomain.'.'.DOMAIN;
@@ -200,7 +200,7 @@ class Url {
 
   static function GetSubdomain()
   {
-    return substr(str_replace(DOMAIN, '', $_SERVER['HTTP_HOST']), 0, -1);
+    return substr(str_replace(DOMAIN, '', preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST'])), 0, -1);
   }
 
 }
