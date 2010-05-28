@@ -76,8 +76,8 @@ class Url {
     if (($subdomain=Url::GetSubdomain()) != null) {
       Url::$data['is_subdomain'] = true;
       Url::$data['subdomain'] = $subdomain;
-      Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.$subdomain.'.'.DOMAIN;
     }
+    Url::$data['host'] = 'http'.(array_get($_SERVER, 'HTTPS') ? 's' : '').'://'.wrap($subdomain,'','.').DOMAIN;
 
     // d($url);d_arr($parts);d_arr(Url::$data);die;
 
