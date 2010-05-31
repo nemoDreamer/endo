@@ -169,7 +169,7 @@ class User extends AppModel {
   {
     list($email, $crypted_password) = explode('|', $string);
     // valid?
-    if (is_a($user=AppUser::FetchUser($email), 'User') && $user->crypted_password == $crypted_password) {
+    if (($user=AppUser::FetchUser($email)) instanceof User && $user->crypted_password == $crypted_password) {
       return AppUser::SetCurrent($user);
     } else {
       return false;
@@ -178,7 +178,7 @@ class User extends AppModel {
 
   static function Clean($user)
   {
-    if (is_a($user, 'User') || is_subclass_of($user, 'User')) {
+    if ($user instanceof User || is_subclass_of($user, 'User')) {
       unset($user->salt);
       unset($user->password);
       unset($user->crypted_password);

@@ -192,7 +192,8 @@ class Url {
 
   static function GetDataArray($variable, $key, $default=null)
   {
-    return array_get(array_get(Url::$data, $variable, array()), $key, $default);
+    $tmp = array_get(Url::$data, $variable, array()); // fix 'only variables can be passed by reference' bug...
+    return array_get($tmp, $key, $default);
   }
 
   static function GetParam($variable, $default=null) { return Url::GetDataArray('params', $variable, $default); }

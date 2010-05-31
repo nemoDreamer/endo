@@ -18,7 +18,7 @@ class EndoInflector extends Inflector {
   // PLURALIZE / SINGULARIZE
   // --------------------------------------------------
 
-  public function pluralize($str='')
+  static function pluralize($str='')
   {
     $str = strtolower($str);
     if (array_key_exists($str, $tmp=self::GetPluralizeExceptions())) {
@@ -28,7 +28,7 @@ class EndoInflector extends Inflector {
     }
   }
 
-  public function singularize($str='')
+  static function singularize($str='')
   {
     $str = strtolower($str);
     if (array_key_exists($str, $tmp=array_flip(self::GetPluralizeExceptions()))) {
@@ -42,7 +42,7 @@ class EndoInflector extends Inflector {
   // ENDO-SPECIFIC
   // --------------------------------------------------
 
-  public function classify($name='', $type='class')
+  static function classify($name='', $type='class')
   {
     $type = strtolower($type);
     $name = AppInflector::underscore($name);
@@ -62,7 +62,7 @@ class EndoInflector extends Inflector {
     return AppInflector::camelize($name);
   }
 
-  public function fileize($name='', $type='class')
+  static function fileize($name='', $type='class')
   {
     $type = strtolower($type);
     $name = AppInflector::underscore($name);
@@ -75,7 +75,7 @@ class EndoInflector extends Inflector {
     return $name;
   }
 
-  function tableize($class_name)
+  static function tableize($class_name)
   {
     return strtolower(AppInflector::camelize(AppInflector::singularize($class_name)));
   }

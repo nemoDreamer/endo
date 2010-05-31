@@ -575,13 +575,13 @@ class EndoModel extends MyActiveRecord
   // SMART LOAD
   // --------------------------------------------------
 
-  private function _smartLoad($strClass, $type='model')
+  private static function _smartLoad($strClass, $type='model')
   {
     return Globe::Load($strClass, $type) != false;
   }
 
-  private function _smartLoadModel($strClass)       { return AppModel::_smartLoad($strClass, 'model'); }
-  private function _smartLoadController($strClass)  { return AppModel::_smartLoad($strClass, 'controller'); }
+  private static function _smartLoadModel($strClass)       { return AppModel::_smartLoad($strClass, 'model'); }
+  private static function _smartLoadController($strClass)  { return AppModel::_smartLoad($strClass, 'controller'); }
 
   // --------------------------------------------------
   // UPLOADS
