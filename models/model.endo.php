@@ -9,6 +9,7 @@ class EndoModel extends MyActiveRecord
   var $get_attached = array();
   var $get_children = array();
   var $get_parent = array();
+  var $soft_destroys = array();
   var $file_uploads = array();
 
   var $do_handle_attachments = true;
@@ -465,8 +466,13 @@ class EndoModel extends MyActiveRecord
 
       // destroy children
       foreach ($this->get_children as $model) {
+        $soft = in_array($model, $this->soft_destroys); // soft destroy?
         foreach ($this->$model as $child) {
-          $child->destroy();
+          if ($soft) {
+            AppModel::Update($model, $child->id, array(strtolower(get_class($this)).'_id' => null));
+          } else {
+            $child->destroy();
+          }
         }
       }
     }
@@ -729,6 +735,7 @@ class EndoModel extends MyActiveRecord
       $object->detach($this);
     }
   }
+
   // --------------------------------------------------
   // DATA CHECKING
   // --------------------------------------------------
