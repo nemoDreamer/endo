@@ -61,7 +61,7 @@
       }
       this.start = function(){
         clearTimeout(timer);
-        timer = setTimeout(do_search, 250);
+        timer = setTimeout(do_search, 500);
       }
     }
     var timer = new timeOutScope();
