@@ -185,9 +185,9 @@ class Url {
   // HELPERS
   // --------------------------------------------------
 
-  static function GetData($variable, $default=null)
+  static function GetData($variable, $default=null, $allow_false=true)
   {
-    return array_get(Url::$data, $variable, $default);
+    return array_get(Url::$data, $variable, $default, $allow_false);
   }
 
   static function GetDataArray($variable, $key, $default=null)
@@ -198,6 +198,19 @@ class Url {
 
   static function GetParam($variable, $default=null) { return Url::GetDataArray('params', $variable, $default); }
   static function GetRequest($variable, $default=null) { return Url::GetDataArray('request', $variable, $default); }
+
+  static function HasData($variable)
+  {
+    return array_key_exists($variable, Url::$data);
+  }
+
+  static function HasDataArray($variable, $key)
+  {
+    return array_key_exists($key, array_get(Url::$data, $variable, array()));
+  }
+
+  static function HasParam($variable) { return Url::HasDataArray('params', $variable); }
+  static function HasRequest($variable) { return Url::HasDataArray('request', $variable); }
 
   static function GetSubdomain()
   {
