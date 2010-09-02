@@ -13,6 +13,7 @@ pre.debug {
 	padding: 20px;
 	background-color: #000;
 	color: #444;
+	margin-bottom: 10px;
 }
 
 #debug_dump > pre.debug {

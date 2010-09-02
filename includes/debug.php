@@ -22,6 +22,17 @@ function get_constants($key='user')
   return $constants[$key];
 }
 
+function backtrace($provide_object=false)
+{
+  $backtrace = debug_backtrace($provide_object);
+  if (!$provide_object) {
+    foreach ($backtrace as $key => $value) {
+      unset($backtrace[$key]['object']);
+    }
+  }
+  return $backtrace;
+}
+
 // --------------------------------------------------
 // OUTPUT
 // --------------------------------------------------
