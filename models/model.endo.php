@@ -137,11 +137,16 @@ class EndoModel extends MyActiveRecord
     return $objects;
   }
 
-  static function FindById( $strClass, $mxdID, $extend=FALSE )
+  static function FindById( $strClass, $mxdID, $extend=FALSE, $cache_reset=false )
   {
     if (!AppModel::_smartLoadModel($strClass)) return false;
 
-    $objects = array(parent::FindById($strClass, $mxdID));
+    if ($cache_reset) {
+      $cache_reset = rand();
+      $objects = array(array_shift(AppModel::FindAll($strClass, true, array('id' => $mxdID, "'$cache_reset'" => $cache_reset), 'id', 1)));
+    } else {
+      $objects = array(parent::FindById($strClass, $mxdID));
+    }
     if ($extend) {
       AppModel::AddAllRelated($objects);
     }
