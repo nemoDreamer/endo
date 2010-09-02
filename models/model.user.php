@@ -91,6 +91,9 @@ class User extends AppModel {
   // STATIC METHODS
   // --------------------------------------------------
 
+  // Current
+  // --------------------------------------------------
+
   /**
    * This is basically the 'Login' function.
    * It cycles through different possible locations for the user,
@@ -101,13 +104,13 @@ class User extends AppModel {
   static function GetCurrent()
   {
     // session?
-    if ($session=array_get($_SESSION, AppUser::SESSION_KEY, false)) {
+    if ($session=AppUser::GetSession()) {
       if ($user=AppUser::FetchFromString($session)) {
         return $user;
       }
     }
     // cookie?
-    elseif ($cookie=array_get($_COOKIE, AppUser::REMEMBER_ME, false)) {
+    elseif ($cookie=AppUser::GetCookie()) {
       if ($user=AppUser::FetchFromString($cookie)) {
         return $user;
       }
@@ -134,11 +137,10 @@ class User extends AppModel {
     $user = AppUser::FindById($user->class, $user->id, true);
     // cookie
     if (Url::GetRequest(AppUser::REMEMBER_ME, false)) {
-      setcookie(AppUser::REMEMBER_ME, $user->store_tag(), time()+60*60*24*30, DS);
-      d_('setting cookie!');
+      AppUser::SetCookie($user);
     }
     // session
-    $_SESSION[AppUser::SESSION_KEY] = $user->store_tag();
+    AppUser::SetSession($user);
     // return
     return AppUser::Clean($user);
   }
@@ -149,11 +151,51 @@ class User extends AppModel {
    */
   static function UnsetCurrent()
   {
-    // session
-    unset($_SESSION[AppUser::SESSION_KEY]);
-    // cookie
-    setcookie(AppUser::REMEMBER_ME, '', time()-3600, DS);
+    AppUser::UnsetSession();
+    AppUser::UnsetCookie();
   }
+
+  // Session
+  // --------------------------------------------------
+
+  static function GetSession()
+  {
+    return array_get($_SESSION, AppUser::SESSION_KEY, false);
+  }
+
+  static function SetSession($user=false)
+  {
+    $value = !$user ? false : $user->store_tag();
+    $_SESSION[AppUser::SESSION_KEY] = $value;
+  }
+
+  static function UnsetSession()
+  {
+    unset($_SESSION[AppUser::SESSION_KEY]);
+  }
+
+  // Cookie
+  // --------------------------------------------------
+
+  static function GetCookie()
+  {
+    return array_get($_COOKIE, AppUser::REMEMBER_ME, false);
+  }
+
+  static function SetCookie($user=false)
+  {
+    $time = !$user ? time()-3600 : time()+60*60*24*30;
+    $value = !$user ? '' : $user->store_tag();
+    setcookie(AppUser::REMEMBER_ME, $value, $time, DS);
+  }
+
+  static function UnsetCookie()
+  {
+    AppUser::SetCookie(false);
+  }
+
+  // Fetch
+  // --------------------------------------------------
 
   static function FetchUser($email)
   {
@@ -175,6 +217,9 @@ class User extends AppModel {
       return false;
     }
   }
+
+  // Tools
+  // --------------------------------------------------
 
   static function Clean($user)
   {
