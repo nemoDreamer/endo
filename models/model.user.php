@@ -130,13 +130,14 @@ class User extends AppModel {
 
   /**
    * Saves the logged-in User into Session and Cookie
+   * @param boolean $soft do soft log-in (resets cookie if exists)
    */
-  static function SetCurrent($user)
+  static function SetCurrent($user, $soft=false)
   {
     // correct class & extend
-    $user = AppUser::FindById($user->class, $user->id, true);
+    $user = AppUser::FindById($user->class, $user->id, true, true);
     // cookie
-    if (Url::GetRequest(AppUser::REMEMBER_ME, false)) {
+    if (Url::GetRequest(AppUser::REMEMBER_ME, false) || ($soft && AppUser::GetCookie())) {
       AppUser::SetCookie($user);
     }
     // session
