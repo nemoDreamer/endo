@@ -214,7 +214,8 @@ class Url {
 
   static function GetSubdomain()
   {
-    return substr(str_replace(DOMAIN, '', preg_replace('/^www\./i', '', $_SERVER['HTTP_HOST'])), 0, -1);
+    preg_match_all('/^(?:www\.)?(.+)(?:\:\d+)?/i', $_SERVER['HTTP_HOST'], $matches, PREG_SET_ORDER);
+    return substr(str_replace(DOMAIN, '', $matches[0][1]), 0, -1);
   }
 
 }
