@@ -54,6 +54,18 @@ u {
 	clear: both;
 }
 
+.border-top {
+	margin-top: 1em;
+	padding-top: 1em;
+	border-top: 1px solid #edece8;
+}
+
+.border-bottom {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #edece8;
+}
+
 /* @end */
 
 /* @group Layout */
