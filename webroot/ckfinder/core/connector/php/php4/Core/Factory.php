@@ -58,7 +58,7 @@ class CKFinder_Connector_Core_Factory
 
         if (!isset($GLOBALS['CKFinder_Connector_Factory'][$className])) {
             require_once CKFINDER_CONNECTOR_LIB_DIR . "/" . str_replace("_","/",$baseName).".php";
-            $GLOBALS['CKFinder_Connector_Factory'][$className] =& new $className;
+            $GLOBALS['CKFinder_Connector_Factory'][$className] = new $className;
         }
 
         return $GLOBALS['CKFinder_Connector_Factory'][$className];

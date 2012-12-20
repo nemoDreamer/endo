@@ -40,7 +40,7 @@ class EndoController
     $this->data = $_POST; // TODO clean up data for SQL here?
 
     // View
-    $this->View =& new AppView();
+    $this->View = new AppView();
 
     // Model
     if ($this->has_model) {
