@@ -13,6 +13,7 @@
 ddefine('ENDO_ROOT',                        dirname(__FILE__).DS);
 ddefine('APP_PACKAGES_ROOT',                APP_ROOT.'packages'.DS);
 ddefine('ENDO_PACKAGES_ROOT',               ENDO_ROOT.'packages'.DS);
+ddefine('TMP_ROOT',                         ROOT.'tmp'.DS);
 
 // --------------------------------------------------
 // ROUTES
@@ -77,7 +78,7 @@ define('STR_BEHAVIOR',                      'Behavior');
 // LOGS
 // --------------------------------------------------
 
-ddefine('STR_LOG',                          APP_ROOT.CACHES_DIR.'log.txt');
+ddefine('STR_LOG',                          TMP_ROOT.'log.txt');
 ddefine('STR_FINDCACHE',                    'find');
 
 // --------------------------------------------------
