@@ -34,129 +34,139 @@ Anyone familiar with CakePHP, Laravel, RoR or other Ruby-on-Rails-types will alr
 
 This will install **Endo** to `/endo` as a sibling to `/app`:
 
-	git submodule add endo https://github.com/nemoDreamer/endo.git
-	git submodule init && git submodule update
-
+```Shell
+git submodule add endo https://github.com/nemoDreamer/endo.git
+git submodule init && git submodule update
+```
 
 ## Required Files
 
 ### `/.htaccess` URL re-writes
 
-	<IfModule mod_rewrite.c>
-		RewriteEngine  on
+```ApacheConf
+<IfModule mod_rewrite.c>
+	RewriteEngine  on
 
-		# endo webroot
-		RewriteRule    ^assets/?(.*)$ endo/webroot/$1 [L]
+	# endo webroot
+	RewriteRule    ^assets/?(.*)$ endo/webroot/$1 [L]
 
-		# default
-		RewriteRule    ^$ app/webroot/ [L]
-		RewriteRule    (.*) app/webroot/$1 [L]
-	</IfModule>
+	# default
+	RewriteRule    ^$ app/webroot/ [L]
+	RewriteRule    (.*) app/webroot/$1 [L]
+</IfModule>
+```
 
 
 ### `/app/.htaccess` to protect `/app`
 
-	<IfModule mod_rewrite.c>
-		RewriteEngine  on
-		RewriteRule    ^$ webroot/       [L]
-		RewriteRule    (.*) webroot/$1   [L]
-	</IfModule>
+```ApacheConf
+<IfModule mod_rewrite.c>
+	RewriteEngine  on
+	RewriteRule    ^$ webroot/       [L]
+	RewriteRule    (.*) webroot/$1   [L]
+</IfModule>
+```
 
 
 ### `/app/domain.inc` to define domain and SQL connection string
 
-	<?php
-		define('DOMAIN', 'my-awesome-app.com');
-		define('MYACTIVERECORD_CONNECTION_STR', 'mysql://<user>:<pwd>@'.$_ENV['DATABASE_SERVER'].'/<database>');
-	?>
+```PHP
+<?php
+	define('DOMAIN', 'my-awesome-app.com');
+	define('MYACTIVERECORD_CONNECTION_STR', 'mysql://<user>:<pwd>@'.$_ENV['DATABASE_SERVER'].'/<database>');
+?>
+```
 
 
 ### `/app/configure.php` defines application-specific constants
 
-	<?php
+```PHP
+<?php
 
-	/**
-	 * APP Configure
-	 * Define application-specific constants
-	 * (can override ENDO constants defined in `/<ENDO_ROOT>/configure.php`)
-	 *
-	 * @author Philip Blyth
-	 */
+/**
+ * APP Configure
+ * Define application-specific constants
+ * (can override ENDO constants defined in `/<ENDO_ROOT>/configure.php`)
+ *
+ * @author Philip Blyth
+ */
 
-	define('DEBUG',                             LOCAL ? 1 : (STAGING ? 1: 0)); // 0:none | 1:basic | 2:basic+smarty
+define('DEBUG',                             LOCAL ? 1 : (STAGING ? 1: 0)); // 0:none | 1:basic | 2:basic+smarty
 
-	// --------------------------------------------------
-	// LAYOUT
-	// --------------------------------------------------
+// --------------------------------------------------
+// LAYOUT
+// --------------------------------------------------
 
-	define('SITE_NAME',                         'My Awesome App');
-	define('FOOTER',                            'Joyfully produced by <a href="mailto:me@my-awesome-app.com">me</a>, yay!');
+define('SITE_NAME',                         'My Awesome App');
+define('FOOTER',                            'Joyfully produced by <a href="mailto:me@my-awesome-app.com">me</a>, yay!');
 
-	// --------------------------------------------------
-	// ROOTS && DB
-	// --------------------------------------------------
+// --------------------------------------------------
+// ROOTS && DB
+// --------------------------------------------------
 
-	define('ENDO_ROOT',                         ROOT.'endo'.DS); // default
+define('ENDO_ROOT',                         ROOT.'endo'.DS); // default
 
-	// switch for local dev environment
-	if (LOCAL) {
-	  define('DOMAIN',                          'localhost.com'); // point /etc/hosts localhost.com to 127.0.0.1
-	  define('MYACTIVERECORD_CONNECTION_STR',   'mysql://root:root@localhost/endo_my-awesome-app');
-	} else {
-	  include(APP_ROOT.'domain.inc');
-	}
+// switch for local dev environment
+if (LOCAL) {
+  define('DOMAIN',                          'localhost.com'); // point /etc/hosts localhost.com to 127.0.0.1
+  define('MYACTIVERECORD_CONNECTION_STR',   'mysql://root:root@localhost/endo_my-awesome-app');
+} else {
+  include(APP_ROOT.'domain.inc');
+}
 
-	// --------------------------------------------------
-	// ADMIN
-	// --------------------------------------------------
+// --------------------------------------------------
+// ADMIN
+// --------------------------------------------------
 
-	define('ADMIN_DEFAULT_CONTROLLER',          'posts');
+define('ADMIN_DEFAULT_CONTROLLER',          'posts');
 
-	?>
-
+?>
+```
 
 ### `/app/webroot/index.php` loads the app
 
-	<?php
+```PHP
+<?php
 
-	/**
-	 * Index
-	 * gets called first, via .htaccess
-	 *
-	 * this file needs to be overwriteable by any ulterior version!
-	 * (use bootstrap for app-specific additions)
-	 *
-	 * @author Philip Blyth
-	 */
+/**
+ * Index
+ * gets called first, via .htaccess
+ *
+ * this file needs to be overwriteable by any ulterior version!
+ * (use bootstrap for app-specific additions)
+ *
+ * @author Philip Blyth
+ */
 
-	define('LOCAL', strpos($_SERVER['SERVER_NAME'], 'localhost') !== false);
-	define('STAGING', strpos($_SERVER['HTTP_HOST'], 'staging') !== false);
-	define('DS', DIRECTORY_SEPARATOR); // do not change!
+define('LOCAL', strpos($_SERVER['SERVER_NAME'], 'localhost') !== false);
+define('STAGING', strpos($_SERVER['HTTP_HOST'], 'staging') !== false);
+define('DS', DIRECTORY_SEPARATOR); // do not change!
 
-	// --------------------------------------------------
-	// ROOTS
-	// --------------------------------------------------
+// --------------------------------------------------
+// ROOTS
+// --------------------------------------------------
 
-	define('WEB_ROOT', dirname(__FILE__).DS); // do not change!
-	define('APP_ROOT', dirname(dirname(__FILE__)).DS); // do not change!
-	define('ROOT', dirname(dirname(dirname(__FILE__))).DS); // do not change!
+define('WEB_ROOT', dirname(__FILE__).DS); // do not change!
+define('APP_ROOT', dirname(dirname(__FILE__)).DS); // do not change!
+define('ROOT', dirname(dirname(dirname(__FILE__))).DS); // do not change!
 
-	// --------------------------------------------------
-	// CONFIG
-	// --------------------------------------------------
+// --------------------------------------------------
+// CONFIG
+// --------------------------------------------------
 
-	require_once(APP_ROOT.'configure.php');
+require_once(APP_ROOT.'configure.php');
 
-	// --------------------------------------------------
-	// CORE will handle the rest...
-	// --------------------------------------------------
+// --------------------------------------------------
+// CORE will handle the rest...
+// --------------------------------------------------
 
-	require_once(ENDO_ROOT.'core.php');
+require_once(ENDO_ROOT.'core.php');
 
-	?>
-
+?>
+```
 
 ## TODO
 
 - Add LICENSE
+- ! Use prepared statements !
 - Add sample app, instead of lengthy "Required Files" section.
