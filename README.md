@@ -27,11 +27,15 @@ See sample app for required structure & files.
 This will install **Endo** to `/endo` as a sibling to `/app`:
 
 ```Shell
-git submodule add endo https://github.com/nemoDreamer/endo.git
-git submodule init && git submodule update
+git submodule add https://github.com/nemoDreamer/endo.git
+cd endo
+make install
+cd ..
 ```
 
 ## Required Files
+
+You can run `./endo/_sample/install.sh` to get a symlinked preview of what your directory structure and required files should look like, or simply copy the contents of `endo/_sample/` into your root (as syblings of `endo`).
 
 ### `/.htaccess` URL re-writes
 
