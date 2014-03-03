@@ -1,0 +1,12 @@
+# this will redirect all / requests to /app/webroot,
+# and get caught by /app/webroot/index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine  on
+
+    # endo webroot
+    RewriteRule    ^assets/?(.*)$ endo/webroot/$1 [L]
+
+    # default
+    RewriteRule    ^$ app/webroot/ [L]
+    RewriteRule    (.*) app/webroot/$1 [L]
+</IfModule>

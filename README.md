@@ -20,15 +20,7 @@ Anyone familiar with CakePHP, Laravel, RoR or other Ruby-on-Rails-types will alr
 
 ### Directory Structure
 
-	/
-		.htaccess
-		app/
-			webroot/
-				index.php
-			.htaccess
-			configure.php
-			domain.inc
-
+See sample app for required structure & files.
 
 ### Installing Endo
 
@@ -67,6 +59,16 @@ git submodule init && git submodule update
 </IfModule>
 ```
 
+### `/app/.htaccess` to protect `/app`
+
+```ApacheConf
+<IfModule mod_rewrite.c>
+    RewriteEngine  on
+    RewriteCond    %{REQUEST_FILENAME} !-d
+    RewriteCond    %{REQUEST_FILENAME} !-f
+    RewriteRule    ^(.*)$ index.php?url=$1 [QSA,L]
+</IfModule>
+```
 
 ### `/app/domain.inc` to define domain and SQL connection string
 
@@ -90,6 +92,9 @@ git submodule init && git submodule update
  *
  * @author Philip Blyth
  */
+
+define('LOCAL', strpos($_SERVER['SERVER_NAME'], 'localhost') !== false);
+define('STAGING', strpos($_SERVER['HTTP_HOST'], 'staging') !== false);
 
 define('DEBUG',                             LOCAL ? 1 : (STAGING ? 1: 0)); // 0:none | 1:basic | 2:basic+smarty
 
@@ -138,8 +143,6 @@ define('ADMIN_DEFAULT_CONTROLLER',          'posts');
  * @author Philip Blyth
  */
 
-define('LOCAL', strpos($_SERVER['SERVER_NAME'], 'localhost') !== false);
-define('STAGING', strpos($_SERVER['HTTP_HOST'], 'staging') !== false);
 define('DS', DIRECTORY_SEPARATOR); // do not change!
 
 // --------------------------------------------------
@@ -169,4 +172,4 @@ require_once(ENDO_ROOT.'core.php');
 
 - Add LICENSE
 - ! Use prepared statements !
-- Add sample app, instead of lengthy "Required Files" section.
+- Add fallbacks for required files from `app` into `endo/packages`

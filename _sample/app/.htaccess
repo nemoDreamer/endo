@@ -1,0 +1,7 @@
+# this will redirect all /app requests to /app/webroot,
+# and get caught by /app/webroot/index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine  on
+    RewriteRule    ^$ webroot/       [L]
+    RewriteRule    (.*) webroot/$1   [L]
+</IfModule>
