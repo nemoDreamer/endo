@@ -116,8 +116,9 @@ ddefine('SMARTY_DEBUG_OUTPUT',              null);
 // DB
 // --------------------------------------------------
 
-ddefine('MYACTIVERECORD_CONNECTION_STR',    'mysql://root:root@host/database');
+ddefine('MYACTIVERECORD_CONNECTION_STR',    'mysql://username:password@host/database');
 ddefine('MYACTIVERECORD_CACHE_SQL',         true);
+ddefine('MYACTIVERECORD_LOG_SQL_TO',        TMP_ROOT.'log.sql');
 
 // --------------------------------------------------
 // FUNCTIONS
